@@ -4,7 +4,11 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-admin.initializeApp();
+const credentials = require("../../credentials.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(credentials)
+});
 
 const app = express();
 app.use(bodyParser.json());
