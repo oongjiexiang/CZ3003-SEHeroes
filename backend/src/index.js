@@ -19,16 +19,11 @@ app.use("/user", User);
 db = admin.firestore();
 
 //For testing
-const {createOpenChallengeRecord}  = require('./controllers/open-challenge-record-controller');
+const {deleteAssignmentResult}  = require('./controllers/assignment-result-controller');
 const testingMiddleWareFunction = (req, res) => {
 	//Just change this part
-	createOpenChallengeRecord(
-		{
-			team1: ['A', 'B'],
-			team2: ['C', 'D'],
-			type: "single",
-			questions: ['savd6a', 'asgrebr']
-		},
+	deleteAssignmentResult(
+		'naruto', 'rasengan', 
 		(err, uid) => {
 			if(err){
 				return res.status(500).send({ message: `${err}`})
