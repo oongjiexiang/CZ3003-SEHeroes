@@ -54,7 +54,7 @@ module.exports['getAssignmentQuestion'] = async function(assignmentQuestionId, c
     }
 }
 
-module.exports['getAllAssignmentQuestion'] = async function(callback){
+module.exports['getAllAssignmentQuestions'] = async function(callback){
     try{
         const snapshot = await assignmentQuestionCollection.get();
         if(snapshot.empty){

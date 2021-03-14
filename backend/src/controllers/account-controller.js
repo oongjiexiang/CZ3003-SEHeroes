@@ -1,7 +1,6 @@
 const admin = require('firebase-admin');
-const db = admin.firestore();
 
-module.exports["createUser"] = async function(req, res) {
+module.exports["createAccount"] = async function(req, res) {
    try {
        const { displayName, password, email, role } = req.body
 
@@ -26,7 +25,7 @@ function handleError(res, err) {
    return res.status(500).send({ message: `${err.code} - ${err.message}` });
 }
 
-module.exports["getAllUsers"] = async function(req, res) {
+module.exports["getAllAccounts"] = async function(req, res) {
     try {
         const listUsers = await admin.auth().listUsers()
         const users = listUsers.users.map(mapUser)
@@ -49,7 +48,7 @@ function mapUser(user) {
     }
 }
 
-module.exports["getUser"] = async function(req, res) {
+module.exports["getAccount"] = async function(req, res) {
    try {
        const { id } = req.params
        const user = await admin.auth().getUser(id)
@@ -59,7 +58,7 @@ module.exports["getUser"] = async function(req, res) {
    }
 }
 
-module.exports["updateUser"] = async function(req, res) {
+module.exports["updateAccount"] = async function(req, res) {
    try {
        const { id } = req.params
        const { displayName, password, email, role } = req.body
@@ -78,7 +77,7 @@ module.exports["updateUser"] = async function(req, res) {
    }
 }
 
-module.exports["removeUser"] = async function(req, res) {
+module.exports["removeAccount"] = async function(req, res) {
    try {
        const { id } = req.params
        await admin.auth().deleteUser(id)

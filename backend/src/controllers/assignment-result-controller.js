@@ -67,7 +67,7 @@ module.exports['getAssignmentResult'] = async function(studentId, assignmentId, 
     }
 }
 
-module.exports['getAllAssignment'] = async function(callback){
+module.exports['getAllAssignmentResults'] = async function(callback){
     try{
         const snapshot = await assignmentResultCollection.get();
         if(snapshot.empty){

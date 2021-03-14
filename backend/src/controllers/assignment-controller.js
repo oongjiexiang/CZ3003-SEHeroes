@@ -54,7 +54,7 @@ module.exports['getAssignment'] = async function(assignmentId, callback){
     }
 }
 
-module.exports['getAllAssignment'] = async function(callback){
+module.exports['getAllAssignments'] = async function(callback){
     try{
         const snapshot = await assignmentCollection.get();
         if(snapshot.empty){

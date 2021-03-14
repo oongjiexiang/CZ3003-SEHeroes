@@ -11,10 +11,13 @@ admin.initializeApp({
 
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
 app.use(cors({ origin: true }));
 
-const User = require("./routes/user");
-app.use("/user", User);
+const Account = require("./routes/account");
+app.use("/account", Account);
 
 db = admin.firestore();
 
@@ -37,6 +40,9 @@ const testingMiddleWareFunction = (req, res) => {
 app.use('/test', 
 	testingMiddleWareFunction
 )
+
+const Assignment = require("./routes/assignment");
+app.use('/assignment', Assignment)
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
