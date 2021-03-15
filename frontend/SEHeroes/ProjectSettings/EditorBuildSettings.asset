@@ -4,5 +4,26 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Home.unity
+    guid: 2ee1c8bbedfd640c78ff9d09f7f42852
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Tutorial_Group.unity
+    guid: b625c390a59374b9a888eb99d066d96b
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Story_Mode.unity
+    guid: ed8d4918afda143d0984b4cb2a75796e
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Question_Bank.unity
+    guid: 098b8cf63de1e4b39a4a31773fd5317f
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Leaderboard.unity
+    guid: fece9aa2bd2254f5f8b32f311c45073c
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Assignments.unity
+    guid: e24ba2a00934e4d4689f658c630c7335
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Settings.unity
+    guid: 8dc6281094225497eb512ffb2b328c7a
   m_configObjects: {}
