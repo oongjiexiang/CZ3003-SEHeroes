@@ -2,12 +2,12 @@
 	"name": "start-express-app",
 	"version": "1.0.0",
 	"description": "App Bootstrapped with start-express-app",
-	"main": "src/index.js",
+	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "nodemon ./src/index.js",
-		"start:prod": "NODE_ENV=production nodemon ./src/index.js",
-		"debug": "ndb ./src/index.js"
+		"start": "nodemon ./index.js",
+		"start:prod": "NODE_ENV=production nodemon ./index.js",
+		"debug": "ndb ./index.js"
 	},
 	"author": "",
 	"license": "ISC",

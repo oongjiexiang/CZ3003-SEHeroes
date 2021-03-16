@@ -3,7 +3,14 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-const credentials = require("../credentials.json");
+//const credentials = require("./credentials.json");
+const config = require("./config");
+
+const credentials = {
+	"project_id": config.firebaseProjectId,
+	"private_key": config.firebasePrivateKey,
+	"client_email": config.firebaseClientEmail
+}
 
 admin.initializeApp({
   credential: admin.credential.cert(credentials)
@@ -16,13 +23,13 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors({ origin: true }));
 
-const Account = require("./routes/account");
+const Account = require("./src/routes/account");
 app.use("/account", Account);
 
 db = admin.firestore();
 
 //For testing
-const {deleteAssignmentResult}  = require('./controllers/assignment-result-controller');
+const {deleteAssignmentResult}  = require('./src/controllers/assignment-result-controller');
 const testingMiddleWareFunction = (req, res) => {
 	//Just change this part
 	deleteAssignmentResult(
@@ -41,7 +48,7 @@ app.use('/test',
 	testingMiddleWareFunction
 )
 
-const Assignment = require("./routes/assignment");
+const Assignment = require("./src/routes/assignment");
 app.use('/assignment', Assignment)
 
 const PORT = process.env.PORT || 8000;
