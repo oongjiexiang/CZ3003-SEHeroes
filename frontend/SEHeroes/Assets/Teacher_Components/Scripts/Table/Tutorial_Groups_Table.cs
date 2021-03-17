@@ -16,7 +16,7 @@ public class Tutorial_Groups_Table : MonoBehaviour
         entryTemplate.gameObject.SetActive(false);
 
         float templateHeight = 40f;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 40; i++)
         {
             Transform entryTransform = Instantiate(entryTemplate, entryContainer);
             RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
