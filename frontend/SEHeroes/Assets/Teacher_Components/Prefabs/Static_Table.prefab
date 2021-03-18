@@ -596,7 +596,7 @@ GameObject:
   - component: {fileID: 5046790643037134051}
   - component: {fileID: 5046790643037134053}
   m_Layer: 5
-  m_Name: Tutorial_Table
+  m_Name: Static_Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

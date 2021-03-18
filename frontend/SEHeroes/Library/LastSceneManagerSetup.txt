@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/Teacher UI/Student_Management.unity
+- path: Assets/Scenes/Teacher UI/Assignments.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
