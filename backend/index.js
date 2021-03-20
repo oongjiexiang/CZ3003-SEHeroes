@@ -49,7 +49,11 @@ app.use('/test',
 )
 
 const Assignment = require("./src/routes/assignment");
+const AssignmentQuestion = require("./src/routes/assignment-question");
+const AssignmentResult = require("./src/routes/assignment-result");
 app.use('/assignment', Assignment)
+app.use('/assignmentQuestion', AssignmentQuestion)
+app.use('/assignmentResult', AssignmentResult)
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

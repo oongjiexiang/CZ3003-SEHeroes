@@ -3,10 +3,11 @@ const db = admin.firestore();
 const assignmentQuestionCollection = db.collection("assignmentQuestion")
 
 module.exports['createAssignmentQuestion'] = async function(record, callback) {
+    if (!record['answer'] || !record['correctAnswer'] || !record['question'] || !record['score']) {
+        callback('Missing fields', null)
+        return
+    }
     try{
-        if (!record['answer'] || !record['correctAnswer'] || !record['question'] || !record['score']) {
-            callback('Missing fields', null)
-        }
         const reply = await assignmentQuestionCollection.add(record)
         callback(null, reply.id)
         
@@ -33,7 +34,6 @@ module.exports['updateAssignmentQuestion'] = async function(assignmentQuestionId
 module.exports['deleteAssignmentQuestion'] = async function(assignmentQuestionId, callback){
     try{
         const res = await assignmentQuestionCollection.doc(assignmentQuestionId).delete();
-        console.log(res)
         callback(null, res)
     } catch(err) {
         callback(err, null)
@@ -63,7 +63,7 @@ module.exports['getAllAssignmentQuestions'] = async function(callback){
         else{
             const assignmentQuestions = []
             snapshot.forEach(doc =>
-                assignments.push(doc.data())
+                assignmentQuestions.push(doc.data())
             );
             callback(null, assignmentQuestions);
         }

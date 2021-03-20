@@ -79,12 +79,12 @@ router.delete('/:assignmentId', (req, res) => {
     const { assignmentId } = req.params;
     AssignmentController.deleteAssignment(
         assignmentId,
-        (err, assignemnt) => {
+        (err, message) => {
             if(err){
                 return res.status(500).send({ message: `${err}`})
             }
             else{
-                return res.status(200).send(assignemnt)
+                return res.status(200).send(message)
             }
         }
     )

@@ -3,10 +3,11 @@ const db = admin.firestore();
 const assignmentCollection = db.collection("assignment")
 
 module.exports['createAssignment'] = async function(record, callback) {
+    if (!record['startDate'] || !record['dueDate'] || !record['questions'] || !record['tries']) {
+        callback('Missing fields', null)
+        return
+    }
     try{
-        if (!record['startDate'] || !record['dueDate'] || !record['questions'] || !record['tries']) {
-            callback('Missing fields', null)
-        }
         const reply = await assignmentCollection.add(record)
         callback(null, reply.id)
         
