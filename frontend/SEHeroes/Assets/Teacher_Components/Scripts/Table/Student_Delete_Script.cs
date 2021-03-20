@@ -78,7 +78,7 @@ public class Student_Delete_Script : MonoBehaviour
                 playerTextPanel.transform.SetParent(mainScrollContentView.transform);
                 playerTextPanel.transform.localScale = new Vector3(1,1,1);
                 playerTextPanel.transform.localPosition = new Vector3(0,0,0);
-                playerTextPanel.transform.Find ("Cell_Text").GetComponent<Text> ().text=i + ".                     " + value + "                     " + studentName + "                     " + "Manage";
+                playerTextPanel.transform.Find ("Cell_Text").GetComponent<Text> ().text=i + ".                     " + value + "                     " + studentName + "                     " + "Delete";
             }
         }
         else 
