@@ -4,7 +4,7 @@ const AssignmentResultController  = require("../controllers/assignment-result-co
 
 router.post('/', (req, res) => {
     const { assignmentId, studentId, tried, score } = req.body;
-    console.log(req.body)
+
     AssignmentResultController.createAssignmentResult(
         {
             assignmentId: assignmentId,

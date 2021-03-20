@@ -29,28 +29,35 @@ app.use("/account", Account);
 db = admin.firestore();
 
 //For testing
-const {deleteAssignmentResult}  = require('./src/controllers/assignment-result-controller');
-const testingMiddleWareFunction = (req, res) => {
-	//Just change this part
-	deleteAssignmentResult(
-		'naruto', 'rasengan', 
-		(err, uid) => {
-			if(err){
-				return res.status(500).send({ message: `${err}`})
-			}
-			else{
-				return res.status(200).send(uid)
-			}
-		}
-	)
-}
-app.use('/test', 
-	testingMiddleWareFunction
-)
+// const {deleteAssignmentResult}  = require('./src/controllers/assignment-result-controller');
+// const testingMiddleWareFunction = (req, res) => {
+// 	//Just change this part
+// 	deleteAssignmentResult(
+// 		'naruto', 'rasengan', 
+// 		(err, uid) => {
+// 			if(err){
+// 				return res.status(500).send({ message: `${err}`})
+// 			}
+// 			else{
+// 				return res.status(200).send(uid)
+// 			}
+// 		}
+// 	)
+// }
+// app.use('/test', 
+// 	testingMiddleWareFunction
+// )
 
+const User = require("./src/routes/user")
+const TutorialGroup = require("./src/routes/tutorialGroup")
+const World = require("./src/routes/world")
 const Assignment = require("./src/routes/assignment");
 const AssignmentQuestion = require("./src/routes/assignment-question");
 const AssignmentResult = require("./src/routes/assignment-result");
+
+app.use('/user', User)
+app.use('/tutorialGroup', TutorialGroup)
+app.use('/world', World)
 app.use('/assignment', Assignment)
 app.use('/assignmentQuestion', AssignmentQuestion)
 app.use('/assignmentResult', AssignmentResult)
