@@ -2,21 +2,22 @@ const admin = require("firebase-admin");
 const db = admin.firestore();
 
 const trGroup = db.collection('tutorialGroup')
-module.exports['createGroup'] = async function (groupId, students, callback) {
+module.exports['createGroup'] = async function (tutorialGroupId, students, callback) {
     // group id refers to the tutorial group that you want to create
     // students are the students inside that tutorial group
     try {
         // check whether the tutorial group with such group id exists, if yes, ignore else create new group
-        console.log("Running now");
-        students={"studentID":students}
-        const record = await trGroup.doc(groupId).get();
+        const record = await trGroup.doc(tutorialGroupId).get();
         if (record.exists) {
             console.log("Tutorial group already exist");
             callback(null, "Tutorial group already exist");
         }
         else {
-            const res = await trGroup.doc(groupId).set(students);
-            callback(null, "Tutorial group " + groupId + " created");
+            const data = {
+                "students": students
+            }
+            const res = await trGroup.doc(tutorialGroupId).set(data);
+            callback(null, "Tutorial group " + tutorialGroupId + " created");
         }
     }
     catch (err) {
@@ -26,22 +27,19 @@ module.exports['createGroup'] = async function (groupId, students, callback) {
 
 
 module.exports['updateGroup'] = async function (req, callback) {
-    
-
     // Atomically add a new student id to the "studentID" array field.
+    if (!req['tutorialGroupId'] || !req['matricNo']) {
+        callback('Missing fields', null)
+        return
+    }
     try {
-        console.log('Running now');
-        if (!req['group_id'] || !req['student_id']) {
-            console.log('Missing Field');
-            return res.status(400).send({ message: 'Missing Field' })
-        }
-        groupNumber = req['group_id'];
-        studentid = req['student_id'];
+        const groupNumber = req['tutorialGroupId'];
+        const matricNo = req['studematricNont'];
         const record = trGroup.doc(groupNumber);
         const unionRes = await record.update({
-            studentID: admin.firestore.FieldValue.arrayUnion(studentid)
+            students: admin.firestore.FieldValue.arrayUnion(matricNo)
         })
-        callback(null, "student " + studentid + " has been added to group " + groupNumber + "!");
+        callback(null, "student " + matricNo + " has been added to group " + groupNumber + "!");
     }
     catch (err) {
         callback(err, null);
@@ -49,34 +47,32 @@ module.exports['updateGroup'] = async function (req, callback) {
 }
 
 module.exports['removeStudentFromGroup']= async function(req,callback) {
-//Atomically remove a new student id to the "studentID" array field.
+    //Atomically remove a new student id to the "studentID" array field.
+    if (!req['tutorialGroupId'] || !req['matricNo']) {
+        callback('Missing fields', null)
+        return
+    }   
     try {
-        console.log('Running now');
-        if (!req["group_id"] || !req["student_id"]) {
-            console.log("Missing Field");
-            return res.status(400).send({ message: "Missing Field" });
-        }
-        groupNumber = req["group_id"];
-        studentid = req["student_id"];
+        const groupNumber = req['tutorialGroupId'];
+        const matricNo = req['matricNo'];
         const record = trGroup.doc(groupNumber);
         const removeRes = await record.update({
-            studentID: admin.firestore.FieldValue.arrayRemove(studentid)
+            students: admin.firestore.FieldValue.arrayRemove(matricNo)
         });
-        callback(null, studentid+" is removed from "+"group "+groupNumber+"!");
+        callback(null, matricNo+" is removed from "+"group "+groupNumber+"!");
     }
     catch (err) {
         callback(err, null);
     }
 }
 
-module.exports['deleteTutorialGroup'] = async function (groupId, callback) {
-// delete a whole tutorial group
+module.exports['deleteTutorialGroup'] = async function (tutorialGroupId, callback) {
+    // delete a whole tutorial group
     try {
-        const record = await trGroup.doc(groupId).get();
+        const record = await trGroup.doc(tutorialGroupId).get();
         if (record.exists) {
-            console.log("deleting");
-            const res = trGroup.doc(groupId).delete();
-            callback(null,"Group"+groupId+ "deleted");
+            const res = trGroup.doc(tutorialGroupId).delete();
+            callback(null,"Group" + tutorialGroupId + "deleted");
         }
         else {
             callback(null, "tutorial group does not exist!");

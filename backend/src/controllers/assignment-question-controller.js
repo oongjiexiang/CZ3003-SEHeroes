@@ -3,9 +3,12 @@ const db = admin.firestore();
 const assignmentQuestionCollection = db.collection("assignmentQuestion")
 
 module.exports['createAssignmentQuestion'] = async function(record, callback) {
-    if (!record['answer'] || !record['correctAnswer'] || !record['question'] || !record['score']) {
+    if (record['answer'] == null || record['correctAnswer'] == null  || record['question'] == null || record['score'] == null ) {
         callback('Missing fields', null)
         return
+    }
+    if(!record['image']){
+        delete record['image']
     }
     try{
         const reply = await assignmentQuestionCollection.add(record)
@@ -54,19 +57,25 @@ module.exports['getAssignmentQuestion'] = async function(assignmentQuestionId, c
     }
 }
 
-module.exports['getAllAssignmentQuestions'] = async function(callback){
+//get assignment questions by a list of assignmentQuestionId
+module.exports['getAssignmentQuestions'] = async function(assignmentQuestionIds, callback){
     try{
-        const snapshot = await assignmentQuestionCollection.get();
-        if(snapshot.empty){
+        if(assignmentQuestionIds.length == 0){
             callback('Asssignment question is empty', null)
+            return
         }
-        else{
-            const assignmentQuestions = []
-            snapshot.forEach(doc =>
-                assignmentQuestions.push(doc.data())
-            );
-            callback(null, assignmentQuestions);
+        
+        const assignmentQuestions = []
+        for(let i = 0; i < assignmentQuestionIds.length; i++){
+            let assignmentQuestion = await assignmentQuestionCollection.doc(assignmentQuestionIds[i]).get();
+            let data = assignmentQuestion.data();
+            if(data != null){
+                data['assignmentQuestionId'] = assignmentQuestionIds[i];
+                assignmentQuestions.push(data)
+            }
         }
+        callback(null, assignmentQuestions);
+        
     } catch(err) {
         callback(err, null)
     }

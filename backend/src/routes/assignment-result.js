@@ -3,12 +3,12 @@ const router = express.Router();
 const AssignmentResultController  = require("../controllers/assignment-result-controller");
 
 router.post('/', (req, res) => {
-    const { assignmentId, studentId, tried, score } = req.body;
+    const { assignmentId, matricNo, tried, score } = req.body;
 
-    AssignmentResultController.createAssignmentResult(
+    AssignmentResultController.createOrUpdateAssignmentResult(
         {
             assignmentId: assignmentId,
-            studentId: studentId,
+            matricNo: matricNo,
             tried: tried,
             score: score
         }, 
@@ -24,7 +24,14 @@ router.post('/', (req, res) => {
 });
 
 router.get('/', (req, res) => {
+    const { assignmentId, matricNo} = req.query;
+
+    let queryMap = {}
+    if(assignmentId != null) queryMap['assignmentId'] = assignmentId;
+    if(matricNo != null) queryMap['matricNo'] = matricNo;
+
     AssignmentResultController.getAllAssignmentResults(
+        queryMap,
         (err, assignemntResults) => {
             if(err){
                 return res.status(500).send({ message: `${err}`})
@@ -36,51 +43,11 @@ router.get('/', (req, res) => {
     )
 });
 
-router.get('/:assignmentId/:studentId', (req, res) => {
-    const { assignmentId, studentId } = req.params;
-    AssignmentResultController.getAssignmentResult(
-        studentId, assignmentId,
-        (err, assignemntResult) => {
-            if(err){
-                return res.status(500).send({ message: `${err}`})
-            }
-            else{
-                return res.status(200).send(assignemntResult)
-            }
-        }
-    )
-});
 
-router.patch('/:assignmentId/:studentId', (req, res) => {
-    const { assignmentId, studentId } = req.params;
-    const { tried, score } = req.body;
-
-    const updateMap = {}
-    if(req.body.assignmentId) updateMap['assignmentId'] = req.body.assignmentId;
-    if(req.body.studentId) updateMap['studentId'] = req.body.studentId;
-    if(tried) updateMap['tried'] = tried;
-    if(score) updateMap['score'] = score;
-    
-    AssignmentResultController.updateAssignmentResult(
-        studentId,
-        assignmentId,
-        updateMap, 
-        (err, assignemntResultId) => {
-            if(err){
-                return res.status(500).send({ message: `${err}`})
-            }
-            else{
-                return res.status(200).send(assignemntResultId)
-            }
-        }
-    )
-});
-
-router.delete('/:assignmentId/:studentId', (req, res) => {
-    const { assignmentId, studentId } = req.params;
+router.delete('/:assignmentResultId', (req, res) => {
+    const { assignmentResultId } = req.params;
     AssignmentResultController.deleteAssignmentResult(
-        studentId,
-        assignmentId,
+        assignmentResultId,
         (err, message) => {
             if(err){
                 return res.status(500).send({ message: `${err}`})

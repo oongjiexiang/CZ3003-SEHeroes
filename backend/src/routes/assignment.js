@@ -3,10 +3,11 @@ const router = express.Router();
 const AssignmentController  = require("../controllers/assignment-controller");
 
 router.post('/', (req, res) => {
-    const { startDate, dueDate, questions, tries } = req.body;
-
+    const { assignmentName, startDate, dueDate, questions, tries } = req.body;
+    
     AssignmentController.createAssignment(
         {
+            assignmentName: assignmentName,
             startDate: new Date(startDate),
             dueDate: new Date(dueDate),
             questions: questions,
@@ -53,13 +54,14 @@ router.get('/:assignmentId', (req, res) => {
 
 router.patch('/:assignmentId', (req, res) => {
     const { assignmentId } = req.params;
-    const { startDate, dueDate, questions, tries } = req.body;
+    const { assignmentName, startDate, dueDate, questions, tries } = req.body;
 
     const updateMap = {}
-    if(startDate) updateMap['startDate'] = new Date(startDate);
-    if(dueDate) updateMap['dueDate'] = new Date(dueDate);
-    if(questions) updateMap['questions'] = questions;
-    if(tries) updateMap['tries'] = tries;
+    if(assignmentName != null) updateMap['assignmentName'] = assignmentName;
+    if(startDate != null) updateMap['startDate'] = new Date(startDate);
+    if(dueDate != null) updateMap['dueDate'] = new Date(dueDate);
+    if(questions != null) updateMap['questions'] = questions;
+    if(tries != null) updateMap['tries'] = tries;
     
     AssignmentController.updateAssignment(
         assignmentId,

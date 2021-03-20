@@ -1,40 +1,49 @@
 const admin = require('firebase-admin');
 const db = admin.firestore();
+const storyModeQuestionCollection = db.collection("storyModeQuestion")
 
 module.exports['createStoryModeQuestion'] = async function(record, callback) {
+
+    if (record['answer'] == null || record['correctAnswer'] == null|| record['level'] == null
+                || record['question']== null || record['section']== null || record['world'] == null) {
+        callback('Missing fields', null)
+        return
+    }
+    if(!record['image']) delete record['image']
+
     try{
-        if (!record['answer'] || !record['correctAns'] || !record['image'] || !record['level'] || !record['question'] || !record['section'] || !record['world']) {
-            return res.status(400).send({ message: 'Missing fields' })
-        }
-        const reply = await db.collection("storyModeQuestions").add(record)
+        const reply = await storyModeQuestionCollection.add(record)
         callback(null, reply.id)
-        
     } catch(err) {
         callback(err, null)
     }
 }
 
-module.exports['getAllStoryModeQuestions'] = async function(callback) {
+module.exports['getAllStoryModeQuestions'] = async function(queryMap, callback) {
     try{ 
-        const snapshot = await db.collection('storyModeQuestions').get()
+        let questions = storyModeQuestionCollection
+        for (const key in queryMap) {
+            questions = questions.where(key, "==", queryMap[key])
+        }
+        const snapshot = await questions.get()
         if (snapshot.empty) {
             callback('No data', null)
         }
         else {
-            var res = []
+            const res = {}
             snapshot.forEach(doc => {
-                res.push(doc.data())
+                res[doc.id] = doc.data();
             })
             callback(null, res)
-            }
+        }
     } catch(err) {
         callback(err, null)
     }
 }
 
-module.exports['getStoryModeQuestion'] = async function(questionId, callback) {
+module.exports['getStoryModeQuestion'] = async function(storyModeQuestionId, callback) {
     try{ 
-        const question = await db.collection('storyModeQuestions').doc(questionId).get()
+        const question = await storyModeQuestionCollection.doc(storyModeQuestionId).get()
         if (!question.exists) {
             callback('No such question found', null)
         }
@@ -46,14 +55,14 @@ module.exports['getStoryModeQuestion'] = async function(questionId, callback) {
     }
 }
 
-module.exports['updateStoryModeQuestion'] = async function(questionId, updateFields, callback) {
+module.exports['updateStoryModeQuestion'] = async function(storyModeQuestionId, updateFields, callback) {
     try{
-        const question = await db.collection("storyModeQuestions").doc(questionId).get()
+        const question = await storyModeQuestionCollection.doc(storyModeQuestionId).get()
         if (!question.exists) {
             callback('No such question found', null)
         }
         else{
-            const res = await db.collection("storyModeQuestions").doc(questionId).update(updateFields)
+            const res = await storyModeQuestionCollection.doc(storyModeQuestionId).update(updateFields)
             callback(null, res)
         }
     } catch(err) {
@@ -61,11 +70,10 @@ module.exports['updateStoryModeQuestion'] = async function(questionId, updateFie
     }
 }
 
-module.exports['deleteStoryModeQuestion'] = async function(questionId, callback) {
+module.exports['deleteStoryModeQuestion'] = async function(storyModeQuestionId, callback) {
     try{
-        const res = await db.collection("storyModeQuestions").doc(questionId).delete()
-        callback(null, res)
-        
+        const res = await storyModeQuestionCollection.doc(storyModeQuestionId).delete()
+        callback(null, res) 
     } catch(err) {
         callback(err, null)
     }

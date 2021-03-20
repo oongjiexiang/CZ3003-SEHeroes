@@ -23,20 +23,18 @@ router.post("/", (req, res) => {
     );
 });
 
-
-
-router.patch("/", (req, res) => {
-    const { character, matricNo, openChallengeRating, tutorialGroup,username } = req.body;
+router.patch("/:matricNo", (req, res) => {
+    const { character, openChallengeRating, tutorialGroup, username } = req.body;
+    const {matricNo} = req.params;
+    const updateMap = {}
+    if(character) updateMap['character'] = character;
+    if(openChallengeRating) updateMap['openChallengeRating'] = openChallengeRating;
+    if(tutorialGroup) updateMap['tutorialGroup'] = tutorialGroup;
+    if(username) updateMap['username'] = username;
 
     UserController.updateUser(
-        {
-            character: character,
-            matricNo: matricNo,
-            openChallengeRating: openChallengeRating,
-            tutorialGroup: tutorialGroup,
-            username:username
-        },
-        
+        matricNo,
+        updateMap,
         (err, docid) => {
             if (err) {
                 return res.status(500).send({ message: `${err}` });

@@ -3,7 +3,8 @@ const db = admin.firestore();
 const assignmentCollection = db.collection("assignment")
 
 module.exports['createAssignment'] = async function(record, callback) {
-    if (!record['startDate'] || !record['dueDate'] || !record['questions'] || !record['tries']) {
+    if (record['assignmentName'] == null || record['startDate'] == null || record['dueDate'] == null 
+                || record['questions'] == null || record['tries'] == null) {
         callback('Missing fields', null)
         return
     }
@@ -62,10 +63,10 @@ module.exports['getAllAssignments'] = async function(callback){
             callback('Asssignment is empty', null)
         }
         else{
-            const assignments = []
-            snapshot.forEach(doc =>
-                assignments.push(doc.data())
-            );
+            const assignments = {}
+            snapshot.forEach(doc =>{
+                assignments[doc.id] = doc.data();
+            });
             callback(null, assignments);
         }
     } catch(err) {

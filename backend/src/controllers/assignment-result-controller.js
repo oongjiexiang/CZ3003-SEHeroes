@@ -1,96 +1,63 @@
-const e = require('express');
 const admin = require('firebase-admin');
 const db = admin.firestore();
 const assignmentResultCollection = db.collection("assignmentResult")
 
-module.exports['createAssignmentResult'] = async function(record, callback) {
+module.exports['createOrUpdateAssignmentResult'] = async function(record, callback) {
 
-    if (!record['assignmentId'] || !record['studentId'] || !record['score'] || !record['tried']) {
+    if (record['assignmentId'] == null  || record['matricNo'] == null || record['score']== null ) {
         callback('Missing fields', null)
         return
     }
     try{
-        const studentId = record['studentId']
+        const matricNo = record['matricNo']
         const assignmentId = record['assignmentId']
-        const assignmentResult = await assignmentResultCollection.where('studentId', '==', studentId)
+        const assignmentResult = await assignmentResultCollection.where('matricNo', '==', matricNo)
                                                             .where('assignmentId', '==', assignmentId).get();
         
         if(assignmentResult.empty){
-            const reply = await assignmentResultCollection.add(record)
-            callback(null, reply.id)
+            record['tried'] = 1
+            await assignmentResultCollection.add(record)
+            callback(null, "result added");
+            return;
         }
-        else{
-            callback('Asssignment result of the student already exist', null)
-        }
+        
+        let id = assignmentResult.docs[0].id;
+        await assignmentResultCollection.doc(id).update({ 
+            'score': record['score'],
+            'tried': assignmentResult.docs[0].data()['tried']+1
+        });
+        callback(null,"result updated");
+        
+        
     } catch(err) {
         callback(err, null)
     }
 }
 
-module.exports['updateAssignmentResult'] = async function(studentId, assignmentId, updateMap, callback){
-    console.log(studentId, assignmentId)
+module.exports['deleteAssignmentResult'] = async function(assignmentResultId, callback){
     try{
-        const assignmentResult = await assignmentResultCollection.where('studentId', '==', studentId)
-                                                            .where('assignmentId', '==', assignmentId).get();
-                                          
-        if(assignmentResult.empty){
-            callback('Asssignment result does not exist', null)
-        }
-        else{
-            let assignmentResultId = assignmentResult.docs[0].id;
-            const res = await assignmentResultCollection.doc(assignmentResultId).update(updateMap);
-            callback(null, res)       
-        }
+        const res = await assignmentResultCollection.doc(assignmentResultId).delete();
+        callback(null, res)       
     } catch(err) {
         callback(err, null)
     }
 }
 
-module.exports['deleteAssignmentResult'] = async function(studentId, assignmentId, callback){
+module.exports['getAllAssignmentResults'] = async function(queryMap, callback){
     try{
-        const assignmentResult = await assignmentResultCollection.where('studentId', '==', studentId)
-                            .where('assignmentId', '==', assignmentId).get();
-
-        if(assignmentResult.empty){
-            callback('Asssignment result does not exist', null)
-            
+        let results = assignmentResultCollection
+        for (const key in queryMap) {
+            results = results.where(key, "==", queryMap[key])
         }
-        else{
-            let assignmentResultId = assignmentResult.docs[0].id;
-            const res = await assignmentResultCollection.doc(assignmentResultId).delete();
-            callback(null, res)       
-        }
-    } catch(err) {
-        callback(err, null)
-    }
-}
-
-module.exports['getAssignmentResult'] = async function(studentId, assignmentId, callback){
-    try{
-        const assignmentResult = await assignmentResultCollection.where('studentId', '==', studentId)
-                                        .where('assignmentId', '==', assignmentId).get();
-        if(assignmentResult.empty){
-            callback('Asssignment result does not exist', null)
-        }
-        else{
-            callback(null, assignmentResult.docs[0].data());
-        }
-    } catch(err) {
-        callback(err, null)
-    }
-}
-
-module.exports['getAllAssignmentResults'] = async function(callback){
-    try{
-        const snapshot = await assignmentResultCollection.get();
+        const snapshot = await results.get()
         if(snapshot.empty){
-            callback('Asssignment does not exist', null)
+            callback('Asssignment result does not exist', null)
         }
         else{
-            const assignmentResults = []
-            snapshot.forEach(doc =>
-                assignmentResults.push(doc.data())
-            );
+            const assignmentResults = {}
+            snapshot.forEach(doc =>{
+                assignmentResults[doc.id] = doc.data();
+            });
             callback(null, assignmentResults);
         }
     } catch(err) {
