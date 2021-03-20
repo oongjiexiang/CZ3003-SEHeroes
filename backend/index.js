@@ -49,7 +49,14 @@ app.use('/test',
 )
 
 const Assignment = require("./src/routes/assignment");
+const StoryModeQuestion = require("./src/routes/storymodequestion");
+const StoryModeResult = require("./src/routes/storymoderesult");
+const OpenChallengeRecord = require("./src/routes/openchallengerecord");
+
 app.use('/assignment', Assignment)
+app.use('/storymodequestion', StoryModeQuestion)
+app.use('/storymoderesult', StoryModeResult)
+app.use('/openchallengerecord', OpenChallengeRecord)
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

@@ -14,7 +14,7 @@ module.exports['createOpenChallengeRecord'] = async function(record, callback) {
     }
 }
 
-module.exports['getAllOpenChallengeRecords'] = async function(record, callback) {
+module.exports['getAllOpenChallengeRecords'] = async function(callback) {
     try{ 
         const snapshot = await db.collection('openChallengeRecord').get()
         if (snapshot.empty) {

@@ -21,12 +21,12 @@ module.exports['getAllStoryModeQuestions'] = async function(callback) {
             callback('No data', null)
         }
         else {
-            var res = []
+            const res = []
             snapshot.forEach(doc => {
                 res.push(doc.data())
             })
             callback(null, res)
-            }
+        }
     } catch(err) {
         callback(err, null)
     }
