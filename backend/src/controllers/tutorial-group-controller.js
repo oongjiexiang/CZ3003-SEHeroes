@@ -12,11 +12,11 @@ module.exports['createGroup'] = async function (groupId, students, callback) {
         const record = await trGroup.doc(groupId).get();
         if (record.exists) {
             console.log("Tutorial group already exist");
+            callback(null, "Tutorial group already exist");
         }
         else {
-            console.log("Creating tutorial group")
             const res = await trGroup.doc(groupId).set(students);
-            console.log("Tutorial group successfully created");
+            callback(null, "Tutorial group " + groupId + " created");
         }
     }
     catch (err) {
@@ -41,7 +41,7 @@ module.exports['updateGroup'] = async function (req, callback) {
         const unionRes = await record.update({
             studentID: admin.firestore.FieldValue.arrayUnion(studentid)
         })
-        return
+        callback(null, "student " + studentid + " has been added to group " + groupNumber + "!");
     }
     catch (err) {
         callback(err, null);
@@ -60,8 +60,9 @@ module.exports['removeStudentFromGroup']= async function(req,callback) {
         studentid = req["student_id"];
         const record = trGroup.doc(groupNumber);
         const removeRes = await record.update({
-          studentID: admin.firestore.FieldValue.arrayRemove(studentid),
+            studentID: admin.firestore.FieldValue.arrayRemove(studentid)
         });
+        callback(null, studentid+" is removed from "+"group "+groupNumber+"!");
     }
     catch (err) {
         callback(err, null);
@@ -71,14 +72,14 @@ module.exports['removeStudentFromGroup']= async function(req,callback) {
 module.exports['deleteTutorialGroup'] = async function (groupId, callback) {
 // delete a whole tutorial group
     try {
-        console.log("Running now");
         const record = await trGroup.doc(groupId).get();
         if (record.exists) {
+            console.log("deleting");
             const res = trGroup.doc(groupId).delete();
-            console.log("Tutorial group deleted");
+            callback(null,"Group"+groupId+ "deleted");
         }
         else {
-            console.log("Tutorial group does not exists");
+            callback(null, "tutorial group does not exist!");
         }
     }
     catch (err) {
@@ -95,14 +96,15 @@ module.exports['getAllGroups'] = async function (callback) {
         if (record.empty) {
             console.log("No tutorial group at this moment");
         }
-        else { }
-        var dict = {}
-        record.forEach(doc => {
-            dict[doc.id] = doc.data();
-        })
-        // returns a dictionary where the key is the tutorial group id and the value is the students
-        console.log(dict);
-        return dict;
+        else {
+            var dict = {}
+            record.forEach(doc => {
+                dict[doc.id] = doc.data();
+            })
+            // returns a dictionary where the key is the tutorial group id and the value is the students
+            console.log(dict);
+            callback(null, dict);
+        }
     }
     catch (err) {
         callback(err, null);
