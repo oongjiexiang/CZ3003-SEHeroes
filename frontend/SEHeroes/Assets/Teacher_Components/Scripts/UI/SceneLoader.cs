@@ -46,5 +46,20 @@ public class SceneLoader : MonoBehaviour
     	SceneManager.LoadScene(6);
     }
 
+    public void LoadTutorialGroupManagementScene()
+    {
+    	SceneManager.LoadScene(7);
+    }
+
+    public void LoadTutorialGroupEditorScene()
+    {
+    	SceneManager.LoadScene(8);
+    }
+
+    public void LoadStudentManagementScene()
+    {
+    	SceneManager.LoadScene(9);
+    }
+
 
 }
