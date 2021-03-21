@@ -9,7 +9,6 @@ router.post('/', (req, res) => {
         {
             assignmentId: assignmentId,
             matricNo: matricNo,
-            tried: tried,
             score: score
         }, 
         (err, assignemntResultId) => {

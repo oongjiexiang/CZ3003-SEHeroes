@@ -1,13 +1,13 @@
 const admin = require("firebase-admin");
 const db = admin.firestore();
+const tutorialGroupCollection = db.collection('tutorialGroup')
 
-const trGroup = db.collection('tutorialGroup')
 module.exports['createGroup'] = async function (tutorialGroupId, students, callback) {
     // group id refers to the tutorial group that you want to create
     // students are the students inside that tutorial group
     try {
         // check whether the tutorial group with such group id exists, if yes, ignore else create new group
-        const record = await trGroup.doc(tutorialGroupId).get();
+        const record = await tutorialGroupCollection.doc(tutorialGroupId).get();
         if (record.exists) {
             console.log("Tutorial group already exist");
             callback(null, "Tutorial group already exist");
@@ -16,7 +16,7 @@ module.exports['createGroup'] = async function (tutorialGroupId, students, callb
             const data = {
                 "students": students
             }
-            const res = await trGroup.doc(tutorialGroupId).set(data);
+            const res = await tutorialGroupCollection.doc(tutorialGroupId).set(data);
             callback(null, "Tutorial group " + tutorialGroupId + " created");
         }
     }
@@ -35,7 +35,7 @@ module.exports['updateGroup'] = async function (req, callback) {
     try {
         const groupNumber = req['tutorialGroupId'];
         const matricNo = req['studematricNont'];
-        const record = trGroup.doc(groupNumber);
+        const record = tutorialGroupCollection.doc(groupNumber);
         const unionRes = await record.update({
             students: admin.firestore.FieldValue.arrayUnion(matricNo)
         })
@@ -55,7 +55,7 @@ module.exports['removeStudentFromGroup']= async function(req,callback) {
     try {
         const groupNumber = req['tutorialGroupId'];
         const matricNo = req['matricNo'];
-        const record = trGroup.doc(groupNumber);
+        const record = tutorialGroupCollection.doc(groupNumber);
         const removeRes = await record.update({
             students: admin.firestore.FieldValue.arrayRemove(matricNo)
         });
@@ -69,9 +69,9 @@ module.exports['removeStudentFromGroup']= async function(req,callback) {
 module.exports['deleteTutorialGroup'] = async function (tutorialGroupId, callback) {
     // delete a whole tutorial group
     try {
-        const record = await trGroup.doc(tutorialGroupId).get();
+        const record = await tutorialGroupCollection.doc(tutorialGroupId).get();
         if (record.exists) {
-            const res = trGroup.doc(tutorialGroupId).delete();
+            const res = tutorialGroupCollection.doc(tutorialGroupId).delete();
             callback(null,"Group" + tutorialGroupId + "deleted");
         }
         else {
@@ -88,7 +88,7 @@ module.exports['getAllGroups'] = async function (callback) {
 
     try {
         // check if tutorial groups collection is empty or not
-        const record = await trGroup.get();
+        const record = await tutorialGroupCollection.get();
         if (record.empty) {
             console.log("No tutorial group at this moment");
         }

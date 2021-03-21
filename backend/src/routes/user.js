@@ -28,9 +28,11 @@ router.patch("/:matricNo", (req, res) => {
     const {matricNo} = req.params;
     const updateMap = {}
     if(character) updateMap['character'] = character;
-    if(openChallengeRating) updateMap['openChallengeRating'] = openChallengeRating;
-    if(tutorialGroup) updateMap['tutorialGroup'] = tutorialGroup;
     if(username) updateMap['username'] = username;
+
+    if(tutorialGroup) return res.status(500).send({ message: "Update tutorial group only using tutorialGroup endpoint" });
+    if(openChallengeRating) return res.status(500).send({ message: "You cannot change open challenge rating directly" });
+    if(req.body.matricNo) return res.status(500).send({ message: "You cannot change matricNo" });
 
     UserController.updateUser(
         matricNo,
