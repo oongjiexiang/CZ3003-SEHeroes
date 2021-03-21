@@ -3,14 +3,12 @@ const router = express.Router();
 const UserController = require("../controllers/user-controller");
 
 router.post("/", (req, res) => {
-    const {character,matricNo,openChallengeRating,tutorialGroup,username} = req.body;
+    const {character, matricNo, username} = req.body;
 
     UserController.createUser(
         {
             character:character,
             matricNo:matricNo,
-            openChallengeRating: openChallengeRating,
-            tutorialGroup: tutorialGroup,
             username:username
         },
         (err, info) => {

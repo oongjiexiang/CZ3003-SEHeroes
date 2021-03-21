@@ -17,7 +17,7 @@ module.exports['createOrUpdateAssignmentResult'] = async function(record, callba
         if(assignmentResult.empty){
             record['tried'] = 1
             await assignmentResultCollection.add(record)
-            callback(null, "result added");
+            callback(null, "Result added");
             return;
         }
         
@@ -26,7 +26,7 @@ module.exports['createOrUpdateAssignmentResult'] = async function(record, callba
             'score': record['score'],
             'tried': assignmentResult.docs[0].data()['tried']+1
         });
-        callback(null,"result updated");
+        callback(null,"Result updated");
         
         
     } catch(err) {
@@ -37,7 +37,7 @@ module.exports['createOrUpdateAssignmentResult'] = async function(record, callba
 module.exports['deleteAssignmentResult'] = async function(assignmentResultId, callback){
     try{
         const res = await assignmentResultCollection.doc(assignmentResultId).delete();
-        callback(null, res)       
+        callback(null, "Delete successfully")       
     } catch(err) {
         callback(err, null)
     }
@@ -54,9 +54,11 @@ module.exports['getAllAssignmentResults'] = async function(queryMap, callback){
             callback('Asssignment result does not exist', null)
         }
         else{
-            const assignmentResults = {}
+            const assignmentResults = []
             snapshot.forEach(doc =>{
-                assignmentResults[doc.id] = doc.data();
+                const data = doc.data();
+                data['assignmentResultId'] = doc.id;
+                assignmentResults.push(data);
             });
             callback(null, assignmentResults);
         }

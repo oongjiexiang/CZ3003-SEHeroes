@@ -14,18 +14,18 @@ module.exports['createOrUpdateStoryModeResult'] = async function(record, callbac
         const level = record['level']
         const matricNo = record['matricNo']
 
-        await storyModeResultCollection.where('world', '==', world).where('section', '==', section)
+        const result = await storyModeResultCollection.where('world', '==', world).where('section', '==', section)
                             .where('level', '==', level).where('matricNo', '==', matricNo).get();
 
         if (result.empty) {
             await storyModeResultCollection.add(record);
-            callback(null, "result added");
+            callback(null, "Result added");
             return;
         }
 
         let id = assignmentResult.docs[0].id;
         await storyModeResultCollection.doc(id).update({ 'star': record['star'] });
-        callback(null,"result updated");
+        callback(null, "Result updated");
         
     } catch(err) {
         callback(err, null)
@@ -45,7 +45,9 @@ module.exports['getAllStoryModeResults'] = async function(queryMap, callback) {
         else {
             var res = []
             snapshot.forEach(doc => {
-                res.push(doc.data())
+                const data = doc.data();
+                doc['storyModeResultId'] = doc.id;
+                res.push(data)
             })
             callback(null, res)
             }
@@ -61,7 +63,9 @@ module.exports['getStoryModeResult'] = async function(resultId, callback) {
             callback('No such result found', null)
         }
         else {
-            callback(null, result.data())
+            const data = result.data();
+            data['storyModeResultId'] = resultId;
+            callback(null, data);
         }
     } catch(err) {
         callback(err, null)
@@ -71,7 +75,7 @@ module.exports['getStoryModeResult'] = async function(resultId, callback) {
 module.exports['deleteStoryModeResult'] = async function(resultId, callback) {
     try{
         const res = await storyModeResultCollection.doc(resultId).delete()
-        callback(null, res)
+        callback(null, "Delete successfully")
         
     } catch(err) {
         callback(err, null)

@@ -25,7 +25,7 @@ module.exports['updateAssignment'] = async function(assignmentId, updateMap, cal
         }
         else{
             const res = await assignmentCollection.doc(assignmentId).update(updateMap)
-            callback(null, res);
+            callback(null, "Update successfully");
         }
     } catch(err) {
         callback(err, null)
@@ -35,8 +35,7 @@ module.exports['updateAssignment'] = async function(assignmentId, updateMap, cal
 module.exports['deleteAssignment'] = async function(assignmentId, callback){
     try{
         const res = await assignmentCollection.doc(assignmentId).delete();
-        console.log(res)
-        callback(null, res)
+        callback(null, "Delete successfully")
     } catch(err) {
         callback(err, null)
     }
@@ -49,7 +48,9 @@ module.exports['getAssignment'] = async function(assignmentId, callback){
             callback('Asssignment does not exist', null)
         }
         else{
-            callback(null, assignment.data());
+            const data = assignment.data();
+            data['assignmentId'] = assignmentId;
+            callback(null, data);
         }
     } catch(err) {
         callback(err, null)
@@ -63,9 +64,11 @@ module.exports['getAllAssignments'] = async function(callback){
             callback('Asssignment is empty', null)
         }
         else{
-            const assignments = {}
+            const assignments = []
             snapshot.forEach(doc =>{
-                assignments[doc.id] = doc.data();
+                const data = doc.data();
+                data['assignmentId'] = doc.id;
+                assignments.push(data);
             });
             callback(null, assignments);
         }

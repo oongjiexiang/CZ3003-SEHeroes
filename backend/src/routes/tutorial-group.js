@@ -3,10 +3,10 @@ const router = express.Router();
 const TutorialGroupController = require("../controllers/tutorial-group-controller");
 
 router.post("/", (req, res) => {
-    const {groupid,students} = req.body;
+    const {tutorialGroupId, students} = req.body;
 
     TutorialGroupController.createGroup(
-        groupid,
+        tutorialGroupId,
         students,
         (err, info) => {
             if (err) {
@@ -19,12 +19,12 @@ router.post("/", (req, res) => {
 });
 
 router.patch("/add", (req, res) => {
-    const { group_id, student_id } = req.body;
+    const { tutorialGroupId, students } = req.body;
 
     TutorialGroupController.updateGroup(
         {
-            group_id: group_id,
-            student_id: student_id,
+            tutorialGroupId: tutorialGroupId,
+            students: students,
         },
 
         (err, docid) => {
@@ -39,12 +39,12 @@ router.patch("/add", (req, res) => {
 
 
 router.patch("/remove", (req, res) => {
-    const {group_id,student_id} = req.body;
+    const {tutorialGroupId,students} = req.body;
 
     TutorialGroupController.removeStudentFromGroup(
         {
-            group_id: group_id,
-            student_id:student_id
+            tutorialGroupId: tutorialGroupId,
+            students: students
         },
 
         (err, docid) => {
@@ -58,9 +58,9 @@ router.patch("/remove", (req, res) => {
 });
 
 
-router.delete("/:groupID", (req, res) => {
-    const { groupID } = req.params;
-    TutorialGroupController.deleteTutorialGroup(groupID, (err, msg) => {
+router.delete("/:tutorialGroupId", (req, res) => {
+    const { tutorialGroupId } = req.params;
+    TutorialGroupController.deleteTutorialGroup(tutorialGroupId, (err, msg) => {
         if (err) {
             return res.status(500).send({ message: `${err}` });
         } else {
