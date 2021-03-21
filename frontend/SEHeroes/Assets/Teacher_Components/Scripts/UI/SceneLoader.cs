@@ -3,8 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class SceneLoader : MonoBehaviour
 {
+    const string homeScene = "Home";
+    const string tutorialGroupScene = "Tutorial_Group";
+    const string storyModeScene = "Story_Mode";
+    const string questionBankScene = "Question_Bank";
+    const string leaderboardScene = "Leaderboard";
+    const string assignmentScene = "Assignments";
+    const string settingsScene = "Settings";
+    const string tutorialGroupManagementScene = "Tutorial_Group_Management";
+    const string tutorialGroupEditorScene = "Tutorial_Group_Editor";
+    const string studentManagementScene = "Student_Management";
+    const string createAssignmentScene = "Assignments_Creation";
+    const string addAssignmentScene = "Assignments_Creation_Add";
     public void LoadNextScene() 
     {
     	int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -13,53 +26,60 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadHomeScene()
     {
-    	SceneManager.LoadScene(0);
+    	SceneManager.LoadScene(homeScene);
     }
 
     public void LoadTutorialGroupScene()
     {
-    	SceneManager.LoadScene(1);
+    	SceneManager.LoadScene(tutorialGroupScene);
     }
 
     public void LoadStoryModeScene()
     {
-    	SceneManager.LoadScene(2);
+    	SceneManager.LoadScene("Story_Mode");
     }
 
     public void LoadQuestionBankScene()
     {
-    	SceneManager.LoadScene(3);
+    	SceneManager.LoadScene(questionBankScene);
     }
 
     public void LoadLeaderboardScene()
     {
-    	SceneManager.LoadScene(4);
+    	SceneManager.LoadScene(leaderboardScene);
     }
 
     public void LoadAssignmentsScene()
     {
-    	SceneManager.LoadScene(5);
+    	SceneManager.LoadScene(assignmentScene);
     }
 
     public void LoadSettingsScene()
     {
-    	SceneManager.LoadScene(6);
+    	SceneManager.LoadScene(settingsScene);
     }
 
     public void LoadTutorialGroupManagementScene()
     {
-    	SceneManager.LoadScene(7);
+    	SceneManager.LoadScene(tutorialGroupManagementScene);
     }
 
     public void LoadTutorialGroupEditorScene()
     {
-    	SceneManager.LoadScene(8);
+    	SceneManager.LoadScene(tutorialGroupEditorScene);
     }
 
     public void LoadStudentManagementScene()
     {
-    	SceneManager.LoadScene(9);
+    	SceneManager.LoadScene(studentManagementScene);
     }
 
-
+    public void LoadCreateAssignmentScene()
+    {
+        SceneManager.LoadScene(createAssignmentScene);
+    }
+    public void LoadAddAssignmentScene()
+    {
+        SceneManager.LoadScene(addAssignmentScene);
+    }
 }
