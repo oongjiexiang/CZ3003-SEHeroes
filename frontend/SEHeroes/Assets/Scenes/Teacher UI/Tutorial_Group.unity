@@ -1027,8 +1027,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 30.945, y: 215.31}
-  m_SizeDelta: {x: 200.53632, y: 51.180855}
+  m_AnchoredPosition: {x: 43.3, y: 215.32}
+  m_SizeDelta: {x: 225.15668, y: 51.16633}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &603691804
 MonoBehaviour:
@@ -3087,6 +3087,7 @@ GameObject:
   - component: {fileID: 1932414013}
   - component: {fileID: 1932414012}
   - component: {fileID: 1932414014}
+  - component: {fileID: 1932414015}
   m_Layer: 5
   m_Name: Content_Area
   m_TagString: Untagged
@@ -3167,6 +3168,79 @@ MonoBehaviour:
   mainScrollContentView: {fileID: 415158752}
   ContentDataPanel: {fileID: 6447235027704959558, guid: 56a3f81afcbd34393ad774bddc5833a0,
     type: 3}
+--- !u!114 &1932414015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932414010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8e1f588a9f454775abb0eafdd92d2a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberStudentsText: {fileID: 0}
+  indexNumberTextArray:
+  - 1
+  - 2
+  - 3
+  - 4
+--- !u!1 &2028636822
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2028636824}
+  - component: {fileID: 2028636823}
+  m_Layer: 0
+  m_Name: TutorialIndexAPIRequester
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2028636823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028636822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8e1f588a9f454775abb0eafdd92d2a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberStudentsText: {fileID: 0}
+  indexNumberTextArray:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+--- !u!4 &2028636824
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028636822}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 346.7353, y: 196.53346, z: -733.5417}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2059979991
 GameObject:
   m_ObjectHideFlags: 0
