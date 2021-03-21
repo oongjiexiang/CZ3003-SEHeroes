@@ -4,5 +4,26 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Forest.unity
+    guid: d2d613a8d04574202a7645e47a3cc104
+  - enabled: 1
+    path: Assets/Scenes/Village.unity
+    guid: 67fa367a3f2df409982ca8e0e8a4db1c
+  - enabled: 1
+    path: Assets/Scenes/Ashland.unity
+    guid: 99ec8978692364dd184d961497ae6f43
+  - enabled: 1
+    path: Assets/Scenes/WorldSelection.unity
+    guid: 9171c850bcc2244b0bbf23d0270268f9
+  - enabled: 1
+    path: Assets/Scenes/Desert.unity
+    guid: f9c11c5656aff415fb8fde471074d37e
+  - enabled: 1
+    path: Assets/Scenes/Snowland.unity
+    guid: 1dfb0741756ad46e5aeaf1405602f281
+  - enabled: 1
+    path: Assets/Scenes/LevelSelection.unity
+    guid: 4d38f53d41599436bb834209f6370b79
   m_configObjects: {}
