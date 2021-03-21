@@ -10,7 +10,6 @@ module.exports['createOpenChallengeRecord'] = async function(record, callback) {
     try{
         const reply = await openChallengeRecordCollection.add(record)
         callback(null, reply.id)
-        
     } catch(err) {
         callback(err, null)
     }
@@ -26,7 +25,7 @@ module.exports['getAllOpenChallengeRecords'] = async function(callback) {
             var res = []
             snapshot.forEach(doc => {
                 const record = doc.data();
-                record.recordId = doc.id
+                record.openChallengeRecordId = doc.id
                 res.push(record)
             })
             callback(null, res)
@@ -43,7 +42,9 @@ module.exports['getOpenChallengeRecord'] = async function(recordId, callback) {
             callback('No such record found', null)
         }
         else {
-            callback(null, record.data())
+            const data = record.data();
+            data.openChallengeRecordId = recordId
+            callback(null, data)
         }
     } catch(err) {
         callback(err, null)
@@ -58,7 +59,7 @@ module.exports['updateOpenChallengeRecord'] = async function(recordId, updateFie
         }
         else{
             const res = await openChallengeRecordCollection.doc(recordId).update(updateFields)
-            callback(null, res)
+            callback(null, "Update successfully")
         }
     } catch(err) {
         callback(err, null)
@@ -68,7 +69,7 @@ module.exports['updateOpenChallengeRecord'] = async function(recordId, updateFie
 module.exports['deleteOpenChallengeRecord'] = async function(recordId, callback) {
     try{
         const res = await openChallengeRecordCollection.doc(recordId).delete()
-        callback(null, res)
+        callback(null, "Delete successfully")
         
     } catch(err) {
         callback(err, null)

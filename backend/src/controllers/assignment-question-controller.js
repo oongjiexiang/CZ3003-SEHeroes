@@ -27,7 +27,7 @@ module.exports['updateAssignmentQuestion'] = async function(assignmentQuestionId
         }
         else{
             const res = await assignmentQuestionCollection.doc(assignmentQuestionId).update(updateMap)
-            callback(null, res);
+            callback(null, "Update successfully");
         }
     } catch(err) {
         callback(err, null)
@@ -37,7 +37,7 @@ module.exports['updateAssignmentQuestion'] = async function(assignmentQuestionId
 module.exports['deleteAssignmentQuestion'] = async function(assignmentQuestionId, callback){
     try{
         const res = await assignmentQuestionCollection.doc(assignmentQuestionId).delete();
-        callback(null, res)
+        callback(null, "Delete successfully")
     } catch(err) {
         callback(err, null)
     }
@@ -50,7 +50,9 @@ module.exports['getAssignmentQuestion'] = async function(assignmentQuestionId, c
             callback('Asssignment question does not exist', null)
         }
         else{
-            callback(null, assignmentQuestion.data());
+            const data = assignmentQuestion.data();
+            data['assignmentQuestionId'] = assignmentQuestionId;
+            callback(null, data);
         }
     } catch(err) {
         callback(err, null)

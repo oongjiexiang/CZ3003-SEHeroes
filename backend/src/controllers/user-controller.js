@@ -7,8 +7,6 @@ module.exports['createUser'] = async function(record, callback){
         callback('Missing fields', null)
         return
     }
-    if(!record['openChallengeRating']) delete record['openChallengeRating'];
-    if(!record['tutorialGroup']) delete record['tutorialGroup']
 
     try {
         const matricNumber = record["matricNo"];
@@ -32,12 +30,12 @@ module.exports['updateUser'] = async function (matricNo, updateMap, callback) {
     try {
         const result = await usersCollection.where("matricNo", "==", matricNo).get();
         if (result.empty) {
-            callback("User does not exists!",null)
+            callback("User does not exists",null)
         }
         else {
             result.forEach((doc) => {
                 usersCollection.doc(doc.id).update(updateMap);
-                callback(null,doc.id)
+                callback(null,"Update sucessfully")
          });
         }
     }
@@ -50,13 +48,12 @@ module.exports['getUser'] = async function (matricNo, callback) {
     try {
         const result = await usersCollection.where("matricNo", "==", matricNo).get();
         if (result.empty) {
-            callback("User does not exists!",null)
+            callback("User does not exists",null)
         }
         else {
             result.forEach((doc) => {
                 const user = doc.data();
-                console.log(user);
-                callback(null,user)
+                callback(null, user)
             })
         }
     }
@@ -71,11 +68,11 @@ module.exports['deleteUser'] = async function (matricNo, callback) {
         const result = await usersCollection.where("matricNo", "==", matricNo).get();
         console.log(result);
         if (result.empty) {
-            callback("User does not exists!",null)
+            callback("User does not exists",null)
         } else {
             result.forEach((doc) => {
                 usersCollection.doc(doc.id).delete();
-                callback(null, "deleted");
+                callback(null, "Delete successfully");
             });
         }
     }

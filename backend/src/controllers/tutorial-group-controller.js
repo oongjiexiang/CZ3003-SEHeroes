@@ -93,9 +93,11 @@ module.exports['getAllGroups'] = async function (callback) {
             console.log("No tutorial group at this moment");
         }
         else {
-            var dict = {}
+            var dict = []
             record.forEach(doc => {
-                dict[doc.id] = doc.data();
+                const data = doc.data();
+                data['tutorialGroupId'] = doc.id;
+                dict.push(data);
             })
             // returns a dictionary where the key is the tutorial group id and the value is the students
             console.log(dict);

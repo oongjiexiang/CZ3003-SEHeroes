@@ -32,7 +32,9 @@ module.exports['getAllStoryModeQuestions'] = async function(queryMap, callback) 
         else {
             const res = {}
             snapshot.forEach(doc => {
-                res[doc.id] = doc.data();
+                const data = doc.data();
+                data['storyModeQuestionId'] = doc.id;
+                res.push(data);
             })
             callback(null, res)
         }
@@ -48,7 +50,9 @@ module.exports['getStoryModeQuestion'] = async function(storyModeQuestionId, cal
             callback('No such question found', null)
         }
         else {
-            callback(null, question.data())
+            const data = question.data();
+            data['storyModeQuestionId'] = storyModeQuestionId;
+            callback(null, data)
         }
     } catch(err) {
         callback(err, null)
@@ -63,7 +67,7 @@ module.exports['updateStoryModeQuestion'] = async function(storyModeQuestionId, 
         }
         else{
             const res = await storyModeQuestionCollection.doc(storyModeQuestionId).update(updateFields)
-            callback(null, res)
+            callback(null, "Update successfully")
         }
     } catch(err) {
         callback(err, null)
@@ -73,7 +77,7 @@ module.exports['updateStoryModeQuestion'] = async function(storyModeQuestionId, 
 module.exports['deleteStoryModeQuestion'] = async function(storyModeQuestionId, callback) {
     try{
         const res = await storyModeQuestionCollection.doc(storyModeQuestionId).delete()
-        callback(null, res) 
+        callback(null, "Delete successfully") 
     } catch(err) {
         callback(err, null)
     }
