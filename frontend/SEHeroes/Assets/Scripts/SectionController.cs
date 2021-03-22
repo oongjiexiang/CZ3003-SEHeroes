@@ -1,14 +1,36 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SectionController : MonoBehaviour
 {
+
+    public string currentSection;
+    public static string section;
+
+    public static string world;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        world = WorldSelectionController.world;
+
+        if(world!=null) {
+            if(world.Contains("Forest"))
+                GameObject.FindGameObjectWithTag("ForestMusic").GetComponent<MusicController>().PlayMusic();
+            // else if(world.Contains("Village"))
+            //     GameObject.FindGameObjectWithTag("VillageMusic").GetComponent<MusicController>().PlayMusic();
+            // else if(world.Contains("Snowland"))
+            //     GameObject.FindGameObjectWithTag("SnowlandMusic").GetComponent<MusicController>().PlayMusic();
+            // else if(world.Contains("Desert"))                
+            //     GameObject.FindGameObjectWithTag("DesertMusic").GetComponent<MusicController>().PlayMusic();
+            // else if(world.Contains("Ashland"))    
+            //     GameObject.FindGameObjectWithTag("AshlandMusic").GetComponent<MusicController>().PlayMusic();
+        }
+            
     }
 
     // Update is called once per frame
@@ -18,9 +40,14 @@ public class SectionController : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D other) {
-        Debug.Log("Object that entered the trigger : " + other);
-        CharacterController player = other.gameObject.GetComponent<CharacterController>();
+        section = currentSection;
         
+        CharacterController player = other.gameObject.GetComponent<CharacterController>();
         SceneManager.LoadScene(sceneName:"LevelSelection");
+    }
+
+    public void BackButtonOnClick() {
+        GameObject.FindGameObjectWithTag("ForestMusic").GetComponent<MusicController>().StopMusic();
+        SceneManager.LoadScene(sceneName:"WorldSelection");
     }
 }

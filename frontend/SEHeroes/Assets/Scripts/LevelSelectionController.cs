@@ -2,50 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LevelSelectionController : MonoBehaviour
 {
-    public string level;
-    SpriteRenderer renderer;
-    Color initialColor;
+    public string currentLevel;
+    public static string level;
+
+    public static string world;
+    public static string section;
 
     // Start is called before the first frame update
     void Start()
-    {
-        renderer = gameObject.GetComponent<SpriteRenderer>(); 
-        initialColor = renderer.material.color;
-        // initialColor.a = 0.7f;
-        // renderer.material.color = initialColor;
+    {   
+        world = WorldSelectionController.world;
+        section = SectionController.section;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    void OnMouseDown() {
-        switch(level) {
-            case "Easy":
+    public void OnClick() {
+        level = currentLevel;
+        SceneManager.LoadScene(sceneName:"StoryModeBattle");
+    }
+
+    public void BackButtonOnClick() {
+        if(world.Contains("Forest"))
                 SceneManager.LoadScene(sceneName:"Forest");
-                break;
-            case "Medium":
+        else if(world.Contains("Village"))
                 SceneManager.LoadScene(sceneName:"Village");
-                break;
-            case "Hard":
+        else if(world.Contains("Snowland"))
                 SceneManager.LoadScene(sceneName:"Snowland");
-                break;
-        }
-    }
-
-    void OnMouseOver() {
-        initialColor.a = 0.7f;
-        renderer.material.color = initialColor;
-
-    }
-
-    void OnMouseExit() {
-        initialColor.a = 1.0f;
-        renderer.material.color = initialColor;
+        else if(world.Contains("Desert"))                
+                SceneManager.LoadScene(sceneName:"Desert");
+        else if(world.Contains("Ashland"))    
+                SceneManager.LoadScene(sceneName:"Ashland");
     }
 }

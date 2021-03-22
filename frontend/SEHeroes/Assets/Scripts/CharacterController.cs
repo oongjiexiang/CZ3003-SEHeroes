@@ -4,21 +4,16 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-    public float speed = 5.0f;
+    public float speed = 10.0f;
     
-    // public int maxHealth = 5;
-    // public float timeInvincible = 2.0f;
-
-    // public int health { get { return currentHealth; }}
-    // int currentHealth;
-    
-    // bool isInvincible;
-    // float invincibleTimer;
-    
-    Rigidbody2D rigidbody2d;
     float horizontal;
     float vertical;
-    
+
+    // need to pass from API
+    public static string username = "brys0001";
+    public static string characterType = "Magician";
+
+    Rigidbody2D rigidbody2d;
     Animator animator;
     Vector2 lookDirection = new Vector2(1,0);
     
@@ -27,8 +22,15 @@ public class CharacterController : MonoBehaviour
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        
-        // currentHealth = maxHealth;
+
+        if(characterType.Equals("RedWarrior"))
+            animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/RedWarrior");
+        else if(characterType.Equals("Magician"))
+            animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Magician");
+        else if(characterType.Equals("Bowman"))
+            animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Bowman");
+        else if(characterType.Equals("Swordman"))
+            animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Swordman");
     }
 
     // Update is called once per frame
@@ -48,13 +50,6 @@ public class CharacterController : MonoBehaviour
         animator.SetFloat("Look X", lookDirection.x);
         animator.SetFloat("Look Y", lookDirection.y);
         animator.SetFloat("Speed", move.magnitude);
-        
-        // if (isInvincible)
-        // {
-        //     invincibleTimer -= Time.deltaTime;
-        //     if (invincibleTimer < 0)
-        //         isInvincible = false;
-        // }
 
         if(Input.GetKeyDown(KeyCode.C))
         {
@@ -71,20 +66,4 @@ public class CharacterController : MonoBehaviour
 
         rigidbody2d.MovePosition(position);
     }
-
-    // public void ChangeHealth(int amount)
-    // {
-    //     if (amount < 0)
-    //     {
-    //         animator.SetTrigger("Hit");
-    //         if (isInvincible)
-    //             return;
-            
-    //         isInvincible = true;
-    //         invincibleTimer = timeInvincible;
-    //     }
-        
-    //     currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-    //     Debug.Log(currentHealth + "/" + maxHealth);
-    // }
 }

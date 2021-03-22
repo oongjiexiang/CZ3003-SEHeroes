@@ -1,47 +1,46 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class WorldSelectionController : MonoBehaviour
 {
-    public string world;
+    public string currentWorld;
+    public static string world;
+
     SpriteRenderer renderer;
     Color initialColor;
 
     // Start is called before the first frame update
     void Start()
     {
+        
         renderer = gameObject.GetComponent<SpriteRenderer>(); 
         initialColor = renderer.material.color;
         initialColor.a = 0.8f;
         renderer.material.color = initialColor;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     void OnMouseDown() {
-        switch(world) {
-            case "Forest":
+        world = currentWorld;
+
+        if(currentWorld.Contains("Forest"))
                 SceneManager.LoadScene(sceneName:"Forest");
-                break;
-            case "Village":
+        else if(currentWorld.Contains("Village"))
                 SceneManager.LoadScene(sceneName:"Village");
-                break;
-            case "Snowland":
+        else if(currentWorld.Contains("Snowland"))
                 SceneManager.LoadScene(sceneName:"Snowland");
-                break;
-            case "Desert":
+        else if(currentWorld.Contains("Desert"))                
                 SceneManager.LoadScene(sceneName:"Desert");
-                break;
-            case "Ashland":
+        else if(currentWorld.Contains("Ashland"))    
                 SceneManager.LoadScene(sceneName:"Ashland");
-                break;
-        }
     }
 
     void OnMouseOver() {
