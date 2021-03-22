@@ -36,6 +36,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Teacher UI/Student_Management.unity
     guid: 2ab4edebd3863420b964fdec6e81d76a
   - enabled: 1
-    path: Assets/Scenes/Teacher UI/Assignments_Creation.unity
+    path: Assets/Scenes/Teacher UI/Assignments_Creation_T.unity
     guid: c09150bcac0c1c5448d917050f95f949
   m_configObjects: {}

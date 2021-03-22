@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Choice
 {
-    public int question_id;
+    public int question_num;
     public string question {get; set;}
     public string A { get; set; }
     public string B { get; set; }
@@ -14,54 +15,94 @@ public class Choice
 }
 public class Create_Assignment_Script : MonoBehaviour
 {
-    private string assignmentName = "dummy";
+    private string assignmentName = "None";
     private List<Choice> asgQuestionList;
-    private Choice current = null;
+    private Choice current_question;
+    private int current_question_num;
+    public GameObject panelObject;
     private Transform entryContainer;
     // Start is called before the first frame update
     void Awake()
     {
+        entryContainer = panelObject.transform.Find("Panel_Question_Creation");
+        //current_question_num = 1;
         asgQuestionList = new List<Choice>();
+        panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = false;
+        current_question = new Choice();
+        current_question.question_num = 0;
     }
-    void ClickCreate()
+    public void ClickCreate()
     {
 
     }
-    void ClickCancel()
+    public void ClickPreviousQuestion()
     {
-
-    }
-    void ClickPreviousQuestion()
-    {
-
-    }
-    public void ClickNextQuestion()
-    {
-        entryContainer = transform.Find("Panel_Question_Creation");
-        current = new Choice();
-
-        assignmentName = entryContainer.Find("InputField_Name").GetComponent<Text>().text;
-        current.question = entryContainer.Find("InputField_Question").GetComponent<Text>().text;
-        current.A = entryContainer.Find("InputField_A").GetComponent<Text>().text;
-        current.B = entryContainer.Find("InputField_B").GetComponent<Text>().text;
-        current.C = entryContainer.Find("InputField_C").GetComponent<Text>().text;
-        current.D = entryContainer.Find("InputField_D").GetComponent<Text>().text;
-
-        if (assignmentName == "" || current.A == "" || current.B == "" || current.question == "")
+        current_question = asgQuestionList[current_question.question_num - 1];
+        if (current_question.question_num == 0)
         {
-            Debug.Log("cannot load scene");
+            populateFields(current_question, false); 
+            //panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = false;
         }
         else
         {
-            current.question_id = asgQuestionList.Count;
-            asgQuestionList.Add(current);
-            entryContainer.Find("InputField_Question").GetComponent<Text>().text = "";
-            entryContainer.Find("InputField_A").GetComponent<Text>().text = "";
-            entryContainer.Find("InputField_B").GetComponent<Text>().text = "";
-            entryContainer.Find("InputField_C").GetComponent<Text>().text = "";
-            entryContainer.Find("InputField_D").GetComponent<Text>().text = "";
-            entryContainer.Find("Text_Question").GetComponent<Text>().text = "Question " + asgQuestionList.Count.ToString();
+            populateFields(current_question, true);
         }
+        
+    }
+    public void ClickNextQuestion()
+    {
+        if (current_question.question_num >= asgQuestionList.Count)
+        {
+            assignmentName = panelObject.transform.Find("InputField_Name").GetComponent<InputField>().text;
+            current_question.question = entryContainer.Find("InputField_Question").GetComponent<InputField>().text;
+            current_question.A = entryContainer.Find("InputField_A").GetComponent<InputField>().text;
+            current_question.B = entryContainer.Find("InputField_B").GetComponent<InputField>().text;
+            current_question.C = entryContainer.Find("InputField_C").GetComponent<InputField>().text;
+            current_question.D = entryContainer.Find("InputField_D").GetComponent<InputField>().text;
+
+            if (assignmentName == "" || current_question.A == "" || current_question.B == "" || current_question.question == "")
+            {
+                Debug.Log("cannot load scene");
+            }
+            else
+            {
+                asgQuestionList.Add(current_question);
+                current_question = new Choice();
+                current_question.question_num = asgQuestionList.Count;
+                cleanFields(current_question);
+            }
+        }
+        else if(current_question.question_num == asgQuestionList.Count - 1)
+        {
+            current_question = new Choice();
+            current_question.question_num = asgQuestionList.Count;
+            cleanFields(current_question);
+        }
+        else
+        {
+            current_question = asgQuestionList[current_question.question_num + 1];
+            populateFields(current_question, true);
+        }
+    }
+    private void populateFields(Choice current_question, bool buttonInteractable)
+    {
+        fillFields(current_question.question, current_question.A, current_question.B, current_question.C, 
+            current_question.D, current_question.question_num + 1, buttonInteractable);
+       
+    }
+    private void cleanFields(Choice current_question)
+    {
+        fillFields("", "", "", "", "", current_question.question_num + 1, true);
+    }
+    private void fillFields(string question, string A, string B, string C, string D, int question_num, bool buttonInteractable)
+    {
+        entryContainer.Find("InputField_Question").GetComponent<InputField>().text = question;
+        entryContainer.Find("InputField_A").GetComponent<InputField>().text = A;
+        entryContainer.Find("InputField_B").GetComponent<InputField>().text = B;
+        entryContainer.Find("InputField_C").GetComponent<InputField>().text = C;
+        entryContainer.Find("InputField_D").GetComponent<InputField>().text = D;
+        entryContainer.Find("Text_Question").GetComponent<Text>().text = "Question " + question_num.ToString();
+        panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = buttonInteractable;
     }
     // Update is called once per frame
     void Update()
