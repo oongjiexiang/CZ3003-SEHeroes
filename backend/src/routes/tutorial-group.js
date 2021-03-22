@@ -69,6 +69,18 @@ router.delete("/:tutorialGroupId", (req, res) => {
     });
 });
 
+router.get("/:groupID", (req, res) => {
+  const { groupID } = req.params;
+  TutController.getGroup(groupID, (err, msg) => {
+    if (err) {
+      return res.status(500).send({ message: `${err}` });
+    } else {
+      return res.status(200).send(msg);
+    }
+  });
+});
+
+
 router.get("/", (req, res) => {
     TutorialGroupController.getAllGroups((err, groups) => {
         if (err) {
