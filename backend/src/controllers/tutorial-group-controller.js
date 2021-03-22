@@ -83,6 +83,25 @@ module.exports['deleteTutorialGroup'] = async function (tutorialGroupId, callbac
     }   
 }
 
+module.exports['getGroup'] = async function (groupId, callback) {
+    try {
+        console.log("Running now");
+        const record = await trGroup.doc(groupId).get();
+        if (record.exists) {
+            console.log("received");
+            L1 = record.data();
+            callback(null, L1);
+        }
+        else {
+            callback(null, "Tutorial group does not exist");
+        }
+
+    }
+    catch (err) {
+        callback(err, null);
+    }
+}
+
 module.exports['getAllGroups'] = async function (callback) {
 // get all tutorial groups
 
