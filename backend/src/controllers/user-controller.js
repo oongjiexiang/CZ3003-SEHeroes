@@ -81,15 +81,20 @@ module.exports['deleteUser'] = async function (matricNo, callback) {
     }
 }
 
-module.exports['getAllUsers'] = async function (callback) {
+module.exports['getAllUsers'] = async function (queryMap, callback) {
     try {
-        const result = await usersCollection.get();
-        if (result.empty) {
+
+        let results = usersCollection
+        for (const key in queryMap) {
+            results = results.where(key, "==", queryMap[key])
+        }
+        const snapshot = await results.get()
+        if (snapshot.empty) {
             callback("User does not exists!",null)
         }
         else {
             const users = []
-            result.forEach((doc) => {
+            snapshot.forEach((doc) => {
                 users.push(doc.data());
             })
             callback(null, users);

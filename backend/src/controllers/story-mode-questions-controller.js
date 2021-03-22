@@ -30,7 +30,7 @@ module.exports['getAllStoryModeQuestions'] = async function(queryMap, callback) 
             callback('No data', null)
         }
         else {
-            const res = {}
+            const res = []
             snapshot.forEach(doc => {
                 const data = doc.data();
                 data['storyModeQuestionId'] = doc.id;

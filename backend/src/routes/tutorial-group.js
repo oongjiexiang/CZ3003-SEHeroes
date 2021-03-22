@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const TutorialGroupController = require("../controllers/tutorial-group-controller");
+const UserController = require("../controllers/user-controller");
 
 router.post("/", (req, res) => {
-    const {tutorialGroupId, students} = req.body;
+    const {tutorialGroupId, student} = req.body;
 
     TutorialGroupController.createGroup(
         tutorialGroupId,
-        students,
+        student,
         (err, info) => {
             if (err) {
                 return res.status(500).send({ message: `${err}` });
@@ -18,40 +19,61 @@ router.post("/", (req, res) => {
     );
 });
 
-router.patch("/add", (req, res) => {
-    const { tutorialGroupId, students } = req.body;
+router.patch("/:tutorialGroupId/add", (req, res) => {
+    const {tutorialGroupId} = req.params
+    const { matricNo } = req.body;
 
     TutorialGroupController.updateGroup(
         {
             tutorialGroupId: tutorialGroupId,
-            students: students,
+            matricNo: matricNo,
         },
-
         (err, docid) => {
             if (err) {
                 return res.status(500).send({ message: `${err}` });
             } else {
-                return res.status(200).send(docid);
+                UserController.updateUser(
+                    matricNo,
+                    {"tutorialGroup": tutorialGroupId},
+                    (err, info) => {
+                        if (err) {
+                            return res.status(500).send({ message: `${err}` });
+                        } else {
+                            return res.status(200).send("Student added to tutorial group");
+                        }
+                    }
+                );
             }
         }
     );
 });
 
 
-router.patch("/remove", (req, res) => {
-    const {tutorialGroupId,students} = req.body;
+router.patch("/:tutorialGroupId/remove", (req, res) => {
+    const {tutorialGroupId} = req.params
+    const { matricNo } = req.body;
 
     TutorialGroupController.removeStudentFromGroup(
         {
             tutorialGroupId: tutorialGroupId,
-            students: students
+            matricNo: matricNo
         },
 
         (err, docid) => {
             if (err) {
                 return res.status(500).send({ message: `${err}` });
             } else {
-                return res.status(200).send(docid);
+                UserController.updateUser(
+                    matricNo,
+                    {"tutorialGroup": ""},
+                    (err, info) => {
+                        if (err) {
+                            return res.status(500).send({ message: `${err}` });
+                        } else {
+                            return res.status(200).send("Student removed from tutorial group");
+                        }
+                    }
+                );
             }
         }
     );
@@ -71,6 +93,20 @@ router.delete("/:tutorialGroupId", (req, res) => {
 
 router.get("/", (req, res) => {
     TutorialGroupController.getAllGroups((err, groups) => {
+        if (err) {
+            return res.status(500).send({ message: `${err}` });
+        } else {
+            return res.status(200).send(groups);
+        }
+    });
+});
+
+router.get("/:tutorialGroupId", (req, res) => {
+    const {tutorialGroupId} = req.params;
+
+    TutorialGroupController.getTutorialGroup(
+        tutorialGroupId,
+        (err, groups) => {
         if (err) {
             return res.status(500).send({ message: `${err}` });
         } else {

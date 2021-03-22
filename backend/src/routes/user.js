@@ -71,7 +71,15 @@ router.get("/:matricNo", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-    UserController.getAllUsers((err, users) => {
+
+    const { tutorialGroup } = req.query;
+
+    let queryMap = {}
+    if(tutorialGroup != null) queryMap['tutorialGroup'] = tutorialGroup;
+
+    UserController.getAllUsers(
+        queryMap,
+        (err, users) => {
         if (err) {
             return res.status(500).send({ message: `${err}` });
         } else {
