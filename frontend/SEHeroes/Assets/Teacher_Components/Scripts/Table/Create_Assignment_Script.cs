@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Button = UnityEngine.UI.Button;
 
 public class Choice
 {
@@ -12,14 +13,18 @@ public class Choice
     public string B { get; set; }
     public string C { get; set; }
     public string D { get; set; }
+    public string correct_ans_string;
     public int correct_ans;
 }
+
 public class Create_Assignment_Script : MonoBehaviour
 {
+    // variables
     private string assignmentName = "None";
     private List<Choice> asgQuestionList;
     private Choice current_question;
 
+    // display
     public GameObject panelObject;
     public GameObject mainContentPanel;
     private Transform entryContainer;
@@ -28,95 +33,200 @@ public class Create_Assignment_Script : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        // display
         popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
         entryContainer = panelObject.transform.Find("Panel_Question_Creation");
         popUp.SetActive(false);
-        panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = false;
 
+        // buttons
+        panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = false;
+        entryContainer.Find("Button_A").GetComponent<Button>().onClick.AddListener(() => selectCorrectAnswer(0));
+        entryContainer.Find("Button_B").GetComponent<Button>().onClick.AddListener(() => selectCorrectAnswer(1));
+        entryContainer.Find("Button_C").GetComponent<Button>().onClick.AddListener(() => selectCorrectAnswer(2));
+        entryContainer.Find("Button_D").GetComponent<Button>().onClick.AddListener(() => selectCorrectAnswer(3));
+
+        // variables: questions
         asgQuestionList = new List<Choice>();
-        current_question = new Choice();
+        current_question = createNewQuestion();
     }
     public void ClickCreate()
     {
         popUp.SetActive(true);
         popUp.transform.Find("Popup_Cancel").gameObject.SetActive(false);
         popUp.transform.Find("Popup_Create").gameObject.SetActive(true);
+        popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(false);
     }
     public void ClickCancel()
     {
         popUp.SetActive(true);
         popUp.transform.Find("Popup_Cancel").gameObject.SetActive(true);
         popUp.transform.Find("Popup_Create").gameObject.SetActive(false);
+        popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(false);
+    }
+    public void popupQuestionIncomplete()
+    {
+        popUp.SetActive(true);
+        popUp.transform.Find("Popup_Cancel").gameObject.SetActive(false);
+        popUp.transform.Find("Popup_Create").gameObject.SetActive(false);
+        popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(true);
     }
     public void ClickPreviousQuestion()
     {
-        current_question = asgQuestionList[current_question.question_num - 1];
-        if (current_question.question_num == 0)
+        Debug.Log("Current Question Number before switching to previous question: " + current_question.question_num.ToString());
+        Debug.Log("Its correct answer string is: " + current_question.correct_ans_string);
+        Debug.Log("Its correct answer string is: " + current_question.correct_ans.ToString());
+        Debug.Log("Its question number is: " + current_question.question_num.ToString());
+        Debug.Log("Number of questions in list is: " + asgQuestionList.Count.ToString());
+
+        retrieveFields(current_question);
+        if(current_question.question_num == asgQuestionList.Count || validateFields())
         {
-            populateFields(current_question, false); 
+            current_question = asgQuestionList[current_question.question_num - 1];
+            if (current_question.question_num == 0) populateFields(current_question, false);
+            else populateFields(current_question, true);
         }
         else
         {
-            populateFields(current_question, true);
+            Debug.Log("cannot load scene");
+            popupQuestionIncomplete();
         }
-        
+    }
+    void retrieveFields(Choice current_question)
+    {
+        assignmentName = panelObject.transform.Find("InputField_Name").GetComponent<InputField>().text;
+        current_question.question = entryContainer.Find("InputField_Question").GetComponent<InputField>().text;
+        current_question.A = entryContainer.Find("InputField_A").GetComponent<InputField>().text;
+        current_question.B = entryContainer.Find("InputField_B").GetComponent<InputField>().text;
+        current_question.C = entryContainer.Find("InputField_C").GetComponent<InputField>().text;
+        current_question.D = entryContainer.Find("InputField_D").GetComponent<InputField>().text;
+    }
+    Choice createNewQuestion()
+    {
+        Choice current_question = new Choice();
+        current_question.question_num = asgQuestionList.Count;
+        current_question.A = current_question.B = current_question.C = current_question.D = "";
+        current_question.correct_ans = -1;
+        current_question.correct_ans_string = "";
+        return current_question;
     }
     public void ClickNextQuestion()
     {
-        if (current_question.question_num >= asgQuestionList.Count)
+        Debug.Log("Current Question Number before switching to next question: " + current_question.question_num.ToString());
+        Debug.Log("Its correct answer string is: " + current_question.correct_ans_string);
+        Debug.Log("Its correct answer string is: " + current_question.correct_ans.ToString());
+        Debug.Log("Its question number is: " + current_question.question_num.ToString());
+        Debug.Log("Number of questions in list is: " + asgQuestionList.Count.ToString());
+        if (current_question.question_num == asgQuestionList.Count)
         {
-            assignmentName = panelObject.transform.Find("InputField_Name").GetComponent<InputField>().text;
-            current_question.question = entryContainer.Find("InputField_Question").GetComponent<InputField>().text;
-            current_question.A = entryContainer.Find("InputField_A").GetComponent<InputField>().text;
-            current_question.B = entryContainer.Find("InputField_B").GetComponent<InputField>().text;
-            current_question.C = entryContainer.Find("InputField_C").GetComponent<InputField>().text;
-            current_question.D = entryContainer.Find("InputField_D").GetComponent<InputField>().text;
+            Debug.Log("current_question.question_num >= asgQuestionList.Count");
+            retrieveFields(current_question);
 
-            if (assignmentName == "" || current_question.A == "" || current_question.B == "" || current_question.question == "")
+            if (!validateFields())
             {
                 Debug.Log("cannot load scene");
+                popupQuestionIncomplete();
             }
             else
             {
+                Debug.Log("calling from ClickNextQuestion() case if");
+                selectCorrectAnswer(current_question.correct_ans);
                 asgQuestionList.Add(current_question);
-                current_question = new Choice();
-                current_question.question_num = asgQuestionList.Count;
-                cleanFields(current_question);
+                current_question = createNewQuestion();
+                populateFields(current_question, true);
             }
         }
         else if(current_question.question_num == asgQuestionList.Count - 1)
         {
-            current_question = new Choice();
-            current_question.question_num = asgQuestionList.Count;
-            cleanFields(current_question);
+            retrieveFields(current_question);
+            if (!validateFields())
+            {
+                Debug.Log("cannot load scene");
+                popupQuestionIncomplete();
+            }
+            else
+            {
+                current_question = createNewQuestion();
+                Debug.Log("entering else if statement instead");
+                populateFields(current_question, true);
+            }
+            
+            
         }
         else
         {
-            current_question = asgQuestionList[current_question.question_num + 1];
-            populateFields(current_question, true);
+            Debug.Log("entering else part instead");
+            retrieveFields(current_question);
+            if (!validateFields())
+            {
+                Debug.Log("cannot load scene");
+                popupQuestionIncomplete();
+            }
+            else
+            {
+                current_question = asgQuestionList[current_question.question_num + 1];
+                Debug.Log("calling from ClickNextQuestion() case else");
+                populateFields(current_question, true);
+            }
         }
+    }
+    private bool validateFields()
+    {
+        if (assignmentName == "" || current_question.A == "" || current_question.B == "" || current_question.question == "") return false;
+        selectCorrectAnswer(current_question.correct_ans);
+        if (current_question.correct_ans_string == "" || current_question.correct_ans == -1) return false;
+        return true;
     }
     private void populateFields(Choice current_question, bool buttonInteractable)
     {
-        fillFields(current_question.question, current_question.A, current_question.B, current_question.C, 
-            current_question.D, current_question.question_num + 1, buttonInteractable);
-       
-    }
-    private void cleanFields(Choice current_question)
-    {
-        fillFields("", "", "", "", "", current_question.question_num + 1, true);
-    }
-    private void fillFields(string question, string A, string B, string C, string D, int question_num, bool buttonInteractable)
-    {
-        entryContainer.Find("InputField_Question").GetComponent<InputField>().text = question;
-        entryContainer.Find("InputField_A").GetComponent<InputField>().text = A;
-        entryContainer.Find("InputField_B").GetComponent<InputField>().text = B;
-        entryContainer.Find("InputField_C").GetComponent<InputField>().text = C;
-        entryContainer.Find("InputField_D").GetComponent<InputField>().text = D;
-        entryContainer.Find("Text_Question").GetComponent<Text>().text = "Question " + question_num.ToString();
+        entryContainer.Find("InputField_Question").GetComponent<InputField>().text = current_question.question;
+        entryContainer.Find("InputField_A").GetComponent<InputField>().text = current_question.A;
+        entryContainer.Find("InputField_B").GetComponent<InputField>().text = current_question.B;
+        entryContainer.Find("InputField_C").GetComponent<InputField>().text = current_question.C;
+        entryContainer.Find("InputField_D").GetComponent<InputField>().text = current_question.D;
+        entryContainer.Find("Text_Question").GetComponent<Text>().text = "Question " + (current_question.question_num + 1).ToString();
+        Debug.Log("calling from populateFields()");
+        selectCorrectAnswer(current_question.correct_ans);
         panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = buttonInteractable;
     }
-
+    private void selectCorrectAnswer(int answerIndex)
+    {
+        entryContainer.Find("Button_A").GetComponent<Button>().GetComponent<Image>().color = Color.red;
+        entryContainer.Find("Button_B").GetComponent<Button>().GetComponent<Image>().color = Color.red;
+        entryContainer.Find("Button_C").GetComponent<Button>().GetComponent<Image>().color = Color.red;
+        entryContainer.Find("Button_D").GetComponent<Button>().GetComponent<Image>().color = Color.red;
+        current_question.correct_ans = answerIndex;
+        Debug.Log("answer index is " + current_question.correct_ans);
+        switch (answerIndex)
+        {
+            case 0:
+                {
+                    entryContainer.Find("Button_A").GetComponent<Button>().GetComponent<Image>().color = Color.green;
+                    current_question.correct_ans_string = entryContainer.Find("InputField_A").Find("Text").GetComponent<Text>().text;
+                    break;
+                }
+            case 1:
+                {
+                    entryContainer.Find("Button_B").GetComponent<Button>().GetComponent<Image>().color = Color.green;
+                    current_question.correct_ans_string = entryContainer.Find("InputField_B").Find("Text").GetComponent<Text>().text;
+                    break;
+                }
+            case 2:
+                {
+                    entryContainer.Find("Button_C").GetComponent<Button>().GetComponent<Image>().color = Color.green;
+                    current_question.correct_ans_string = entryContainer.Find("InputField_C").Find("Text").GetComponent<Text>().text;
+                    break;
+                }
+            case 3:
+                {
+                    entryContainer.Find("Button_D").GetComponent<Button>().GetComponent<Image>().color = Color.green;
+                    current_question.correct_ans_string = entryContainer.Find("InputField_D").Find("Text").GetComponent<Text>().text;
+                    break;
+                }
+            default:
+                Debug.Log("No answer index");
+                break;
+        }
+    }
     public void confirmCancel()
     {
         SceneManager.LoadScene("Assignments");
@@ -130,6 +240,10 @@ public class Create_Assignment_Script : MonoBehaviour
         SceneManager.LoadScene("Assignments");
     }
     public void exitCreate()
+    {
+        popUp.gameObject.SetActive(false);
+    }
+    public void popupQuestionIncompleteAcknowledge()
     {
         popUp.gameObject.SetActive(false);
     }
