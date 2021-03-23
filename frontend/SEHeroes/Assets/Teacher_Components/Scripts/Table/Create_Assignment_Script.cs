@@ -12,28 +12,41 @@ public class Choice
     public string B { get; set; }
     public string C { get; set; }
     public string D { get; set; }
+    public int correct_ans;
 }
 public class Create_Assignment_Script : MonoBehaviour
 {
     private string assignmentName = "None";
     private List<Choice> asgQuestionList;
     private Choice current_question;
-    private int current_question_num;
+
     public GameObject panelObject;
+    public GameObject mainContentPanel;
     private Transform entryContainer;
+    private GameObject popUp;
+
     // Start is called before the first frame update
     void Awake()
     {
+        popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
         entryContainer = panelObject.transform.Find("Panel_Question_Creation");
-        //current_question_num = 1;
-        asgQuestionList = new List<Choice>();
+        popUp.SetActive(false);
         panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = false;
+
+        asgQuestionList = new List<Choice>();
         current_question = new Choice();
-        current_question.question_num = 0;
     }
     public void ClickCreate()
     {
-
+        popUp.SetActive(true);
+        popUp.transform.Find("Popup_Cancel").gameObject.SetActive(false);
+        popUp.transform.Find("Popup_Create").gameObject.SetActive(true);
+    }
+    public void ClickCancel()
+    {
+        popUp.SetActive(true);
+        popUp.transform.Find("Popup_Cancel").gameObject.SetActive(true);
+        popUp.transform.Find("Popup_Create").gameObject.SetActive(false);
     }
     public void ClickPreviousQuestion()
     {
@@ -41,7 +54,6 @@ public class Create_Assignment_Script : MonoBehaviour
         if (current_question.question_num == 0)
         {
             populateFields(current_question, false); 
-            //panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = false;
         }
         else
         {
@@ -104,9 +116,22 @@ public class Create_Assignment_Script : MonoBehaviour
         entryContainer.Find("Text_Question").GetComponent<Text>().text = "Question " + question_num.ToString();
         panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = buttonInteractable;
     }
-    // Update is called once per frame
-    void Update()
+
+    public void confirmCancel()
     {
-        
+        SceneManager.LoadScene("Assignments");
+    }
+    public void exitCancel()
+    {
+        popUp.gameObject.SetActive(false);
+    }
+    public void confirmCreate()
+    {
+        SceneManager.LoadScene("Assignments");
+    }
+    public void exitCreate()
+    {
+        popUp.gameObject.SetActive(false);
     }
 }
+
