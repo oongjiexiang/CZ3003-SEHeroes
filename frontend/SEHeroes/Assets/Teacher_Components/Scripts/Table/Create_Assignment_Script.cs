@@ -8,7 +8,7 @@ using Button = UnityEngine.UI.Button;
 public class Choice
 {
     public int question_num;
-    public string question {get; set;}
+    public string question { get; set; }
     public string A { get; set; }
     public string B { get; set; }
     public string C { get; set; }
@@ -113,7 +113,7 @@ public class Create_Assignment_Script : MonoBehaviour
                 populateFields(current_question, true);
             }
         }
-        else if(current_question.question_num == asgQuestionList.Count - 1)
+        else if (current_question.question_num == asgQuestionList.Count - 1)
         {
             retrieveFields(current_question);
             if (!validateFields()) popupQuestionIncomplete();
