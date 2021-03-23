@@ -72,12 +72,6 @@ public class Create_Assignment_Script : MonoBehaviour
     }
     public void ClickPreviousQuestion()
     {
-        Debug.Log("Current Question Number before switching to previous question: " + current_question.question_num.ToString());
-        Debug.Log("Its correct answer string is: " + current_question.correct_ans_string);
-        Debug.Log("Its correct answer string is: " + current_question.correct_ans.ToString());
-        Debug.Log("Its question number is: " + current_question.question_num.ToString());
-        Debug.Log("Number of questions in list is: " + asgQuestionList.Count.ToString());
-
         retrieveFields(current_question);
         if(current_question.question_num == asgQuestionList.Count || validateFields())
         {
@@ -85,11 +79,7 @@ public class Create_Assignment_Script : MonoBehaviour
             if (current_question.question_num == 0) populateFields(current_question, false);
             else populateFields(current_question, true);
         }
-        else
-        {
-            Debug.Log("cannot load scene");
-            popupQuestionIncomplete();
-        }
+        else popupQuestionIncomplete();
     }
     void retrieveFields(Choice current_question)
     {
@@ -111,24 +101,12 @@ public class Create_Assignment_Script : MonoBehaviour
     }
     public void ClickNextQuestion()
     {
-        Debug.Log("Current Question Number before switching to next question: " + current_question.question_num.ToString());
-        Debug.Log("Its correct answer string is: " + current_question.correct_ans_string);
-        Debug.Log("Its correct answer string is: " + current_question.correct_ans.ToString());
-        Debug.Log("Its question number is: " + current_question.question_num.ToString());
-        Debug.Log("Number of questions in list is: " + asgQuestionList.Count.ToString());
         if (current_question.question_num == asgQuestionList.Count)
         {
-            Debug.Log("current_question.question_num >= asgQuestionList.Count");
             retrieveFields(current_question);
-
-            if (!validateFields())
-            {
-                Debug.Log("cannot load scene");
-                popupQuestionIncomplete();
-            }
+            if (!validateFields()) popupQuestionIncomplete();
             else
             {
-                Debug.Log("calling from ClickNextQuestion() case if");
                 selectCorrectAnswer(current_question.correct_ans);
                 asgQuestionList.Add(current_question);
                 current_question = createNewQuestion();
@@ -138,15 +116,10 @@ public class Create_Assignment_Script : MonoBehaviour
         else if(current_question.question_num == asgQuestionList.Count - 1)
         {
             retrieveFields(current_question);
-            if (!validateFields())
-            {
-                Debug.Log("cannot load scene");
-                popupQuestionIncomplete();
-            }
+            if (!validateFields()) popupQuestionIncomplete();
             else
             {
                 current_question = createNewQuestion();
-                Debug.Log("entering else if statement instead");
                 populateFields(current_question, true);
             }
             
@@ -154,17 +127,11 @@ public class Create_Assignment_Script : MonoBehaviour
         }
         else
         {
-            Debug.Log("entering else part instead");
             retrieveFields(current_question);
-            if (!validateFields())
-            {
-                Debug.Log("cannot load scene");
-                popupQuestionIncomplete();
-            }
+            if (!validateFields()) popupQuestionIncomplete();
             else
             {
                 current_question = asgQuestionList[current_question.question_num + 1];
-                Debug.Log("calling from ClickNextQuestion() case else");
                 populateFields(current_question, true);
             }
         }
@@ -184,7 +151,6 @@ public class Create_Assignment_Script : MonoBehaviour
         entryContainer.Find("InputField_C").GetComponent<InputField>().text = current_question.C;
         entryContainer.Find("InputField_D").GetComponent<InputField>().text = current_question.D;
         entryContainer.Find("Text_Question").GetComponent<Text>().text = "Question " + (current_question.question_num + 1).ToString();
-        Debug.Log("calling from populateFields()");
         selectCorrectAnswer(current_question.correct_ans);
         panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = buttonInteractable;
     }
@@ -195,7 +161,6 @@ public class Create_Assignment_Script : MonoBehaviour
         entryContainer.Find("Button_C").GetComponent<Button>().GetComponent<Image>().color = Color.red;
         entryContainer.Find("Button_D").GetComponent<Button>().GetComponent<Image>().color = Color.red;
         current_question.correct_ans = answerIndex;
-        Debug.Log("answer index is " + current_question.correct_ans);
         switch (answerIndex)
         {
             case 0:
@@ -223,7 +188,6 @@ public class Create_Assignment_Script : MonoBehaviour
                     break;
                 }
             default:
-                Debug.Log("No answer index");
                 break;
         }
     }
