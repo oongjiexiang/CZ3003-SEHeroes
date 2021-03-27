@@ -2,23 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
-
-public class Assignment_Entry_Script : MonoBehaviour
+public class Assignment_Scheduling_Script : MonoBehaviour
 {
     private Transform entryTemplate;
     private Transform entryContainer;
     List<string> assignmentNames;
     List<string> assignmentStatus;
     public Text noRecordLabel;
-
-    public static string assignmentName;
-
+    // Start is called before the first frame update
     private void Awake()
     {
         setAssignmentList();
-        tableInitialize();   
+        tableInitialize();
+
     }
 
     void setAssignmentList()
@@ -45,21 +42,19 @@ public class Assignment_Entry_Script : MonoBehaviour
         entryTemplate.gameObject.SetActive(false);
         float templateHeight = 50f;
 
-        for(int i = 0; i < assignmentNames.Count; i++)
+        for (int i = 0; i < assignmentNames.Count; i++)
         {
             Transform entryTransform = Instantiate(entryTemplate, entryContainer);
             RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
             entryTransform.gameObject.SetActive(true);
             entryTransform.Find("Text_No").GetComponent<Text>().text = i.ToString();
-            entryTransform.Find("Text_Name").GetComponent<Text>().text = assignmentNames[i];
-            entryTransform.Find("Text_Status").GetComponent<Text>().text = assignmentStatus[i];
-            entryTransform.Find("Text_Name").Find("Button_Edit").GetComponent<Button>().onClick.AddListener(() => editAssignment(entryTransform.Find("Text_Name").GetComponent<Text>().text));
-            entryTransform.Find("Text_Name").Find("Button_Delete").GetComponent<Button>().onClick.AddListener(() => editAssignment(entryTransform.Find("Text_Name").GetComponent<Text>().text));
+            entryTransform.Find("Text_Assignment").GetComponent<Text>().text = assignmentNames[i];
+            //entryTransform.Find("Text_Status").GetComponent<Text>().text = assignmentStatus[i];
             entryTransform.localScale = new Vector2(1, 1);
             entryTransform.localPosition = new Vector2(0, -templateHeight * i);
         }
         //Debug.Log(assignmentNames.Count);
-        if(assignmentNames.Count == 0)
+        if (assignmentNames.Count == 0)
         {
             noRecordLabel.gameObject.SetActive(true);
         }
@@ -67,10 +62,5 @@ public class Assignment_Entry_Script : MonoBehaviour
         {
             noRecordLabel.gameObject.SetActive(false);
         }
-    }
-    public void editAssignment(string asgName)
-    {
-        assignmentName = asgName;
-        SceneManager.LoadScene("Assignments_Edit");
     }
 }

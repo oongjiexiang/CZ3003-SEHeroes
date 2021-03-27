@@ -122,8 +122,6 @@ public class Create_Assignment_Script : MonoBehaviour
                 current_question = createNewQuestion();
                 populateFields(current_question, true);
             }
-            
-            
         }
         else
         {
