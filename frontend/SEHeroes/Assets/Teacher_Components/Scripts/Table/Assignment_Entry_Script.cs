@@ -18,7 +18,7 @@ public class Assignment_Entry_Script : MonoBehaviour
     private void Awake()
     {
         setAssignmentList();
-        tableInitialize();   
+        tableInitialize();
     }
 
     void setAssignmentList()
@@ -45,7 +45,7 @@ public class Assignment_Entry_Script : MonoBehaviour
         entryTemplate.gameObject.SetActive(false);
         float templateHeight = 50f;
 
-        for(int i = 0; i < assignmentNames.Count; i++)
+        for (int i = 0; i < assignmentNames.Count; i++)
         {
             Transform entryTransform = Instantiate(entryTemplate, entryContainer);
             RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
@@ -53,13 +53,19 @@ public class Assignment_Entry_Script : MonoBehaviour
             entryTransform.Find("Text_No").GetComponent<Text>().text = i.ToString();
             entryTransform.Find("Text_Name").GetComponent<Text>().text = assignmentNames[i];
             entryTransform.Find("Text_Status").GetComponent<Text>().text = assignmentStatus[i];
-            entryTransform.Find("Text_Name").Find("Button_Edit").GetComponent<Button>().onClick.AddListener(() => editAssignment(entryTransform.Find("Text_Name").GetComponent<Text>().text));
-            entryTransform.Find("Text_Name").Find("Button_Delete").GetComponent<Button>().onClick.AddListener(() => editAssignment(entryTransform.Find("Text_Name").GetComponent<Text>().text));
+            entryTransform.Find("Text_Name").Find("Button_Edit").GetComponent<Button>().onClick.AddListener(() => {
+                assignmentName = entryTransform.Find("Text_Name").GetComponent<Text>().text;
+                viewAssignment();
+            });
+            entryTransform.Find("Text_Name").Find("Button_Delete").GetComponent<Button>().onClick.AddListener(() => {
+                assignmentName = entryTransform.Find("Text_Name").GetComponent<Text>().text;
+                viewAssignment();
+            });
             entryTransform.localScale = new Vector2(1, 1);
             entryTransform.localPosition = new Vector2(0, -templateHeight * i);
         }
         //Debug.Log(assignmentNames.Count);
-        if(assignmentNames.Count == 0)
+        if (assignmentNames.Count == 0)
         {
             noRecordLabel.gameObject.SetActive(true);
         }
@@ -68,9 +74,12 @@ public class Assignment_Entry_Script : MonoBehaviour
             noRecordLabel.gameObject.SetActive(false);
         }
     }
-    public void editAssignment(string asgName)
+    public void viewAssignment()
     {
-        assignmentName = asgName;
-        SceneManager.LoadScene("Assignments_Edit");
+        SceneManager.LoadScene("Assignments_View");
+    }
+    public void scheduleAssignment()
+    {
+        SceneManager.LoadScene("Assignments_Schedule");
     }
 }
