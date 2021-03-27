@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Datetime_Controller_Script : MonoBehaviour
 {
@@ -10,10 +11,14 @@ public class Datetime_Controller_Script : MonoBehaviour
 
     public GameObject HandleDate;
     public GameObject HandleTime;
+    //public GameObject mainContentPanel;
     private List<Dropdown> dropdowns = new List<Dropdown>();
+    //private GameObject popUp;
 
     void Start()
     {
+        //popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
+        //popUp.SetActive(false);
         dropdowns.Add(HandleDate.transform.Find("Dropdown_Year").GetComponent<Dropdown>());
         dropdowns.Add(HandleDate.transform.Find("Dropdown_Month").GetComponent<Dropdown>());
         dropdowns.Add(HandleDate.transform.Find("Dropdown_Day").GetComponent<Dropdown>());
@@ -54,4 +59,29 @@ public class Datetime_Controller_Script : MonoBehaviour
             dropdowns[i].AddOptions(options[i]);
         }
     }
+
+    //public void ClickSaveSchedule()
+    //{
+    //    popUp.SetActive(true);
+    //    if (saveSchedules())
+    //    {
+    //        popUp.transform.Find("Popup_Save").gameObject.SetActive(true);
+    //    }
+    //    else
+    //    {
+    //        popUp.transform.Find("Popup_Error").gameObject.SetActive(true);
+    //    }
+    //}
+    public void confirmSave()
+    {
+        SceneManager.LoadScene("Assignments");
+    }
+    //public void confirmError()
+    //{
+    //    popUp.gameObject.SetActive(false);
+    //}
+    //private Boolean saveSchedules()
+    //{
+    //    return false;
+    //}
 }

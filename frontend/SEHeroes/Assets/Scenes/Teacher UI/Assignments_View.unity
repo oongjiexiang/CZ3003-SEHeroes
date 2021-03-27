@@ -230,6 +230,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 965134578}
+    - target: {fileID: 8591989996038409918, guid: e17daa75367eb744d9b066b2e8749dd8,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: confirmDelete
       objectReference: {fileID: 0}
     - target: {fileID: 8591989996300193472, guid: e17daa75367eb744d9b066b2e8749dd8,
         type: 3}
@@ -345,6 +350,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 965134578}
+    - target: {fileID: 8591989997657723308, guid: e17daa75367eb744d9b066b2e8749dd8,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: exitDelete
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e17daa75367eb744d9b066b2e8749dd8, type: 3}
@@ -524,7 +534,6 @@ GameObject:
   - component: {fileID: 406943395}
   - component: {fileID: 406943394}
   - component: {fileID: 406943393}
-  - component: {fileID: 406943392}
   m_Layer: 5
   m_Name: Button_NextQ
   m_TagString: Untagged
@@ -552,21 +561,6 @@ RectTransform:
   m_AnchoredPosition: {x: 280.4383, y: -330}
   m_SizeDelta: {x: 288.9734, y: 53.6037}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &406943392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 406943390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
 --- !u!114 &406943393
 MonoBehaviour:
   m_ObjectHideFlags: 0

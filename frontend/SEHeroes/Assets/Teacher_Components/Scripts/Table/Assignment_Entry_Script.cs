@@ -9,14 +9,20 @@ public class Assignment_Entry_Script : MonoBehaviour
 {
     private Transform entryTemplate;
     private Transform entryContainer;
+    private GameObject popUp;
     List<string> assignmentNames;
     List<string> assignmentStatus;
+
     public Text noRecordLabel;
+    public GameObject mainContentPanel;
+    public GameObject content;
 
     public static string assignmentName;
 
-    private void Awake()
+    void Awake()
     {
+        popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
+        popUp.SetActive(false);
         setAssignmentList();
         tableInitialize();
     }
@@ -40,8 +46,9 @@ public class Assignment_Entry_Script : MonoBehaviour
 
     void tableInitialize()
     {
-        entryContainer = transform.Find("Assignment_Entry_Container");
-        entryTemplate = entryContainer.Find("Assignment_Entry_Template");
+        entryContainer = content.transform.Find("Assignment_Entry_Container");
+        Debug.Log(entryContainer);
+        entryTemplate = entryContainer.Find("Assignment_Entry_Template").transform;
         entryTemplate.gameObject.SetActive(false);
         float templateHeight = 50f;
 
@@ -64,7 +71,6 @@ public class Assignment_Entry_Script : MonoBehaviour
             entryTransform.localScale = new Vector2(1, 1);
             entryTransform.localPosition = new Vector2(0, -templateHeight * i);
         }
-        //Debug.Log(assignmentNames.Count);
         if (assignmentNames.Count == 0)
         {
             noRecordLabel.gameObject.SetActive(true);
@@ -81,5 +87,20 @@ public class Assignment_Entry_Script : MonoBehaviour
     public void scheduleAssignment()
     {
         SceneManager.LoadScene("Assignments_Schedule");
+    }
+    public void deleteAssignment()
+    {
+        popUp.SetActive(true);
+        popUp.transform.Find("Popup_Delete").gameObject.SetActive(true);   
+        SceneManager.LoadScene("Assignments");
+    }
+    public void confirmDelete()
+    {
+        //
+        SceneManager.LoadScene("Assignments");
+    }
+    public void exitDelete()
+    {
+        popUp.gameObject.SetActive(false);
     }
 }

@@ -46,5 +46,5 @@ EditorBuildSettings:
     guid: 338a8ad1af8b9d242b8314812bb1c5aa
   - enabled: 1
     path: Assets/Scenes/Teacher UI/Assignments_View.unity
-    guid: b22b5a503a31f1941a75064374c2f9bb
+    guid: 42bc8a296d29f474b8bf208a03e55219
   m_configObjects: {}
