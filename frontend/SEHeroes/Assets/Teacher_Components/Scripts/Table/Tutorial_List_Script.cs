@@ -21,6 +21,7 @@ public class Tutorial_List_Script : MonoBehaviour
     //public Tutorial_Group_API_Controller tutorialAPI;
     List<string> indexNumberTextArray = new List<string>();
     List<JSONNode> allStudentsArray = new List<JSONNode>();
+    public static string indexNumber;
     
 
     private readonly string baseTutorialIndexURL = "https://seheroes.herokuapp.com/tutorialGroup";
@@ -59,7 +60,7 @@ public class Tutorial_List_Script : MonoBehaviour
 
         studentNumberList = new List<JSONNode>();
         studentNumberList = allStudentsArray;
-        Debug.Log(studentNumberList);
+        //Debug.Log(studentNumberList);
         
         if (tutorialList.Count > 0)
         {
@@ -69,13 +70,19 @@ public class Tutorial_List_Script : MonoBehaviour
             { 
                 string value = tutorialList[i];
                 string studentNumber = studentNumberList[i].Count.ToString();
-                Debug.Log(studentNumberList[i].Count);
-                //string studentNumber = studentNumberList[i];
+                //Debug.Log(studentNumberList[i].Count);
                 GameObject playerTextPanel = (GameObject)Instantiate(ContentDataPanel);
                 playerTextPanel.transform.SetParent(mainScrollContentView.transform);
                 playerTextPanel.transform.localScale = new Vector3(1,1,1);
                 playerTextPanel.transform.localPosition = new Vector3(0,0,0);
-                playerTextPanel.transform.Find ("Cell_Text").GetComponent<Text> ().text=i + ".                  " + value + "                  " + studentNumber + "                  " + "Manage";
+                playerTextPanel.transform.Find("Text_No").GetComponent<Text>().text = i.ToString();
+                playerTextPanel.transform.Find("Text_Index").GetComponent<Text>().text = value;
+                playerTextPanel.transform.Find("Text_Students").GetComponent<Text>().text = studentNumber;
+                
+                playerTextPanel.transform.Find("Text_Students").transform.Find("Button_View").GetComponent<Button>().onClick.AddListener(() => {
+                indexNumber = playerTextPanel.transform.Find("Text_Index").GetComponent<Text>().text;
+                viewTutorial();
+            });
             }
         }
         else 
@@ -84,6 +91,11 @@ public class Tutorial_List_Script : MonoBehaviour
         }
         
 
+    }
+
+    public void viewTutorial()
+    {
+        SceneManager.LoadScene("Tutorial_Group_Management");
     }
 
     public void hideTutorialListPopUp() 

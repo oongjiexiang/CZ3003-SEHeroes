@@ -984,7 +984,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Grade
+  m_Text: Score
 --- !u!222 &603691805
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1029,7 +1029,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 365, y: 300}
+  m_AnchoredPosition: {x: 430, y: 297.1}
   m_SizeDelta: {x: 288.9734, y: 53.603745}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &634704371
@@ -1441,7 +1441,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Generate
+  m_Text: Tries
 --- !u!222 &753352777
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1947,7 +1947,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 21.169, y: 289.14}
+  m_AnchoredPosition: {x: 92, y: 289.14}
   m_SizeDelta: {x: 347.12482, y: 37.68776}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &952059087
@@ -2871,8 +2871,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -362.55, y: 282.4}
-  m_SizeDelta: {x: 399.64197, y: 82.99678}
+  m_AnchoredPosition: {x: -328.6, y: 282.4}
+  m_SizeDelta: {x: 467.52356, y: 82.99678}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1613032648
 MonoBehaviour:
@@ -2895,7 +2895,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 40
+    m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -2906,7 +2906,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: John Koh Kim Toh
+  m_Text: Student
 --- !u!222 &1613032649
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3142,6 +3142,51 @@ MonoBehaviour:
   TabSelectionChangedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1878103395
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1878103397}
+  - component: {fileID: 1878103396}
+  m_Layer: 0
+  m_Name: View_Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1878103396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878103395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8825ff8dba2e84961905f7cf0dfdfbdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelObject: {fileID: 2059979991}
+  mainContentPanel: {fileID: 1932414010}
+--- !u!4 &1878103397
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878103395}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 289.0184, y: 163.2751, z: -17.81236}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1932414010
 GameObject:
   m_ObjectHideFlags: 0
@@ -3232,7 +3277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noRecordLabel: {fileID: 415325508}
   mainScrollContentView: {fileID: 415158752}
-  ContentDataPanel: {fileID: 6447235027704959558, guid: 56a3f81afcbd34393ad774bddc5833a0,
+  ContentDataPanel: {fileID: 1869631271174286748, guid: 4df454fe65e034dafbcdda2d797f095b,
     type: 3}
 --- !u!1 &2059979991
 GameObject:

@@ -3,96 +3,133 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
+using SimpleJSON;
+using System.Linq;
+
+
 
 public class Student_List_Script : MonoBehaviour
 {
-    List<string> studentList;
-    List<string> studentNameList;
+    
+    List<JSONNode> studentList;
+    List<JSONNode> studentNameList;
+    //List<JSONNode> studentNameList;
     GameObject studentPopUp;
     public Text noRecordLabel;
     public GameObject mainScrollContentView;
     public GameObject ContentDataPanel;
+    //public Tutorial_Group_API_Controller tutorialAPI;
+    List<JSONNode> matricNumberTextArray = new List<JSONNode>();
+    List<JSONNode> studentNameArray = new List<JSONNode>();
+    public static string matricNumber;
+    public static string studentUsername;
+    public static string currentTutorialIndex= Tutorial_List_Script.indexNumber;
+    
 
+    private readonly string baseStudentInfoURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex;
+    private readonly string baseUsersURL = "https://seheroes.herokuapp.com/user";
+    
     //use this for initialization
     void Start () 
-    {
-       setStudentListData ();
-       //setStudentsNameListData();
-       studentPopupInitialized ();
+    { 
+       StartCoroutine(GetStudentInfo());
+       
     }
 
-    //Update is called once per frame
-    void Update ()
+    IEnumerator GetStudentInfo()
     {
+        //GET students' matriculation number in a tutorial group
+        UnityWebRequest studentInfoRequest = UnityWebRequest.Get(baseStudentInfoURL);
 
-    }
+        yield return studentInfoRequest.SendWebRequest();
 
-    //public void backButtonAction
-    //{
-
-    //}
-
-    //public void computerButtonAction
-    //{
-        //manager.Instance.isComputerVsPlayer = true;
-        //SceneManager.LoadScene (2);
-    //}
-
-
-    //Student popup methods
-    void setStudentListData() 
-    {
-        studentList = new List<string> ();
-        int index;
-        for (int i = 0; i < 15; i++)
+        if (studentInfoRequest.isNetworkError || studentInfoRequest.isHttpError)
         {
-            index = Random.Range(10000, 90000);
-            studentList.Add (index.ToString());
+            //Debug.LogError(studentInfoRequest.error);
+            yield break;
         }
-    }
 
-    /*void setStudentsNameListData() 
-    {
-        studentNameList = new List<string> ();
-        int index;
-        for (int i = 0; i < 15; i++)
+        JSONNode studentInfo = JSON.Parse(studentInfoRequest.downloadHandler.text);
+
+        
+        //GET students' name from users
+        UnityWebRequest usersRequest = UnityWebRequest.Get(baseUsersURL);
+
+        yield return usersRequest.SendWebRequest();
+
+        if (usersRequest.isNetworkError || usersRequest.isHttpError)
         {
-            index = Random.Range(0, 100);
-            studentNameList.Add (index.ToString());
+            yield break;
         }
-    }
-    */
 
-    void studentPopupInitialized () 
-    {
+        JSONNode userInfo = JSON.Parse(usersRequest.downloadHandler.text);
+        
+        
+        //loop to get a list of student matriculation number in tutorial group
+        for (int i = 0; i < studentInfo["student"].Count; i++)
+        {
+            matricNumberTextArray.Add(studentInfo["student"][i]);
+            //Debug.Log();
+            for (int j = 0; j < userInfo.Count; j++)
+            {
+                if (studentInfo["student"][i] == userInfo[j]["matricNo"])
+                {
+                    studentNameArray.Add(userInfo[j]["username"]);
+                }
+            }
+            
+        }
+        
+
+        studentList = matricNumberTextArray;
+        
+
+        studentNameList = new List<JSONNode>();
+        studentNameList = studentNameArray;
+        
         if (studentList.Count > 0)
         {
-            noRecordLabel.gameObject.SetActive (false);
+            noRecordLabel.gameObject.SetActive(false);
             RectTransform rt = (RectTransform)mainScrollContentView.transform;
             for (int i = 0; i < studentList.Count; i++)
-            {
-                string value = studentList [i];
-                //string studentName = studentNameList [i];
-                string studentName = "John Koh Kim Toh";
+            { 
+                string value = studentList[i];
+                string studentName = studentNameList[i];
                 GameObject playerTextPanel = (GameObject)Instantiate(ContentDataPanel);
                 playerTextPanel.transform.SetParent(mainScrollContentView.transform);
                 playerTextPanel.transform.localScale = new Vector3(1,1,1);
                 playerTextPanel.transform.localPosition = new Vector3(0,0,0);
-                playerTextPanel.transform.Find ("Cell_Text").GetComponent<Text> ().text=i + ".                     " + value + "                     " + studentName + "                     " + "Manage";
+                playerTextPanel.transform.Find("Text_No").GetComponent<Text>().text = i.ToString();
+                playerTextPanel.transform.Find("Text_Matric").GetComponent<Text>().text = value;
+                playerTextPanel.transform.Find("Text_Name").GetComponent<Text>().text = studentName;
+                
+                playerTextPanel.transform.Find("Text_Name").transform.Find("Button_View").GetComponent<Button>().onClick.AddListener(() => {
+                matricNumber = playerTextPanel.transform.Find("Text_Matric").GetComponent<Text>().text;
+                studentUsername = playerTextPanel.transform.Find("Text_Name").GetComponent<Text>().text;
+                viewStudent();
+            });
             }
         }
         else 
         {
             noRecordLabel.gameObject.SetActive (true);
         }
+        
+
     }
 
-    public void hideStudentListPopUp() 
+    public void viewStudent()
+    {
+        SceneManager.LoadScene("Student_Management");
+    }
+
+    public void hidestudentListPopUp() 
     {
         studentPopUp.gameObject.SetActive (false);
     }
 
-    public void showStudentListPopUp() 
+    public void showstudentListPopUp() 
     {
         studentPopUp.gameObject.SetActive (true);
     }
@@ -100,3 +137,4 @@ public class Student_List_Script : MonoBehaviour
 
 
 }
+

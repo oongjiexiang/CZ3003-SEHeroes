@@ -4575,7 +4575,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noRecordLabel: {fileID: 415325508}
   mainScrollContentView: {fileID: 415158752}
-  ContentDataPanel: {fileID: 6447235027704959558, guid: 56a3f81afcbd34393ad774bddc5833a0,
+  ContentDataPanel: {fileID: 7937342511948188998, guid: a002b82dec7894182861f163caf066d0,
     type: 3}
 --- !u!1 &2032386621
 GameObject:
@@ -5080,7 +5080,7 @@ GameObject:
   - component: {fileID: 2107072960}
   - component: {fileID: 2107072959}
   m_Layer: 0
-  m_Name: TutorialNavigation
+  m_Name: TutorialNavigationController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5098,6 +5098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8801396d94b434dc1aefcea1b1fd2aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropdownMenu: {fileID: 0}
 --- !u!4 &2107072960
 Transform:
   m_ObjectHideFlags: 0
