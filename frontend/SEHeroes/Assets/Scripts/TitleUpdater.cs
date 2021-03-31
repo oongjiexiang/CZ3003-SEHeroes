@@ -7,9 +7,9 @@ public class TitleUpdater : MonoBehaviour
 {
     public bool isTitle;
 
-    private static string world;
-    private static string section;
-    private static string username;
+    private string world;
+    private string section;
+    private string username;
 
     private TextMeshProUGUI textMesh;
     private string text;
@@ -17,9 +17,9 @@ public class TitleUpdater : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        world = WorldSelectionController.world;
-        section = SectionController.section;
-        username = CharacterController.username;
+        world = ProgramStateController.world;
+        section = ProgramStateController.section;
+        username = ProgramStateController.username;
         textMesh = gameObject.GetComponent<TextMeshProUGUI>();
         
     }

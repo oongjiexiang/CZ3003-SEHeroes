@@ -8,15 +8,14 @@ public class SectionController : MonoBehaviour
 {
 
     public string currentSection;
-    public static string section;
-
-    public static string world;
+    private string world;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        world = WorldSelectionController.world;
+        world = ProgramStateController.world;
+        ProgramStateController.viewState();
 
         if(world!=null) {
             if(world.Contains("Forest"))
@@ -40,7 +39,7 @@ public class SectionController : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D other) {
-        section = currentSection;
+        ProgramStateController.section = currentSection;
         
         CharacterController player = other.gameObject.GetComponent<CharacterController>();
         SceneManager.LoadScene(sceneName:"LevelSelection");

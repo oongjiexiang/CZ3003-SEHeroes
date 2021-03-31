@@ -7,16 +7,16 @@ using TMPro;
 public class LevelSelectionController : MonoBehaviour
 {
     public string currentLevel;
-    public static string level;
 
-    public static string world;
-    public static string section;
+    private string world;
+    private string section;
 
     // Start is called before the first frame update
     void Start()
     {   
-        world = WorldSelectionController.world;
-        section = SectionController.section;
+        world = ProgramStateController.world;
+        section = ProgramStateController.section;
+        ProgramStateController.viewState();
     }
 
     // Update is called once per frame
@@ -26,7 +26,7 @@ public class LevelSelectionController : MonoBehaviour
     }
 
     public void OnClick() {
-        level = currentLevel;
+        ProgramStateController.level = currentLevel;
         SceneManager.LoadScene(sceneName:"StoryModeBattle");
     }
 

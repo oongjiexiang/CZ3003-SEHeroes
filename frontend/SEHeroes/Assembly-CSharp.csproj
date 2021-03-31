@@ -46,6 +46,7 @@
      <Compile Include="Assets\Scripts\MissingInputField.cs" />
      <Compile Include="Assets\Scripts\MusicController.cs" />
      <Compile Include="Assets\Scripts\ProfileController.cs" />
+     <Compile Include="Assets\Scripts\ProgramStateController.cs" />
      <Compile Include="Assets\Scripts\QuestionController.cs" />
      <Compile Include="Assets\Scripts\RegistrationController.cs" />
      <Compile Include="Assets\Scripts\SectionController.cs" />

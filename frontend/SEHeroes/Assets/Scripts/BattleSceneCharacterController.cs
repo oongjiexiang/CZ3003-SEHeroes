@@ -5,10 +5,10 @@ using UnityEngine;
 public class BattleSceneCharacterController : MonoBehaviour
 {   
     
-    public static string world;
-    public static string section;
-    public static string level;
-    public static string character;
+    private string world;
+    private string section;
+    private string level;
+    private string character;
 
     Dictionary<string, object> redwarrior = new Dictionary<string, object>();
     Dictionary<string, object> magician = new Dictionary<string, object>();
@@ -22,12 +22,11 @@ public class BattleSceneCharacterController : MonoBehaviour
     Animator animator;
     
     // Start is called before the first frame update
-    void Start()
-    {
-        world = WorldSelectionController.world;
-        section = SectionController.section;
-        level = LevelSelectionController.level;
-        character = CharacterController.characterType;
+    void Start() {
+        world = ProgramStateController.world;
+        section = ProgramStateController.section;
+        level = ProgramStateController.level;
+        character = ProgramStateController.characterType;
 
         if(world!=null) {
             if(world.Contains("Forest"))

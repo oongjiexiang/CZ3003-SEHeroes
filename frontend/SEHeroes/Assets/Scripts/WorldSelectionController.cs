@@ -7,15 +7,13 @@ using UnityEngine.SceneManagement;
 public class WorldSelectionController : MonoBehaviour
 {
     public string currentWorld;
-    public static string world;
-
     SpriteRenderer renderer;
     Color initialColor;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        ProgramStateController.viewState();
         renderer = gameObject.GetComponent<SpriteRenderer>(); 
         initialColor = renderer.material.color;
         initialColor.a = 0.8f;
@@ -29,7 +27,7 @@ public class WorldSelectionController : MonoBehaviour
     }
 
     void OnMouseDown() {
-        world = currentWorld;
+        ProgramStateController.world = currentWorld;
 
         if(currentWorld.Contains("Forest"))
                 SceneManager.LoadScene(sceneName:"Forest");

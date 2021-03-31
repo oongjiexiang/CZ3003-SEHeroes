@@ -10,8 +10,8 @@ public class CharacterController : MonoBehaviour
     float vertical;
 
     // need to pass from API
-    public static string username = "brys0001";
-    public static string characterType = "Magician";
+    private string username = ProgramStateController.username;
+    private string characterType = ProgramStateController.characterType;
 
     Rigidbody2D rigidbody2d;
     Animator animator;

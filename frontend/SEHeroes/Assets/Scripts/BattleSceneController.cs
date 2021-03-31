@@ -12,9 +12,10 @@ using System.Linq;
 public class BattleSceneController : MonoBehaviour
 {
     // Start is called before the first frame update
-    public static string level = LevelSelectionController.level;
-    public static string section = SectionController.section;
-    public static string world = WorldSelectionController.world;
+    private string level = ProgramStateController.level;
+    private string section = ProgramStateController.section;
+    private string world = ProgramStateController.world;
+
     public static bool APIdone = false;
     public static int questionCounter=0;
     public static List<JSONNode> allQA = new List<JSONNode>();
@@ -55,6 +56,7 @@ public class BattleSceneController : MonoBehaviour
 
     void Start()
     {
+        ProgramStateController.viewState();
         StartCoroutine(GetQuesAPI());
         playerHP = 20;
         enemyHP = 10;
