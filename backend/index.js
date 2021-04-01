@@ -54,6 +54,7 @@ const AssignmentResult = require("./src/routes/assignment-result");
 const StoryModeQuestion = require("./src/routes/story-mode-question");
 const StoryModeResult = require("./src/routes/story-mode-result");
 const OpenChallengeRecord = require("./src/routes/open-challenge-record");
+const AssignmentReport = require("./src/routes/assignment-report");
 
 app.use('/user', User)
 app.use('/tutorialGroup', TutorialGroup)
@@ -64,6 +65,7 @@ app.use('/openchallengerecord', OpenChallengeRecord)
 app.use('/assignment', Assignment)
 app.use('/assignmentQuestion', AssignmentQuestion)
 app.use('/assignmentResult', AssignmentResult)
+app.use('/assignmentReport', AssignmentReport)
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
