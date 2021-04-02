@@ -10,6 +10,7 @@ public class LevelSelectionController : MonoBehaviour
 
     private string world;
     private string section;
+    GameObject guideMessageBox;
 
     // Start is called before the first frame update
     void Start()
@@ -26,8 +27,14 @@ public class LevelSelectionController : MonoBehaviour
     }
 
     public void OnClick() {
+        guideMessageBox = GameObject.Find("ConfirmationMessage");
         ProgramStateController.level = currentLevel;
-        SceneManager.LoadScene(sceneName:"StoryModeBattle");
+        LevelSelectionConfirmation.showMessage();
+    }
+
+    public void EnterBattle() {
+        ProgramStateController.sceneToLoad = "StoryModeBattle";
+        SceneManager.LoadScene(sceneName:"Loading");
     }
 
     public void BackButtonOnClick() {
@@ -41,5 +48,9 @@ public class LevelSelectionController : MonoBehaviour
                 SceneManager.LoadScene(sceneName:"Desert");
         else if(world.Contains("Ashland"))    
                 SceneManager.LoadScene(sceneName:"Ashland");
+    }
+
+    public void closeConfirmation() {
+        LevelSelectionConfirmation.closeMessage();
     }
 }

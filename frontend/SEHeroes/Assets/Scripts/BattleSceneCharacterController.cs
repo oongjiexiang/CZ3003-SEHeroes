@@ -52,24 +52,24 @@ public class BattleSceneCharacterController : MonoBehaviour
         else if(character.Equals("Swordman"))
             animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Swordman");
 
-        redwarrior.Add("Health", 5);
+        redwarrior.Add("Health", 20);
         redwarrior.Add("Damage", 1.5);
         redwarrior.Add("Hit", 0.75);
 
-        magician.Add("Health", 5);
+        magician.Add("Health", 20);
         magician.Add("Damage", 1);
         magician.Add("Hit", 1);
         // Heal Chance = 35%
         magician.Add("HealChance", 35);
 
-        bowman.Add("Health", 5);
+        bowman.Add("Health", 20);
         bowman.Add("Damage", 1);
         bowman.Add("Hit", 1);
         // Critical Chance = 35%
         bowman.Add("Crit", 35);
         bowman.Add("CritDamage", 2);
 
-        swordman.Add("Health", 5);
+        swordman.Add("Health", 20);
         swordman.Add("Damage", 1);
         swordman.Add("Hit", 0.5);
         

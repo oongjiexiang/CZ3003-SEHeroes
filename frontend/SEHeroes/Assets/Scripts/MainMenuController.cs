@@ -27,5 +27,9 @@ public class MainMenuController : MonoBehaviour
     public void loadProfile() {
         SceneManager.LoadScene(sceneName:"Profile");
     }
+
+    public void exitGame() {
+        Application.Quit();
+    }
 }
 

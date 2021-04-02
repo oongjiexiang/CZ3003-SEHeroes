@@ -39,7 +39,10 @@
      <Compile Include="Assets\Scripts\BattleSceneCharacterController.cs" />
      <Compile Include="Assets\Scripts\BattleSceneController.cs" />
      <Compile Include="Assets\Scripts\CharacterController.cs" />
+     <Compile Include="Assets\Scripts\CharacterSelectionCollider.cs" />
+     <Compile Include="Assets\Scripts\CharacterSelectionController.cs" />
      <Compile Include="Assets\Scripts\InputFieldController.cs" />
+     <Compile Include="Assets\Scripts\LevelSelectionConfirmation.cs" />
      <Compile Include="Assets\Scripts\LevelSelectionController.cs" />
      <Compile Include="Assets\Scripts\LoginController.cs" />
      <Compile Include="Assets\Scripts\MainMenuController.cs" />
@@ -49,8 +52,9 @@
      <Compile Include="Assets\Scripts\ProgramStateController.cs" />
      <Compile Include="Assets\Scripts\QuestionController.cs" />
      <Compile Include="Assets\Scripts\RegistrationController.cs" />
+     <Compile Include="Assets\Scripts\SceneLoader.cs" />
      <Compile Include="Assets\Scripts\SectionController.cs" />
-     <Compile Include="Assets\Scripts\TitleUpdater.cs" />
+     <Compile Include="Assets\Scripts\SectionTitleUpdater.cs" />
      <Compile Include="Assets\Scripts\WorldSelectionController.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
@@ -606,26 +610,11 @@
     <Reference Include="mscorlib">
         <HintPath>/Applications/Unity/Hub/Editor/2019.4.21f1/Unity.app/Contents/NetStandard/compat/2.0.0/shims/netfx/mscorlib.dll</HintPath>
     </Reference>
-    <Reference Include="Cinemachine">
-        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Tilemap.Editor">
-        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="com.unity.cinemachine.editor">
-        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.UI">
-        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Timeline.Editor">
         <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Cinemachine">
+        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Animation.Runtime">
         <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.2D.Animation.Runtime.dll</HintPath>
@@ -644,6 +633,9 @@
     </Reference>
     <Reference Include="Unity.2D.Path.Editor">
         <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.2D.Path.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
         <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
@@ -669,8 +661,14 @@
     <Reference Include="Unity.InternalAPIEngineBridge.001">
         <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.InternalAPIEngineBridge.001.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.2D.Common.Runtime">
         <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.2D.Common.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Tilemap.Editor">
+        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.SpriteShape.Runtime">
         <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.2D.SpriteShape.Runtime.dll</HintPath>
@@ -680,6 +678,9 @@
     </Reference>
     <Reference Include="Unity.2D.Animation.Editor">
         <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.2D.Animation.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="com.unity.cinemachine.editor">
+        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
         <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
@@ -692,6 +693,9 @@
     </Reference>
     <Reference Include="Unity.InternalAPIEditorBridge.001">
         <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.001.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

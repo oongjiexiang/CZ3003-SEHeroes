@@ -668,7 +668,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 307528540}
-        m_MethodName: ExitGame
+        m_MethodName: exitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -927,8 +927,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279408893
-  m_fontColor: {r: 0.99215686, g: 0.59607846, b: 0.07058824, a: 1}
+    rgba: 4279880695
+  m_fontColor: {r: 0.96862745, g: 0.79607844, b: 0.09803922, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1735,8 +1735,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279408893
-  m_fontColor: {r: 0.99215686, g: 0.59607846, b: 0.07058824, a: 1}
+    rgba: 4279880695
+  m_fontColor: {r: 0.96862745, g: 0.79607844, b: 0.09803922, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1869,8 +1869,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279408893
-  m_fontColor: {r: 0.99215686, g: 0.59607846, b: 0.07058824, a: 1}
+    rgba: 4279880695
+  m_fontColor: {r: 0.96862745, g: 0.79607844, b: 0.09803922, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2554,8 +2554,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279408893
-  m_fontColor: {r: 0.99215686, g: 0.59607846, b: 0.07058824, a: 1}
+    rgba: 4279880695
+  m_fontColor: {r: 0.96862745, g: 0.79607844, b: 0.09803922, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-    public float speed = 10.0f;
+    public float speed = 7.0f;
+    public bool moveable;
     
     float horizontal;
     float vertical;
@@ -36,20 +37,22 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
-        
-        Vector2 move = new Vector2(horizontal, vertical);
-        
-        if(!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
-        {
-            lookDirection.Set(move.x, move.y);
-            lookDirection.Normalize();
+        if(moveable){
+            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis("Vertical");
+            
+            Vector2 move = new Vector2(horizontal, vertical);
+            
+            if(!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
+            {
+                lookDirection.Set(move.x, move.y);
+                lookDirection.Normalize();
+            }
+            
+            animator.SetFloat("Look X", lookDirection.x);
+            animator.SetFloat("Look Y", lookDirection.y);
+            animator.SetFloat("Speed", move.magnitude);
         }
-        
-        animator.SetFloat("Look X", lookDirection.x);
-        animator.SetFloat("Look Y", lookDirection.y);
-        animator.SetFloat("Speed", move.magnitude);
 
         if(Input.GetKeyDown(KeyCode.C))
         {
@@ -60,10 +63,14 @@ public class CharacterController : MonoBehaviour
     
     void FixedUpdate()
     {
-        Vector2 position = rigidbody2d.position;
-        position.x = position.x + speed * horizontal * Time.deltaTime;
-        position.y = position.y + speed * vertical * Time.deltaTime;
+        if(rigidbody2d) {
+            if(moveable){
+                Vector2 position = rigidbody2d.position;
+                position.x = position.x + speed * horizontal * Time.deltaTime;
+                position.y = position.y + speed * vertical * Time.deltaTime;
 
-        rigidbody2d.MovePosition(position);
+                rigidbody2d.MovePosition(position);
+            }
+        }
     }
 }

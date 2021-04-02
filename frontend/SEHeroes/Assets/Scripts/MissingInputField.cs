@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+
 public class MissingInputField : MonoBehaviour
 {
     private static TextMeshProUGUI missingFieldText;

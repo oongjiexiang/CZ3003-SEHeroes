@@ -8,14 +8,19 @@ public class SectionController : MonoBehaviour
 {
 
     public string currentSection;
-    private string world;
 
+    private string world;
+    GameObject guideMessageBox;
 
     // Start is called before the first frame update
     void Start()
     {
         world = ProgramStateController.world;
         ProgramStateController.viewState();
+        
+        if(string.IsNullOrEmpty(currentSection)){
+            guideMessageBox = GameObject.Find("GuideMessage");
+        }
 
         if(world!=null) {
             if(world.Contains("Forest"))
@@ -48,5 +53,9 @@ public class SectionController : MonoBehaviour
     public void BackButtonOnClick() {
         GameObject.FindGameObjectWithTag("ForestMusic").GetComponent<MusicController>().StopMusic();
         SceneManager.LoadScene(sceneName:"WorldSelection");
+    }
+
+    public void closeGuideMessage() {
+        guideMessageBox.SetActive(false);
     }
 }

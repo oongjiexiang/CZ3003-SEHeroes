@@ -14,11 +14,12 @@ public class WorldSelectionController : MonoBehaviour
     void Start()
     {
         ProgramStateController.viewState();
-        renderer = gameObject.GetComponent<SpriteRenderer>(); 
-        initialColor = renderer.material.color;
-        initialColor.a = 0.8f;
-        renderer.material.color = initialColor;
-        
+        renderer = gameObject.GetComponent<SpriteRenderer>();
+        if(renderer){
+            initialColor = renderer.material.color;
+            initialColor.a = 0.8f;
+            renderer.material.color = initialColor;
+        }
     }
 
     // Update is called once per frame
@@ -42,13 +43,20 @@ public class WorldSelectionController : MonoBehaviour
     }
 
     void OnMouseOver() {
-        initialColor.a = 1.0f;
-        renderer.material.color = initialColor;
-
+        if(renderer){
+            initialColor.a = 1.0f;
+            renderer.material.color = initialColor;
+        }
     }
 
     void OnMouseExit() {
-        initialColor.a = 0.8f;
-        renderer.material.color = initialColor;
+        if(renderer){
+            initialColor.a = 0.8f;
+            renderer.material.color = initialColor;
+        }
+    }
+
+    public void BackButtonOnClick() {
+        SceneManager.LoadScene(sceneName:"MainMenu");
     }
 }

@@ -164,8 +164,6 @@ public class BattleSceneController : MonoBehaviour
             allQA.Add(quesInfo[i]);
         }
         APIdone = true;
-
-
     }
 
     private IEnumerator HandleIt()

@@ -50,7 +50,7 @@ public class LoginController : MonoBehaviour
         Debug.Log(username);
         Debug.Log(password);
 
-        // SceneManager.LoadScene(sceneName:"MainMenu");
+        SceneManager.LoadScene(sceneName:"MainMenu");
     }
 
     public void socialMediaLogin() {
