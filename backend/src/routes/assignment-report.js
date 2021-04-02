@@ -6,10 +6,10 @@ router.get('/', (req, res) => {
     const { tutorialGroupId, assignmentId } = req.query
 
     let queryMap = {}
-    queryMap['tutorialGroupId'] = tutorialGroupId
-    if (assignmentId != null) queryMap['assignmentId'] = assignmentId
+    if(tutorialGroupId != null) queryMap['tutorialGroupId'] = tutorialGroupId
+    if(assignmentId != null) queryMap['assignmentId'] = assignmentId
 
-    AssignmentReportController.getAssignmentReportByTutorialGroup(
+    AssignmentReportController.getAssignmentReport(
         queryMap,
         (err, results) => {
             if(err){

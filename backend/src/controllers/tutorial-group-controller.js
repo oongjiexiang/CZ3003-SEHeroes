@@ -23,9 +23,7 @@ module.exports['createGroup'] = async function (tutorialGroupId, student, callba
                     if (result.empty) {
                         continue
                     }
-                    else {
-
-                        
+                    else {        
                         result.forEach((doc) => {
                             usersCollection.doc(doc.id).update({"tutorialGroup": tutorialGroupId});
                             existing_student.push(matricNo)

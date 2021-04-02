@@ -68,7 +68,7 @@ router.get('/:assignmentQuestionId', (req, res) => {
     )
 });
 
-router.patch('/:assignmentQuestionId', (req, res) => {
+router.put('/:assignmentQuestionId', (req, res) => {
     const { assignmentQuestionId } = req.params;
     const { answer, correctAnswer, question, score, image } = req.body;
 

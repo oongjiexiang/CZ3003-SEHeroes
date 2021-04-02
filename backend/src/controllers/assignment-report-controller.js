@@ -3,46 +3,36 @@ const db = admin.firestore();
 const assignmentResultCollection = db.collection("assignmentResult")
 const tutorialGroupCollection = db.collection("tutorialGroup")
 
-module.exports['getAssignmentReportByTutorialGroup'] = async function(queryMap, callback) {
-    if (!queryMap['tutorialGroupId']) {
-        callback('Missing tutorial group ID', null)
-        return
-    }
+module.exports['getAssignmentReport'] = async function(queryMap, callback) {
+    
     try{
-        const report = []
-        const record = await tutorialGroupCollection.doc(queryMap['tutorialGroupId']).get()
-        var users = []
-        if (record.empty) {
-            callback('No students in tutorial group', null)
-        }
-        else {
-            for (const user of record.data()['student']) {
-                users.push(user)
-            }
-        }
-        const all_data = []
-        const availableAssignments = new Set()
-        for (const matricNo of users) {
-            let selection = null
-            if (queryMap['assignmentId'] == null) {
-                selection = assignmentResultCollection.where("matricNo", "==", matricNo)
+        const result = await assignmentResultCollection.get();
+        let resultData = []
+        result.forEach((doc) => resultData.push(doc.data()));
+        let assignmentIds = new Set();
+
+        if(queryMap['tutorialGroupId'] != null){
+            const record = await tutorialGroupCollection.doc(queryMap['tutorialGroupId']).get();
+            if (!record.exists) {
+                callback("Tutorial group not exist", null);
+                return;
             }
             else {
-                selection = assignmentResultCollection.where("matricNo", "==", matricNo).where("assignmentId", "==", queryMap['assignmentId'])
-            }
-            snapshot = await selection.get()
-            if (!snapshot.empty) {
-                snapshot.forEach(doc => {
-                    all_data.push(doc.data())
-                    availableAssignments.add(doc.data()['assignmentId'])
-                })
+                const student = record.data()['student'];
+                resultData = resultData.filter(res => ((res['matricNo'] != null) && student.includes(res['matricNo'])));
             }
         }
-        availableAssignments.forEach((assignmentId, notUsed, set) => {
+        if(queryMap['assignmentId'] != null){
+            resultData = resultData.filter(res => res['assignmentId'] == queryMap['assignmentId']);
+        }
+
+        resultData.forEach(data => assignmentIds.add(data['assignmentId']));
+        const report = []
+        assignmentIds.forEach((assignmentId) => {
             const assignmentResult = {}
             const raw_data = []
             const scores = []
-            for (const entry of all_data) {
+            for (const entry of resultData) {
                 if (entry['assignmentId'] == assignmentId) {
                     raw_data.push(entry)
                     scores.push(entry['score'])
@@ -56,7 +46,7 @@ module.exports['getAssignmentReportByTutorialGroup'] = async function(queryMap, 
                 max: Math.max(...scores),
                 mean: scores.reduce((a,b) => a+b, 0) / scores.length,
                 median: med,
-                raw_data: raw_data
+                rawData: raw_data
             }
             report.push(assignmentResult)          
         })

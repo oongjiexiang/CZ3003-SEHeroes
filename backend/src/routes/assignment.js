@@ -52,7 +52,7 @@ router.get('/:assignmentId', (req, res) => {
     )
 });
 
-router.patch('/:assignmentId', (req, res) => {
+router.put('/:assignmentId', (req, res) => {
     const { assignmentId } = req.params;
     const { assignmentName, startDate, dueDate, questions, tries } = req.body;
 

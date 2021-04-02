@@ -21,7 +21,7 @@ router.post("/", (req, res) => {
     );
 });
 
-router.patch("/:matricNo", (req, res) => {
+router.put("/:matricNo", (req, res) => {
     const { character, openChallengeRating, tutorialGroup, username } = req.body;
     const {matricNo} = req.params;
     const updateMap = {}

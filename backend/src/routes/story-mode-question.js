@@ -78,7 +78,7 @@ router.get('/questionSet', (req, res) => {
     )
 });
 
-router.patch('/:storyModeQuestionId', (req, res) => {
+router.put('/:storyModeQuestionId', (req, res) => {
     const { storyModeQuestionId } = req.params;
     const { answer, correctAnswer, image, level, question, section, world } = req.body;
 

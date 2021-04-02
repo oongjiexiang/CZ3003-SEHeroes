@@ -55,13 +55,15 @@ const StoryModeQuestion = require("./src/routes/story-mode-question");
 const StoryModeResult = require("./src/routes/story-mode-result");
 const OpenChallengeRecord = require("./src/routes/open-challenge-record");
 const AssignmentReport = require("./src/routes/assignment-report");
+const StoryModeReport = require("./src/routes/story-mode-report");
 
 app.use('/user', User)
 app.use('/tutorialGroup', TutorialGroup)
 app.use('/world', World)
-app.use('/storymodequestion', StoryModeQuestion)
-app.use('/storymoderesult', StoryModeResult)
-app.use('/openchallengerecord', OpenChallengeRecord)
+app.use('/storyModeQuestion', StoryModeQuestion)
+app.use('/storyModeResult', StoryModeResult)
+app.use('/storyModeReport', StoryModeReport)
+app.use('/openChallengeRecord', OpenChallengeRecord)
 app.use('/assignment', Assignment)
 app.use('/assignmentQuestion', AssignmentQuestion)
 app.use('/assignmentResult', AssignmentResult)

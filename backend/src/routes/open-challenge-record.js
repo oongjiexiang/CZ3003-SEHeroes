@@ -51,7 +51,7 @@ router.get('/:recordId', (req, res) => {
     )
 });
 
-router.patch('/:recordId', (req, res) => {
+router.put('/:recordId', (req, res) => {
     const { recordId } = req.params;
     const { questions, team1, team2, type } = req.body;
 

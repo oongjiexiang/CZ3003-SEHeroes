@@ -19,7 +19,7 @@ router.post("/", (req, res) => {
     );
 });
 
-router.patch("/:tutorialGroupId/add", (req, res) => {
+router.put("/:tutorialGroupId/add", (req, res) => {
     const {tutorialGroupId} = req.params
     const { matricNo } = req.body;
 
@@ -49,7 +49,7 @@ router.patch("/:tutorialGroupId/add", (req, res) => {
 });
 
 
-router.patch("/:tutorialGroupId/remove", (req, res) => {
+router.put("/:tutorialGroupId/remove", (req, res) => {
     const {tutorialGroupId} = req.params
     const { matricNo } = req.body;
 
