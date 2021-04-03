@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
-public class assignment{
+public class Assignment{
     public string assignmentName;
     public int tries;
-    public int startDate;      // will change
-    public int dueDate;        // will change
+    public DateTime startDate;      // will change
+    public DateTime dueDate;        // will change
     // public List<assignmentQuestion> questions;
-    public List<string> questions;
+    public List<string> questions;  // represents list of questionId 
 }
