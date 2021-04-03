@@ -82,14 +82,18 @@ public class Assignment_Entry_Script : MonoBehaviour
         print(jsonToPut + " is PUT url for assignment");
         yield return conn.PutData("assignment/1rO3ShtqbePhkjoQ2Jcd", jsonToPut);
     }
-    
+    IEnumerator dummyDeleteAssignment(assignment asg){
+        API_Connection conn = new API_Connection();
+        yield return conn.DeleteData("assignment/1rO3ShtqbePhkjoQ2Jcd");
+    }
     IEnumerator setAssignmentList()
     {
         
         // yield return conn.GetData("user");
         // yield return conn.DeleteData("assignment/B4AF3RCBqaxTzbx9rDtx");
         // yield return dummyPostAssignment(dummyCreateAssign());
-        yield return dummyPutAssignment(dummyCreateAssign());
+        // yield return dummyPutAssignment(dummyCreateAssign());
+        yield return dummyDeleteAssignment(dummyCreateAssign());
 
         assignmentNames = new List<string>();
         assignmentStatus = new List<string>();
