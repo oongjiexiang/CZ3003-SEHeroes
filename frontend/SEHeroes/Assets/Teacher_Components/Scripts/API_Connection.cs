@@ -37,22 +37,26 @@ public class API_Connection : MonoBehaviour
     }
     public IEnumerator PostData(string apiEndpoint, string json_toAdd){
         string fullURL = baseURL + apiEndpoint;
-        byte[] bytes_toAdd = System.Text.Encoding.UTF8.GetBytes(json_toAdd);
+        // byte[] bytes_toAdd = System.Text.Encoding.UTF8.GetBytes(json_toAdd);
+        print(fullURL);
 
-        //Using UnityWebRequest to do a put request to the database
-        using (UnityWebRequest addRequest = UnityWebRequest.Put(fullURL, bytes_toAdd))
+        var addRequest = new UnityWebRequest(fullURL, "POST");
+        byte[] bytes_toAdd = System.Text.Encoding.UTF8.GetBytes(json_toAdd);
+        addRequest.uploadHandler = (UploadHandler) new UploadHandlerRaw(bytes_toAdd);
+        addRequest.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
+        addRequest.SetRequestHeader("Content-Type", "application/json");
+        yield return addRequest.SendWebRequest();
+        Debug.Log("Status Code: " + addRequest.responseCode);
+        if (addRequest.isNetworkError)
         {
-            addRequest.SetRequestHeader("Content-Type", "application/json");
-            yield return addRequest.SendWebRequest();
-            if (addRequest.isNetworkError)
-            {
-                Debug.Log(addRequest.error);
-            }
-            else
-            {
-                Debug.Log(addRequest.downloadHandler.text);
-            }
+            Debug.Log(addRequest.error);
         }
+        else
+        {
+            Debug.Log(addRequest.downloadHandler.text);
+        }
+        // }
+        print("post successful");
     }
     public IEnumerator PutData(string apiEndpoint, string json_toModify)
     {   // PUT method: as extra compiler must be installed for dynamic type, pass json instead of whole object
