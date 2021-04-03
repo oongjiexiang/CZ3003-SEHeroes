@@ -149,7 +149,7 @@ public class Student_Delete_List_Script : MonoBehaviour
  
             yield return studentRemoveRequest.SendWebRequest();
  
-            if (studentRemoveRequest.isError)
+            if (studentRemoveRequest.isNetworkError)
             {
                 Debug.Log(studentRemoveRequest.error);
             }

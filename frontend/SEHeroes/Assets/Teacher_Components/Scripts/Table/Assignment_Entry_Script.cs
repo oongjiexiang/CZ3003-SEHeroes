@@ -19,16 +19,19 @@ public class Assignment_Entry_Script : MonoBehaviour
 
     public static string assignmentName;
 
-    void Awake()
+    IEnumerator Start()
     {
+        yield return StartCoroutine(setAssignmentList());
         popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
         popUp.SetActive(false);
-        setAssignmentList();
         tableInitialize();
     }
 
-    void setAssignmentList()
+    IEnumerator setAssignmentList()
     {
+        API_Connection conn = new API_Connection();
+        yield return conn.GetData("user");
+        yield return conn.DeleteData("assignment/B4AF3RCBqaxTzbx9rDtx");
         assignmentNames = new List<string>();
         assignmentStatus = new List<string>();
         var list = new List<string> { "Ongoing", "Closed", "Scheduled" };
@@ -47,7 +50,6 @@ public class Assignment_Entry_Script : MonoBehaviour
     void tableInitialize()
     {
         entryContainer = content.transform.Find("Assignment_Entry_Container");
-        Debug.Log(entryContainer);
         entryTemplate = entryContainer.Find("Assignment_Entry_Template").transform;
         entryTemplate.gameObject.SetActive(false);
         float templateHeight = 50f;
