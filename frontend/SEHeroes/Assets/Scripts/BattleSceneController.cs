@@ -16,7 +16,6 @@ public class BattleSceneController : MonoBehaviour
     private string section = ProgramStateController.section;
     private string world = ProgramStateController.world;
 
-    public static bool APIdone = false;
     public static int questionCounter=0;
     public static List<JSONNode> allQA = new List<JSONNode>();
     public static string question;
@@ -24,15 +23,15 @@ public class BattleSceneController : MonoBehaviour
     public static int correctAnswerIndex;
     public static string correctAnswer;
     public static int userAnswer = 0;
-    private static bool beingHandled=false;
+    // private static bool beingHandled=false;
     private static bool canStart = false;
 
-    private readonly string baseQuesAPIURL = "https://seheroes.herokuapp.com/storyModeQuestion?";
+    // private readonly string baseQuesAPIURL = "https://seheroes.herokuapp.com/storyModeQuestion?";
     private JSONNode currQuestion;
 
     private int playerHP;
     private int enemyHP;
-    private int maxHP = 20;
+    // private int maxHP = 20;
     private int maxHeart = 5;
     public Image[] playerhealthImages;
     public Image[] enemyhealthImages;
@@ -57,7 +56,9 @@ public class BattleSceneController : MonoBehaviour
     void Start()
     {
         ProgramStateController.viewState();
-        StartCoroutine(GetQuesAPI());
+        StartCoroutine(APIController.GetStoryModeQuesAPI());
+        allQA = APIController.allQA;
+        // StartCoroutine(GetQuesAPI());
         playerHP = 20;
         enemyHP = 10;
         checkHealthAmount(playerhealthImages);
@@ -70,7 +71,8 @@ public class BattleSceneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(APIdone == true && questionCounter == 0)
+        // if(APIdone == true && questionCounter == 0)
+        if(APIController.APIdone == true && questionCounter == 0)
         {
             currQuestion = allQA.ElementAt(questionCounter);
             question = currQuestion["question"];
@@ -143,28 +145,29 @@ public class BattleSceneController : MonoBehaviour
             
         
     }
-    IEnumerator GetQuesAPI()
-    {
-        string QuesURL = baseQuesAPIURL + "world=" + world.Split(' ')[0] + "&section=" + section + "&level=" + level;
-        UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
-        yield return quesRequest.SendWebRequest();
 
-        if (quesRequest.isNetworkError || quesRequest.isHttpError)
-        {
-            Debug.LogError(quesRequest.error);
-            yield break;
-        }
+    // IEnumerator GetQuesAPI()
+    // {
+    //     string QuesURL = baseQuesAPIURL + "world=" + world.Split(' ')[0] + "&section=" + section + "&level=" + level;
+    //     UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
+    //     yield return quesRequest.SendWebRequest();
 
-        JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
-        Debug.Log(quesInfo[0]["level"]);
-        Debug.Log(quesInfo[0]);
-        for (int i = 0; i < quesInfo.Count; i++)
-        {
-            Debug.Log(quesInfo[0]);
-            allQA.Add(quesInfo[i]);
-        }
-        APIdone = true;
-    }
+    //     if (quesRequest.isNetworkError || quesRequest.isHttpError)
+    //     {
+    //         Debug.LogError(quesRequest.error);
+    //         yield break;
+    //     }
+
+    //     JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
+    //     Debug.Log(quesInfo[0]["level"]);
+    //     Debug.Log(quesInfo[0]);
+    //     for (int i = 0; i < quesInfo.Count; i++)
+    //     {
+    //         Debug.Log(quesInfo[0]);
+    //         allQA.Add(quesInfo[i]);
+    //     }
+    //     APIdone = true;
+    // }
 
     private IEnumerator HandleIt()
     {

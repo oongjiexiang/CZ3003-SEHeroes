@@ -36,6 +36,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\APIController.cs" />
      <Compile Include="Assets\Scripts\BattleSceneCharacterController.cs" />
      <Compile Include="Assets\Scripts\BattleSceneController.cs" />
      <Compile Include="Assets\Scripts\CharacterController.cs" />

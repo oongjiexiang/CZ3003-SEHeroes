@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class CharacterSelectionController : MonoBehaviour
 {
@@ -44,15 +45,19 @@ public class CharacterSelectionController : MonoBehaviour
         TextMeshProUGUI textMesh = confirmationContainer.GetComponentInChildren<TextMeshProUGUI>();
         switch(characterType){
             case "Swordman":
+                ProgramStateController.characterSelected = "Swordman";
                 textMesh.text = header + "Swordman";
                 break;
             case "Bowman":
+                ProgramStateController.characterSelected = "Bowman";
                 textMesh.text = header + "Bowman";
                 break;
             case "Warrior":
+                ProgramStateController.characterSelected = "Warrior";
                 textMesh.text = header + "Warrior";
                 break;
             case "Magician":
+                ProgramStateController.characterSelected = "Magician";
                 textMesh.text = header + "Magician";
                 break;
         }
@@ -85,5 +90,6 @@ public class CharacterSelectionController : MonoBehaviour
     public void confirmSelection() {
         confirmationContainer.SetActive(false);
         CharacterSelectionCollider.enableCollider();
+        SceneManager.LoadScene(sceneName:"Registration");
     }
 }

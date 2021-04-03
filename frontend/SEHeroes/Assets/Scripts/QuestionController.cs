@@ -52,7 +52,7 @@ public class QuestionController : MonoBehaviour
 
             }
         }
-        if (BattleSceneController.APIdone == true)
+        if (APIController.APIdone == true)
         {
             textMesh = gameObject.GetComponent<TextMeshProUGUI>();
             questionText = BattleSceneController.question;

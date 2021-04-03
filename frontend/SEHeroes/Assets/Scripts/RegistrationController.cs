@@ -12,6 +12,7 @@ public class RegistrationController : MonoBehaviour
     private string matriculationNo;
 
     void Start() {
+        ProgramStateController.viewState();
     }
 
     void Update() {

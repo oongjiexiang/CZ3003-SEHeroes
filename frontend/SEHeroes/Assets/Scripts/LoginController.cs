@@ -37,7 +37,7 @@ public class LoginController : MonoBehaviour
 
     public void register() {
         Debug.Log("Register Account Button Clicked!");
-        SceneManager.LoadScene(sceneName:"Registration");
+        SceneManager.LoadScene(sceneName:"CharacterSelection");
     }
 
     public void login() {
