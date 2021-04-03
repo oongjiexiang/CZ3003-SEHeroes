@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,8 +13,7 @@ public class Assignment_Entry_Script : MonoBehaviour
     private Transform entryTemplate;
     private Transform entryContainer;
     private GameObject popUp;
-    List<string> assignmentNames;
-    List<string> assignmentStatus;
+    List<assignment> assignmentList;
 
     public Text noRecordLabel;
     public GameObject mainContentPanel;
@@ -88,26 +88,37 @@ public class Assignment_Entry_Script : MonoBehaviour
     }
     IEnumerator setAssignmentList()
     {
-        
-        // yield return conn.GetData("user");
-        // yield return conn.DeleteData("assignment/B4AF3RCBqaxTzbx9rDtx");
-        // yield return dummyPostAssignment(dummyCreateAssign());
-        // yield return dummyPutAssignment(dummyCreateAssign());
-        yield return dummyDeleteAssignment(dummyCreateAssign());
-
-        assignmentNames = new List<string>();
-        assignmentStatus = new List<string>();
-        var list = new List<string> { "Ongoing", "Closed", "Scheduled" };
-
-        int week = 0;
-        var rd = new System.Random();
-        for (int i = 0; i < 20; i++)
-        {
-            week++;
-            assignmentNames.Add("Week " + week.ToString());
-            int index = rd.Next(list.Count);
-            assignmentStatus.Add(list[index]);
+        API_Connection conn = new API_Connection();
+        JSONNode jsonNode = null;
+        // print("in main: " + json_receivedData.Count);
+        yield return StartCoroutine(conn.GetData("assignment", null, s => {
+            jsonNode = JSON.Parse(s);
+        }));
+        assignmentList = new List<assignment>();
+        for(int i = 0; i < jsonNode.Count; i++){
+            assignment asg = new assignment();
+            asg.assignmentName = jsonNode[i]["assignmentName"];
+            asg.tries = jsonNode[i]["tries"];
+            asg.startDate = jsonNode[i]["startDate"];
+            asg.dueDate = jsonNode[i]["dueDate"];
+            asg.questions = new List<string>();
+            for(int j = 0; j < jsonNode[i]["questions"].Count; j++)
+                asg.questions.Add(jsonNode[i]["questions"][j]);
+            assignmentList.Add(asg);
         }
+        // assignmentNames = new List<string>();
+        // assignmentStatus = new List<string>();
+        // var list = new List<string> { "Ongoing", "Closed", "Scheduled" };
+
+        // int week = 0;
+        // var rd = new System.Random();
+        // for (int i = 0; i < 20; i++)
+        // {
+        //     week++;
+        //     assignmentNames.Add("Week " + week.ToString());
+        //     int index = rd.Next(list.Count);
+        //     assignmentStatus.Add(list[index]);
+        // }
     }
 
     void tableInitialize()
@@ -116,15 +127,14 @@ public class Assignment_Entry_Script : MonoBehaviour
         entryTemplate = entryContainer.Find("Assignment_Entry_Template").transform;
         entryTemplate.gameObject.SetActive(false);
         float templateHeight = 50f;
-
-        for (int i = 0; i < assignmentNames.Count; i++)
+        for (int i = 0; i < assignmentList.Count; i++)
         {
             Transform entryTransform = Instantiate(entryTemplate, entryContainer);
             RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
             entryTransform.gameObject.SetActive(true);
             entryTransform.Find("Text_No").GetComponent<Text>().text = i.ToString();
-            entryTransform.Find("Text_Name").GetComponent<Text>().text = assignmentNames[i];
-            entryTransform.Find("Text_Status").GetComponent<Text>().text = assignmentStatus[i];
+            entryTransform.Find("Text_Name").GetComponent<Text>().text = assignmentList[i].assignmentName;
+            entryTransform.Find("Text_Status").GetComponent<Text>().text = assignmentList[i].dueDate.ToString();
             entryTransform.Find("Text_Name").Find("Button_Edit").GetComponent<Button>().onClick.AddListener(() => {
                 assignmentName = entryTransform.Find("Text_Name").GetComponent<Text>().text;
                 viewAssignment();
@@ -136,7 +146,7 @@ public class Assignment_Entry_Script : MonoBehaviour
             entryTransform.localScale = new Vector2(1, 1);
             entryTransform.localPosition = new Vector2(0, -templateHeight * i);
         }
-        if (assignmentNames.Count == 0)
+        if (assignmentList.Count == 0)
         {
             noRecordLabel.gameObject.SetActive(true);
         }

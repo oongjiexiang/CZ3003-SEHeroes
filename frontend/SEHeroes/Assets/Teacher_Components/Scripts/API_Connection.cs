@@ -10,7 +10,7 @@ public class API_Connection : MonoBehaviour
 {
     private readonly string baseURL = "https://seheroes.herokuapp.com/";
     // Start is called before the first frame update
-    public IEnumerator GetData(string apiEndpoint, Dictionary<string, string> queryParams = null)   //Verified: Working
+    public IEnumerator GetData(string apiEndpoint, Dictionary<string, string> queryParams, System.Action<string> callback = null)   //Verified: Working
     {
         string fullURL = baseURL + apiEndpoint;
         if(queryParams != null)
@@ -25,15 +25,16 @@ public class API_Connection : MonoBehaviour
         UnityWebRequest response = UnityWebRequest.Get(fullURL);
         print(response.url);
         yield return response.SendWebRequest();
-
+        
         if (response.isNetworkError || response.isHttpError)
         {
             //Debug.LogError(assignmentInfoRequest.error);
             yield break;
         }
-
-        JSONNode responseContent = JSON.Parse(response.downloadHandler.text);
-        print(responseContent.Count);
+        if(callback != null){
+            print("response callback is not null");
+            callback(response.downloadHandler.text);
+        }
     }
     public IEnumerator PostData(string apiEndpoint, string json_toAdd){
         string fullURL = baseURL + apiEndpoint;
