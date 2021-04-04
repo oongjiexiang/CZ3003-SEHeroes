@@ -9,9 +9,10 @@ public class Create_Assignment_Meta_Script : MonoBehaviour
 {
     const int NUM_TRY = 10;
     private Assignment newAsg;
+    private GameObject popUp;
     public GameObject panelObject;
     public GameObject mainContentPanel;
-    private GameObject popUp;
+    public static Assignment tentAssignment;
     void Start()
     {
         newAsg = new Assignment();
@@ -34,7 +35,10 @@ public class Create_Assignment_Meta_Script : MonoBehaviour
         SceneManager.LoadScene("Assignments");
     }
     public void clickCreate(){
-        if(verifyFields()) SceneManager.LoadScene("Assignments_Creation");
+        if(verifyFields()){
+            tentAssignment = newAsg;
+            SceneManager.LoadScene("Assignments_Creation");
+        }
         else{
             popUp.SetActive(true);
             popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(true);

@@ -20,6 +20,7 @@ public class Assignment_Entry_Script : MonoBehaviour
     public GameObject content;
 
     public static string assignmentName;
+    public static string assignmentId;
 
     IEnumerator Start()
     {

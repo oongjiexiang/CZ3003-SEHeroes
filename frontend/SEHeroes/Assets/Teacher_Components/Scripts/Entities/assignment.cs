@@ -16,6 +16,7 @@ public class Assignment{
     }
     public Assignment(JSONNode jsonAsg){
         assignmentName = jsonAsg["assignmentName"];
+        assignmentId = jsonAsg["assignmentId"];
         tries = jsonAsg["tries"];
         startDate = new AsgDate(jsonAsg["startDate"]);
         dueDate = new AsgDate(jsonAsg["dueDate"]);
