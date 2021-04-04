@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -18,8 +18,8 @@ public static class APIController
     private static readonly string baseStoryModeQuesAPIURL = "https://seheroes.herokuapp.com/storyModeQuestion?";
     public static bool APIdone = false;
 
-
-
+    // Assignment API
+    private static readonly string baseAssQuesAPIURL = "https://seheroes.herokuapp.com/assignmentQuestion?assignmentId=";
 
     public static IEnumerator RequestLogin(string matricNo, string password) {
         WWWForm form = new WWWForm();
@@ -84,11 +84,12 @@ public static class APIController
             MissingInputField.promptMissingField();
         }
     }
-
+    
     // Get Story Mode Questions and Answers
     public static IEnumerator GetStoryModeQuesAPI() {
+        APIdone = false;
         string QuesURL = baseStoryModeQuesAPIURL +
-                                "world=" +ProgramStateController.world.Split(' ')[1] +
+                                "world=" +ProgramStateController.world +
                                     "&section=" + ProgramStateController.section +
                                         "&level=" + ProgramStateController.level;
         UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
@@ -102,7 +103,25 @@ public static class APIController
 
         JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
         for (int i = 0; i < quesInfo.Count; i++)
-            allQA.Add(quesInfo[i]);
+            BattleSceneController.allQA.Add(quesInfo[i]);
+
+        APIdone = true;
+    }
+    public static IEnumerator GetAssignmentQuesAPI() {
+        APIdone = false;
+        string QuesURL = baseAssQuesAPIURL + ProgramStateController.assID;
+        UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
+        yield return quesRequest.SendWebRequest();
+
+        if (quesRequest.isNetworkError || quesRequest.isHttpError)
+        {
+            Debug.LogError(quesRequest.error);
+            yield break;
+        }
+
+        JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
+        for (int i = 0; i < quesInfo.Count; i++)
+            AssignmentBattleSceneController.allQA.Add(quesInfo[i]);
 
         APIdone = true;
     }

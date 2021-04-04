@@ -15,13 +15,10 @@ public class QuestionController : MonoBehaviour
     public bool isQuestion;
     public int answerNo;
     public bool answered = false;
-
     private TextMeshProUGUI textMesh;
     private string questionText;
     private JSONNode allAnswer;
     private int correctAnswerIndex;
-
-    
     [SerializeField] Button choicebutton;
     public Button ChoiceButton { get { return choicebutton; } }
 
@@ -29,8 +26,6 @@ public class QuestionController : MonoBehaviour
     void Start()
     {
         if(!isQuestion)choicebutton.onClick.AddListener(onClickButton);
-
-
     }
 
     // Update is called once per frame
@@ -52,7 +47,7 @@ public class QuestionController : MonoBehaviour
 
             }
         }
-        if (APIController.APIdone == true)
+        if (APIController.APIdone == true && BattleSceneController.q1Ready == true)
         {
             textMesh = gameObject.GetComponent<TextMeshProUGUI>();
             questionText = BattleSceneController.question;

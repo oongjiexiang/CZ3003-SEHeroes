@@ -2,29 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ProgramStateController
+public class ProgramStateController : MonoBehaviour
 {
-    public static string sceneToLoad;
-
-    // User-Information
-    public static string username;
-    public static string email;
-    public static string characterType;
-    public static string matricNo;
-
     // Login
     public static bool loggedIn = false;
 
-    // Character Selection during Sign-Up
+    // Character Selection Registration
     public static string characterSelected;
 
-    
-    // Story Mode State
-    public static string world;
-    public static string section;
-    public static string level;
-    
+    // User Information
+    public static string username = "brys0001";
+    public static string email;
+    public static string matricNo = "U1920410B";
+    public static string characterType = "RedWarrior";
 
+    // Game State
+    public static string world="Planning";
+    public static string section="Introduction";
+    public static string level="Hard";
+    
+    // Assignment
+    public static string assID="FdT7HsqGsSfL4Dus5xNq";
+
+    public static string sceneToLoad;
     public static void viewState() {
         // Debug.Log(world);
         // Debug.Log(section);

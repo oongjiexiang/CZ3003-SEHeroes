@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 436320222032740010}
   - component: {fileID: 436320222032740005}
   - component: {fileID: 436320222032740004}
-  - component: {fileID: 2389541470087108091}
   m_Layer: 5
   m_Name: Answer Prefab
   m_TagString: Untagged
@@ -131,20 +130,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2389541470087108091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 436320222032740006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a5bdbafcb1a2e74b93c93fae6acac6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  infoTextObject: {fileID: 7328181439628026169}
-  events: {fileID: 11400000, guid: 2cff26f319bcfd24fbf2661e7dacab11, type: 2}
 --- !u!1 &5065587576294819215
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,6 +140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3762623485325421039}
   - component: {fileID: 5231842764819110631}
+  - component: {fileID: 7097956226222437988}
   - component: {fileID: 7328181439628026169}
   m_Layer: 5
   m_Name: info
@@ -190,6 +176,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5065587576294819215}
   m_CullTransparentMesh: 0
+--- !u!114 &7097956226222437988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5065587576294819215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f5c2d4d55af3ef46a8e35758e926efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isQuestion: 0
+  answerNo: 0
+  answered: 0
+  choicebutton: {fileID: 436320222032740004}
 --- !u!114 &7328181439628026169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,7 +251,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: -40
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
