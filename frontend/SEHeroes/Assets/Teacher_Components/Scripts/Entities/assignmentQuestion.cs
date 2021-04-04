@@ -1,8 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using SimpleJSON;
+using System.Linq;
+using UnityEngine;
 
 public class AssignmentQuestion{
     public string question;
+    [System.NonSerialized]
     public string assignmentQuestionId;
     public int score;
     public List<string> answer;

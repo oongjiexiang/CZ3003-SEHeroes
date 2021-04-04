@@ -91,6 +91,44 @@ public class Create_Assignment_Script : MonoBehaviour
         popUp.SetActive(true);
         popUp.transform.Find("Popup_Delete").gameObject.SetActive(true);
     }
+    public void confirmSaveAndCreate(){
+        API_Assignment asg_conn = new API_Assignment();
+        print(new API_Connection());
+        foreach(var asgQuestion in asgQuestionList){
+            StartCoroutine(asg_conn.saveBack(asgQuestion));
+            asg.questions.Add(asgQuestion.assignmentQuestionId);
+        }
+        StartCoroutine(asg_conn.saveBack(asg));
+        print("Whole process is successful");
+        SceneManager.LoadScene("Assignments");
+    }
+    public void exitSaveAndCreate(){
+        popUp.transform.Find("Popup_Create").gameObject.SetActive(false);
+        popUp.gameObject.SetActive(false);
+    }
+    public void popupQuestionIncompleteAcknowledge(){
+        popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(false);
+        popUp.gameObject.SetActive(false);
+    }
+    public void confirmDelete(){
+        exitDelete();
+        if(cur < asgQuestionList.Count - 1){
+            asgQuestionList.RemoveAt(cur);
+            current_question = asgQuestionList[cur];
+            if(cur == 0) populateFields(current_question, false);
+            else populateFields(current_question, true);
+        }
+        else{
+            asgQuestionList.RemoveAt(cur);
+            current_question = asgQuestionList[--cur];
+            if(cur == 0) populateFields(current_question, false);
+            else populateFields(current_question, true);
+        }
+    }
+    public void exitDelete(){
+        popUp.transform.Find("Popup_Delete").gameObject.SetActive(false);
+        popUp.gameObject.SetActive(false);
+    }
     private void setPopupMessage(string message){
         popUp.transform.Find("Popup_Incomplete").Find("Text").GetComponent<Text>().text = message;
     }
@@ -164,35 +202,5 @@ public class Create_Assignment_Script : MonoBehaviour
     private void popupQuestionIncomplete(){
         popUp.SetActive(true);
         popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(true);
-    }
-    public void confirmSaveAndCreate(){
-        SceneManager.LoadScene("Assignments");
-    }
-    public void exitSaveAndCreate(){
-        popUp.transform.Find("Popup_Create").gameObject.SetActive(false);
-        popUp.gameObject.SetActive(false);
-    }
-    public void popupQuestionIncompleteAcknowledge(){
-        popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(false);
-        popUp.gameObject.SetActive(false);
-    }
-    public void confirmDelete(){
-        exitDelete();
-        if(cur < asgQuestionList.Count - 1){
-            asgQuestionList.RemoveAt(cur);
-            current_question = asgQuestionList[cur];
-            if(cur == 0) populateFields(current_question, false);
-            else populateFields(current_question, true);
-        }
-        else{
-            asgQuestionList.RemoveAt(cur);
-            current_question = asgQuestionList[--cur];
-            if(cur == 0) populateFields(current_question, false);
-            else populateFields(current_question, true);
-        }
-    }
-    public void exitDelete(){
-        popUp.transform.Find("Popup_Delete").gameObject.SetActive(false);
-        popUp.gameObject.SetActive(false);
     }
 }

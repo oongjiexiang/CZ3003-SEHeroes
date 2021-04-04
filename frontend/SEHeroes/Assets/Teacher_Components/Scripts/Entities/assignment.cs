@@ -1,11 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using SimpleJSON;
 using System.Linq;
 
 public class Assignment{
     public string assignmentName;
+    [System.NonSerialized]
     public string assignmentId;
     public int tries;
     public AsgDate startDate;      // will change

@@ -36,7 +36,7 @@ public class API_Connection : MonoBehaviour
             callback(response.downloadHandler.text);
         }
     }
-    public IEnumerator PostData(string apiEndpoint, string json_toAdd){
+    public IEnumerator PostData(string apiEndpoint, string json_toAdd, System.Action<string> callback = null){
         string fullURL = baseURL + apiEndpoint;
         // byte[] bytes_toAdd = System.Text.Encoding.UTF8.GetBytes(json_toAdd);
         print(fullURL);
@@ -47,16 +47,13 @@ public class API_Connection : MonoBehaviour
         addRequest.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
         addRequest.SetRequestHeader("Content-Type", "application/json");
         yield return addRequest.SendWebRequest();
-        Debug.Log("Status Code: " + addRequest.responseCode);
-        if (addRequest.isNetworkError)
-        {
+        Debug.Log("Status Code for post: " + addRequest.responseCode);
+        if (addRequest.isNetworkError){
             Debug.Log(addRequest.error);
         }
-        else
-        {
+        else{
             Debug.Log(addRequest.downloadHandler.text);
         }
-        // }
         print("post successful");
     }
     public IEnumerator PutData(string apiEndpoint, string json_toModify)
