@@ -19,6 +19,7 @@ public class SceneLoader : MonoBehaviour
     const string createAssignmentScene = "Assignments_Creation";
     const string addAssignmentScene = "Assignments_Creation_Add";
     const string tutorialReport = "Tutorial_Group_Report";
+    const string studentReport = "Student_Report";
     public void LoadNextScene() 
     {
     	int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -87,5 +88,10 @@ public class SceneLoader : MonoBehaviour
     public void LoadTutorialReportScene()
     {
         SceneManager.LoadScene(tutorialReport);
+    }
+
+    public void LoadStudentReportScene()
+    {
+        SceneManager.LoadScene(studentReport);
     }
 }

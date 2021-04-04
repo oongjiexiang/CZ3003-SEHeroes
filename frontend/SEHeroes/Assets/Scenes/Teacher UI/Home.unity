@@ -600,7 +600,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Welcome, <teacher's name>
+  m_Text: 'Welcome admin, '
 --- !u!222 &450358165
 CanvasRenderer:
   m_ObjectHideFlags: 0
