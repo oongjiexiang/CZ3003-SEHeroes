@@ -53,4 +53,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Teacher UI/Assignment_Creation_Meta.unity
     guid: 01739b3eaf3f5384d9e77212d34f62b1
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Student_Report.unity
+    guid: 587601a9b1116472e8d4620853288db0
   m_configObjects: {}

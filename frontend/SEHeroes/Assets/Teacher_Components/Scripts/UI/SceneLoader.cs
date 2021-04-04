@@ -20,6 +20,7 @@ public class SceneLoader : MonoBehaviour
     const string addAssignmentScene = "Assignments_Creation_Add";
     const string tutorialReport = "Tutorial_Group_Report";
     const string addAssignmentMetaScene = "Assignment_Creation_Meta";
+    const string studentReport = "Student_Report";
     public void LoadNextScene() 
     {
     	int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -91,5 +92,9 @@ public class SceneLoader : MonoBehaviour
     }
     public void LoadCreateAssignmentMetaScene(){
         SceneManager.LoadScene(addAssignmentMetaScene);
+    }
+    public void LoadStudentReportScene()
+    {
+        SceneManager.LoadScene(studentReport);
     }
 }
