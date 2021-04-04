@@ -30,6 +30,7 @@ public class Create_Assignment_Script : MonoBehaviour
         entryContainer = panelObject.transform.Find("Panel_Question_Creation");
         dropdownAnswer = entryContainer.Find("Dropdown_Answer").GetComponent<Dropdown>();
         popUp.SetActive(false);
+        // panelObject.transform.Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(() => clickCancel());
 
         // variables: questions
         asgQuestionList = new List<AssignmentQuestion>();
@@ -40,22 +41,33 @@ public class Create_Assignment_Script : MonoBehaviour
     }
     public void ClickSaveAndComplete()
     {
-        popUp.SetActive(true);
-        popUp.transform.Find("Popup_Create").gameObject.SetActive(true);
-        popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(false);
+        if(validateFields()){
+            popUp.SetActive(true);
+            popUp.transform.Find("Popup_Create").gameObject.SetActive(true);
+            popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(false);
+        }
+        else{
+            popupQuestionIncomplete();
+        }
     }
     public void ClickSaveAndPrevious(){
-        current_question = asgQuestionList[cur--];
-        if(cur > 0) populateFields(current_question, true);
-        else populateFields(current_question, false);
+        if(validateFields()){
+            current_question = asgQuestionList[--cur];
+            if(cur > 0) populateFields(current_question, true);
+            else populateFields(current_question, false);
+        }
+        else{
+            popupQuestionIncomplete();
+        }
     }
     public void ClickSaveAndNext(){
         if(validateFields()){
             try{
-                current_question = asgQuestionList[cur++];
+                current_question = asgQuestionList[cur+1];
                 populateFields(current_question, true);
+                cur++;
             }
-            catch(IndexOutOfRangeException e){
+            catch(ArgumentOutOfRangeException){
                 current_question = new AssignmentQuestion();
                 asgQuestionList.Add(current_question);
                 cur++;
@@ -98,21 +110,27 @@ public class Create_Assignment_Script : MonoBehaviour
                 return false;
             }
         }
-
+        for(int i = 0; i < current_question.answer.Count-1; i++){
+            for(int j = i+1; j < current_question.answer.Count; j++){
+                if(current_question.answer[i].Equals(current_question.answer[j])){
+                    setPopupMessage("All answers must be unique");
+                    return false;
+                }
+            }
+        }
         // Score must be integer
         try{
-            current_question.score = int.Parse(entryContainer.Find("InputField_C").GetComponent<InputField>().text);
+            current_question.score = int.Parse(entryContainer.Find("InputField_Score").GetComponent<InputField>().text);
         }
-        catch(FormatException e){
+        catch(FormatException){
             setPopupMessage("Score must be a whole number");
             return false;
         }
-
         if(dropdownAnswer.value == 0){
             setPopupMessage("Please choose an answer");
             return false;
         }
-        current_question.correctAnswer = dropdownAnswer.options[dropdownAnswer.value].text;
+        current_question.correctAnswer = current_question.answer[dropdownAnswer.value-1];
         return true;
     }
     private void populateFields(AssignmentQuestion current_question, bool buttonInteractable)
@@ -123,9 +141,10 @@ public class Create_Assignment_Script : MonoBehaviour
         entryContainer.Find("InputField_C").GetComponent<InputField>().text = current_question.answer[2];
         entryContainer.Find("InputField_D").GetComponent<InputField>().text = current_question.answer[3];
         entryContainer.Find("Text_Question").GetComponent<Text>().text = "Question " + (cur + 1).ToString();
-        for(int i = 1; i < 5; i++){
-            if(current_question.answer.Equals(dropdownAnswer.options[i].text)){
-                dropdownAnswer.value = i;
+        entryContainer.Find("InputField_Score").GetComponent<InputField>().text = current_question.score.ToString();
+        for(int i = 0; i < 4; i++){
+            if(current_question.correctAnswer.Equals(current_question.answer[i])){
+                dropdownAnswer.value = i+1;
                 break;
             }
             dropdownAnswer.value = 0;
