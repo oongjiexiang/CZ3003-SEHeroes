@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
             answer: answer,
             correctAnswer: correctAnswer,
             question: question,
-            score: score,
+            score: parseInt(score),
             image: image
         }, 
         (err, assignmentQuestionId) => {

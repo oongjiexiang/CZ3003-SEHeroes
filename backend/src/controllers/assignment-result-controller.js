@@ -23,7 +23,7 @@ module.exports['createOrUpdateAssignmentResult'] = async function(record, callba
         
         let id = assignmentResult.docs[0].id;
         await assignmentResultCollection.doc(id).update({ 
-            'score': record['score'],
+            'score': Math.max(record['score'], assignmentResult.docs[0].data()['score']),
             'tried': assignmentResult.docs[0].data()['tried']+1
         });
         callback(null,"Result updated");

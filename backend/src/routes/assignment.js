@@ -8,8 +8,8 @@ router.post('/', (req, res) => {
     AssignmentController.createAssignment(
         {
             assignmentName: assignmentName,
-            startDate: new Date(startDate),
-            dueDate: new Date(dueDate),
+            startDate: objectToDate(startDate),
+            dueDate: objectToDate(dueDate),
             questions: questions,
             tries: tries
         }, 
@@ -25,16 +25,34 @@ router.post('/', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    AssignmentController.getAllAssignments(
-        (err, assignemnts) => {
-            if(err){
-                return res.status(500).send({ message: `${err}`})
+    const{ matricNo } = req.query;
+
+    if(matricNo){
+        AssignmentController.getAssignmentsByMatricNo(
+            matricNo,
+            (err, assignemnts) => {
+                if(err){
+                    return res.status(500).send({ message: `${err}`})
+                }
+                else{
+                    return res.status(200).send(assignemnts)
+                }
             }
-            else{
-                return res.status(200).send(assignemnts)
+        )
+    }
+    else{
+         AssignmentController.getAllAssignments(
+            (err, assignemnts) => {
+                if(err){
+                    return res.status(500).send({ message: `${err}`})
+                }
+                else{
+                    return res.status(200).send(assignemnts)
+                }
             }
-        }
-    )
+        )
+    }
+   
 });
 
 router.get('/:assignmentId', (req, res) => {
@@ -58,8 +76,8 @@ router.put('/:assignmentId', (req, res) => {
 
     const updateMap = {}
     if(assignmentName != null) updateMap['assignmentName'] = assignmentName;
-    if(startDate != null) updateMap['startDate'] = new Date(startDate);
-    if(dueDate != null) updateMap['dueDate'] = new Date(dueDate);
+    if(startDate != null) updateMap['startDate'] = objectToDate(startDate);
+    if(dueDate != null) updateMap['dueDate'] = objectToDate(dueDate);
     if(questions != null) updateMap['questions'] = questions;
     if(tries != null) updateMap['tries'] = tries;
     
@@ -91,5 +109,21 @@ router.delete('/:assignmentId', (req, res) => {
         }
     )
 });
+
+
+function objectToDate(obj){
+    try{
+        const {year, month, day, hour, minute} = obj;
+        var date = new Date(year, month-1, day, hour, minute,0,0);
+        if(date instanceof Date && !isNaN(date))
+            return date;
+        else
+            return null;
+    }
+    catch{
+        //console.log("date format error");
+        return null;
+    }
+}
 
 module.exports = router

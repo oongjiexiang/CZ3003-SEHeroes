@@ -13,7 +13,7 @@ module.exports['createUser'] = async function(record, callback){
         const result = await usersCollection.where("matricNo", "==", matricNumber).get();
         if (result.empty) {
             // just create a new item with random id 
-            usersCollection.doc().set(record);
+            await usersCollection.doc().set(record);
             callback(null, "User created");
         }
         // assuming that we already have the user with such user name and matric number dont do anything

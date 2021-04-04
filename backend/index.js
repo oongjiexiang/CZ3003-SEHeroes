@@ -43,7 +43,7 @@ db = admin.firestore();
 // )
 
 const Account = require("./src/routes/account");
-app.use("/account", Account);
+app.use("/", Account);
 
 const User = require("./src/routes/user")
 const TutorialGroup = require("./src/routes/tutorial-group")

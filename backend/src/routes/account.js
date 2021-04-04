@@ -1,40 +1,70 @@
 const express = require("express");
 const router = express.Router();
-const { createAccount, getAllAccounts, getAccount, updateAccount, removeAccount }  = require("../controllers/account-controller");
-const { isAuthenticated } = require("../utils/authenticated");
-const { isAuthorized }  = require("../utils/authorized");
+const { register, login }  = require("../controllers/account-controller");
+const {check, validationResult} = require("express-validator/check");
 
-router.post('/signup',
-    //isAuthenticated,
-    //isAuthorized({ hasRole: ['admin', 'manager'] }),
-    createAccount
+router.post('/register',
+    [
+        check('username', 'Username is required').not().isEmpty(),
+        check('email', 'Please include a valid email').isEmail(),
+        check('password', 'Password must have 6 or more characters').isLength({min: 6}),
+        check(
+            'password2',
+            'confirm password should be same as password',
+          )
+            .exists()
+            .custom((value, { req }) => value === req.body.password),
+        check('matricNo', 'Matric number is required').not().isEmpty(),
+        check('character', 'Character is requried').not().isEmpty()
+    ],
+    (req, res) => {
+
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return res.status(500).send({ message: `${errors.array()[0].msg}` });
+        }
+
+        const {username, email, password,  matricNo, character} = req.body;
+        
+        register({
+            username, email, password, matricNo, character
+        },
+        (err, info) => {
+            if (err) {
+                return res.status(500).send({ message: `${err}` });
+            } else {
+                return res.status(200).send({message:"Register successfully", ...info});
+            }
+        })
+    }
 );
 
-router.get('/', [
-    //isAuthenticated,
-    //isAuthorized({ hasRole: ['admin', 'manager'] }),
-    getAllAccounts
-]);
 
-// get :id user
-router.get('/:id', [
-    //isAuthenticated,
-    //isAuthorized({ hasRole: ['admin', 'manager'], allowSameUser: true }),
-    getAccount
-]);
+router.post('/login',
+    [
+        check('matricNo', 'Matric number is required').not().isEmpty(),
+        check('password', 'Password is required').not().isEmpty()
+    ],
+    (req, res) => {
 
-// updates :id user
-router.patch('/:id', [
-    //isAuthenticated,
-    //isAuthorized({ hasRole: ['admin', 'manager'], allowSameUser: true }),
-    updateAccount
-]);
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return res.status(500).send({ message: `${errors.array()[0].msg}` });
+        }
 
-// deletes :id user
-router.delete('/:id', [
-    //isAuthenticated,
-    //isAuthorized({ hasRole: ['admin', 'manager'] }),
-    removeAccount
-]);
+        const {password, matricNo} = req.body;
+        
+        login({
+            password, matricNo
+        },
+        (err, info) => {
+            if (err) {
+                return res.status(500).send({ message: `${err}` });
+            } else {
+                return res.status(200).send({message:"Login successfully", ...info});
+            }
+        })
+    }
+);
 
 module.exports = router

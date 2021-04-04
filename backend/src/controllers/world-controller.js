@@ -9,6 +9,7 @@ module.exports['update_add_restrictions'] = async function(record,callback) {
         callback('Missing fields', null)
         return
     }
+    console.log(record)
     try {
         const section = record['section'];
         const world = record['world'];
@@ -19,17 +20,18 @@ module.exports['update_add_restrictions'] = async function(record,callback) {
                             .where('tutorialGroupID', '==', tutorialGroupID).get();
         if (result.empty) {
             // just create a new item with random id //
-            worldCollection.doc().set(record);
+            await worldCollection.doc().set(record);
             callback(null, "new restriction added for section number " + String(section) + 
                         " world number " + String(world) + " tutorial group " + tutorialGroupID);
             return;
         }
         // assuming that we already have the object with same section, 
         // world-number and tutorial group, we just update the object's unlockDate
-        result.forEach(doc => {
-            worldCollection.doc(doc.id).update({ 'unlockDate': unlockDate });
-            callback(null,"restriction modified for section number " +String(section) +" world number " +String(world) +" tutorial group " +tutorialGroupID);
-        });
+        const id = result.docs[0].id
+        
+        await worldCollection.doc(id).update({ 'unlockDate': unlockDate });
+        callback(null,"restriction modified for section number " +String(section) +" world number " +String(world) +" tutorial group " +tutorialGroupID);
+        
     }
     catch (err) {
         callback(err, null);
@@ -54,13 +56,46 @@ module.exports['remove_restriction'] = async function (record, callback) {
             callback(null, "No exisiting document found");
             return;
         }
-        result.forEach((doc) => {
-            worldCollection.doc(doc.id).delete();
-            callback(null, "restriction removed for section number " + String(section) + " world number " + world 
-                            + " tutorial group " + tutorialGroupID);
-         });
+
+        const id = result.docs[0].id
+        await worldCollection.doc(id).delete();
+        callback(null, "restriction removed for section number " + String(section) + " world number " + world 
+                        + " tutorial group " + tutorialGroupID);
     }
     catch (err) {
         callback(err, null);
+    }
+}
+
+module.exports['getRestriction'] = async function(queryMap, callback) {
+    try{ 
+        let result = worldCollection
+        for (const key in queryMap) {
+            result = result.where(key, "==", queryMap[key])
+        }
+        const snapshot = await result.get()
+        
+        const res = []
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            data['unlockDate'] = dateToObject(data['unlockDate'].toDate())
+            res.push(data);
+        })
+        callback(null, res)
+        
+    } catch(err) {
+        callback(err, null)
+    }
+}
+
+
+function dateToObject(date){
+    return{
+        year: date.getFullYear(),
+        month: date.getMonth(),
+        day: date.getDay(),
+        hour: date.getHours(),
+        minute: date.getMinutes(),
+        second: date.getSeconds()
     }
 }
