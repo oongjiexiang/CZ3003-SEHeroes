@@ -29,6 +29,7 @@ public class Create_Assignment_Script : MonoBehaviour
         popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
         entryContainer = panelObject.transform.Find("Panel_Question_Creation");
         dropdownAnswer = entryContainer.Find("Dropdown_Answer").GetComponent<Dropdown>();
+        panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = false;
         popUp.SetActive(false);
         // panelObject.transform.Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(() => clickCancel());
 
@@ -44,7 +45,6 @@ public class Create_Assignment_Script : MonoBehaviour
         if(validateFields()){
             popUp.SetActive(true);
             popUp.transform.Find("Popup_Create").gameObject.SetActive(true);
-            popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(false);
         }
         else{
             popupQuestionIncomplete();
@@ -86,6 +86,10 @@ public class Create_Assignment_Script : MonoBehaviour
         entryContainer.Find("InputField_C").GetComponent<InputField>().text = "";
         entryContainer.Find("InputField_D").GetComponent<InputField>().text = "";
         dropdownAnswer.value = 0;
+    }
+    public void ClickDelete(){
+        popUp.SetActive(true);
+        popUp.transform.Find("Popup_Delete").gameObject.SetActive(true);
     }
     private void setPopupMessage(string message){
         popUp.transform.Find("Popup_Incomplete").Find("Text").GetComponent<Text>().text = message;
@@ -149,21 +153,46 @@ public class Create_Assignment_Script : MonoBehaviour
             }
             dropdownAnswer.value = 0;
         }
+        if(asgQuestionList.Count > 1){
+            panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = true;
+        }
+        else{
+            panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = false;
+        }
         panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = buttonInteractable;
     }
     private void popupQuestionIncomplete(){
         popUp.SetActive(true);
-        popUp.transform.Find("Popup_Create").gameObject.SetActive(false);
         popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(true);
     }
     public void confirmSaveAndCreate(){
         SceneManager.LoadScene("Assignments");
     }
     public void exitSaveAndCreate(){
+        popUp.transform.Find("Popup_Create").gameObject.SetActive(false);
         popUp.gameObject.SetActive(false);
     }
     public void popupQuestionIncompleteAcknowledge(){
+        popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(false);
+        popUp.gameObject.SetActive(false);
+    }
+    public void confirmDelete(){
+        exitDelete();
+        if(cur < asgQuestionList.Count - 1){
+            asgQuestionList.RemoveAt(cur);
+            current_question = asgQuestionList[cur];
+            if(cur == 0) populateFields(current_question, false);
+            else populateFields(current_question, true);
+        }
+        else{
+            asgQuestionList.RemoveAt(cur);
+            current_question = asgQuestionList[--cur];
+            if(cur == 0) populateFields(current_question, false);
+            else populateFields(current_question, true);
+        }
+    }
+    public void exitDelete(){
+        popUp.transform.Find("Popup_Delete").gameObject.SetActive(false);
         popUp.gameObject.SetActive(false);
     }
 }
-
