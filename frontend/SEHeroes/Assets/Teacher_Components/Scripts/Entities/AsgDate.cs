@@ -20,6 +20,14 @@ public class AsgDate{
         minute = time["minute"];
         second = time["second"];
     }
+    public AsgDate(DateTime time){
+        year = time.Year;
+        month = time.Month;
+        day = time.Day;
+        hour = time.Hour;
+        minute = time.Minute;
+        second = time.Second;
+    }
     public string printTime(){
         return String.Format("{0}/{1}/{2} {3:d2}:{4:d2}", year, month, day, hour, minute);
     }
