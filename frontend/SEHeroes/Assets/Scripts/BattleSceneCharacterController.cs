@@ -43,7 +43,7 @@ public class BattleSceneCharacterController : MonoBehaviour
 
 
         animator = GetComponent<Animator>();   
-        if(character.Equals("RedWarrior"))
+        if(character.Equals("Warrior"))
             animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/RedWarrior");
         else if(character.Equals("Magician"))
             animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Magician");

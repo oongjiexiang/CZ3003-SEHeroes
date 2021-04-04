@@ -2,37 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
+using SimpleJSON;
+using System.Linq;
 
 public class LoginController : MonoBehaviour
 {
-    private string username;
+    private string matricNo;
     private string password;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     void getForm() {
-        username = InputFieldController.username;
+        matricNo = InputFieldController.matriculationNo;
         password = InputFieldController.password;
-    }
-
-    void validateForm() {
-        // validation script not yet fully implemented
-        if(string.IsNullOrEmpty(username) ||
-                string.IsNullOrEmpty(password)) {
-                            Debug.Log("One of the fields is empty");
-                            MissingInputField.promptMissingField();
-                        }
-        else
-            MissingInputField.clearPrompt();
     }
 
     public void register() {
@@ -41,21 +22,19 @@ public class LoginController : MonoBehaviour
     }
 
     public void login() {
-        // Login logic to be done later before going into Main Menu -- BRYSON
-        // Fetch user details
         Debug.Log("Login Button Clicked!");
         getForm();
-        validateForm();
 
-        Debug.Log(username);
-        Debug.Log(password);
+        StartCoroutine(APIController.RequestLogin(matricNo, password));
+    }
 
-        SceneManager.LoadScene(sceneName:"MainMenu");
+    public static void loginSuccessful() {
+        if(ProgramStateController.loggedIn)
+            SceneManager.LoadScene(sceneName:"MainMenu");
     }
 
     public void socialMediaLogin() {
         Debug.Log("Social Media Login Button Clicked!");
-        // JIAQING: This is where I neeeeed you :()
     }
 
     public void forgotPassword() {

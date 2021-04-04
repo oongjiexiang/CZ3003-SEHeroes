@@ -16,7 +16,6 @@ public class SectionController : MonoBehaviour
     void Start()
     {
         world = ProgramStateController.world;
-        ProgramStateController.viewState();
         
         if(string.IsNullOrEmpty(currentSection)){
             guideMessageBox = GameObject.Find("GuideMessage");

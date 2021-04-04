@@ -55,7 +55,6 @@ public class BattleSceneController : MonoBehaviour
 
     void Start()
     {
-        ProgramStateController.viewState();
         StartCoroutine(APIController.GetStoryModeQuesAPI());
         allQA = APIController.allQA;
         // StartCoroutine(GetQuesAPI());

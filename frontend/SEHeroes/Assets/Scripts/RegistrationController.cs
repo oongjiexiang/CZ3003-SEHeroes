@@ -10,14 +10,7 @@ public class RegistrationController : MonoBehaviour
     private string password;
     private string confirmPassword;
     private string matriculationNo;
-
-    void Start() {
-        ProgramStateController.viewState();
-    }
-
-    void Update() {
-        
-    }
+    private string character;
 
     void getForm() {
         username = InputFieldController.username;
@@ -25,33 +18,21 @@ public class RegistrationController : MonoBehaviour
         password = InputFieldController.password;
         confirmPassword = InputFieldController.confirmPassword;
         matriculationNo = InputFieldController.matriculationNo;
+        character = ProgramStateController.characterSelected;
     }
 
-    void validateForm() {
-        // validation script not yet fully implemented
-        if(string.IsNullOrEmpty(username) ||
-            string.IsNullOrEmpty(email) ||
-                string.IsNullOrEmpty(password) ||
-                    string.IsNullOrEmpty(confirmPassword) ||
-                        string.IsNullOrEmpty(matriculationNo)) {
-                            Debug.Log("One of the fields is empty");
-                            MissingInputField.promptMissingField();
-                        }
-        else
-            MissingInputField.clearPrompt();
-    }
     public void register() {
         Debug.Log("Register Button Clicked!");
         getForm();
-        validateForm();
-        // Call backend register flow
 
-        Debug.Log(username);
-        Debug.Log(email);
-        Debug.Log(password);
-        Debug.Log(confirmPassword);
-        Debug.Log(matriculationNo);
+        StartCoroutine(APIController.RequestRegister(username, password, email, character, matriculationNo, confirmPassword));   
     }
+
+    public static void registerSuccessful() {
+        DialogMessageController.showMessage("Registration");
+        SceneManager.LoadScene(sceneName:"Login");
+    }
+
     public void backButton() {
         SceneManager.LoadScene(sceneName:"Login");
     }
@@ -59,5 +40,4 @@ public class RegistrationController : MonoBehaviour
         Application.Quit();
         Debug.Log("EXITING GAME!");
     }
-
 }

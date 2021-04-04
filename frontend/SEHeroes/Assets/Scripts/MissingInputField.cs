@@ -19,5 +19,9 @@ public class MissingInputField : MonoBehaviour
     public static void clearPrompt() {
         missingFieldText.enabled = false;
     }
+
+    public static void setText(string message) {
+        missingFieldText.text = message;
+    }
 }
 

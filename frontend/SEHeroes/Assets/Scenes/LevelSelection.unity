@@ -1594,7 +1594,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1018224130}
   m_Layer: 0
-  m_Name: GuideMessageContainer
+  m_Name: ConfirmationMessageContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1706,7 +1706,7 @@ GameObject:
   - component: {fileID: 1175223079}
   - component: {fileID: 1175223078}
   m_Layer: 5
-  m_Name: ConfirmationMessageCanvas
+  m_Name: DialogMessageBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1721,7 +1721,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1175223077}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cb615a80b40e47c2b1c89e6d019f089, type: 3}
+  m_Script: {fileID: 11500000, guid: 204ce3803782047658428f7d067dfc73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1175223079

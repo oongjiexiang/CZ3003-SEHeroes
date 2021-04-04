@@ -10,14 +10,12 @@ public class LevelSelectionController : MonoBehaviour
 
     private string world;
     private string section;
-    GameObject guideMessageBox;
 
     // Start is called before the first frame update
     void Start()
     {   
         world = ProgramStateController.world;
         section = ProgramStateController.section;
-        ProgramStateController.viewState();
     }
 
     // Update is called once per frame
@@ -27,9 +25,8 @@ public class LevelSelectionController : MonoBehaviour
     }
 
     public void OnClick() {
-        guideMessageBox = GameObject.Find("ConfirmationMessage");
         ProgramStateController.level = currentLevel;
-        LevelSelectionConfirmation.showMessage();
+        DialogMessageController.showMessage("Level Selection");
     }
 
     public void EnterBattle() {
@@ -51,6 +48,6 @@ public class LevelSelectionController : MonoBehaviour
     }
 
     public void closeConfirmation() {
-        LevelSelectionConfirmation.closeMessage();
+        DialogMessageController.closeMessage();
     }
 }

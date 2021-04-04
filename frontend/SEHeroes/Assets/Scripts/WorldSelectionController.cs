@@ -13,7 +13,6 @@ public class WorldSelectionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ProgramStateController.viewState();
         renderer = gameObject.GetComponent<SpriteRenderer>();
         if(renderer){
             initialColor = renderer.material.color;

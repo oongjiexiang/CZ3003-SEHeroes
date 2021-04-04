@@ -7,8 +7,13 @@ public static class ProgramStateController
     public static string sceneToLoad;
 
     // User-Information
-    public static string username = "brys0001";
-    public static string characterType = "Magician";
+    public static string username;
+    public static string email;
+    public static string characterType;
+    public static string matricNo;
+
+    // Login
+    public static bool loggedIn = false;
 
     // Character Selection during Sign-Up
     public static string characterSelected;

@@ -42,8 +42,8 @@
      <Compile Include="Assets\Scripts\CharacterController.cs" />
      <Compile Include="Assets\Scripts\CharacterSelectionCollider.cs" />
      <Compile Include="Assets\Scripts\CharacterSelectionController.cs" />
+     <Compile Include="Assets\Scripts\DialogMessageController.cs" />
      <Compile Include="Assets\Scripts\InputFieldController.cs" />
-     <Compile Include="Assets\Scripts\LevelSelectionConfirmation.cs" />
      <Compile Include="Assets\Scripts\LevelSelectionController.cs" />
      <Compile Include="Assets\Scripts\LoginController.cs" />
      <Compile Include="Assets\Scripts\MainMenuController.cs" />

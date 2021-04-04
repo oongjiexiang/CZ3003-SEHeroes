@@ -24,7 +24,7 @@ public class CharacterController : MonoBehaviour
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
-        if(characterType.Equals("RedWarrior"))
+        if(characterType.Equals("Warrior"))
             animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/RedWarrior");
         else if(characterType.Equals("Magician"))
             animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Magician");

@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 88047382}
   - component: {fileID: 88047381}
   m_Layer: 5
-  m_Name: UsernameText
+  m_Name: MatricNo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 255684664}
   - component: {fileID: 255684667}
   m_Layer: 5
-  m_Name: Username
+  m_Name: MatriculationNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -584,7 +584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d9f0c8df47454fa98f26e2446c83915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: Username
+  type: Matriculation Number
 --- !u!1 &307528535
 GameObject:
   m_ObjectHideFlags: 0
@@ -2317,15 +2317,15 @@ RectTransform:
   m_GameObject: {fileID: 1453329809}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.4247935, y: 2.4247935, z: 2.4247935}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1187228101}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 261, y: -19}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 2, y: 22.7}
+  m_SizeDelta: {x: 940.15656, y: 59.27735}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1453329811
 MonoBehaviour:
@@ -2358,7 +2358,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: One of the field is empty!
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc3fda198856a4c8a9ddc0ccef0d7260, type: 2}
   m_sharedMaterial: {fileID: -7430693967277135641, guid: dc3fda198856a4c8a9ddc0ccef0d7260,
@@ -2386,15 +2386,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -2422,7 +2422,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -0.63771546, y: 0, z: -0.52487755, w: -0.6829909}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2854,7 +2854,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Username
+  m_text: Matriculation No.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25f0c3f7bdb4726419c7220744839bc0, type: 2}
   m_sharedMaterial: {fileID: -2023022869939774180, guid: 25f0c3f7bdb4726419c7220744839bc0,
