@@ -13,11 +13,11 @@ using System.Linq;
 public class BattleSceneController : MonoBehaviour
 {
     // Start is called before the first frame update
-    private string level = ProgramStateController.level;
-    private string section = ProgramStateController.section;
     private string world = ProgramStateController.world;
+    private string section = ProgramStateController.section;
+    private string level = ProgramStateController.level;
 
-    //public static bool APIdone = false;
+    public static bool APIdone = false;
     public static bool q1Ready = false;
     public static int questionCounter = 0;
     public static List<JSONNode> allQA = new List<JSONNode>();
@@ -86,7 +86,7 @@ public class BattleSceneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (APIController.APIdone == true && questionCounter == 0)
+        if (APIdone == true && questionCounter == 0)
         {
             currQuestion = allQA.ElementAt(questionCounter);
             question = currQuestion["question"];

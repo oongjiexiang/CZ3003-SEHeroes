@@ -39,6 +39,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Desert.unity
     guid: f9c11c5656aff415fb8fde471074d37e
   - enabled: 1
+    path: Assets/Scenes/AssignmentBattle.unity
+    guid: 9e5047b58338d6e4eb37e102ad255b85
+  - enabled: 1
+    path: Assets/Scenes/AssignmentSelection.unity
+    guid: 09118df03a0f4430a925ed18f5f0c45a
+  - enabled: 1
     path: Assets/Scenes/Snowland.unity
     guid: 1dfb0741756ad46e5aeaf1405602f281
   - enabled: 1

@@ -45,7 +45,7 @@ public class AssignmentQuestionController : MonoBehaviour
 
             }
         }
-        if (APIController.APIdone == true && AssignmentBattleSceneController.q1Ready == true)
+        if (AssignmentBattleSceneController.APIdone == true && AssignmentBattleSceneController.q1Ready == true)
         {
             textMesh = gameObject.GetComponent<TextMeshProUGUI>();
             questionText = AssignmentBattleSceneController.question;
@@ -68,7 +68,7 @@ public class AssignmentQuestionController : MonoBehaviour
 
     public void onClickButton()
     {
-        AssignmentBattleSceneController.userAnswer = answerNo;
         Debug.Log(answerNo);
+        AssignmentBattleSceneController.userAnswer = answerNo;
     }
 }

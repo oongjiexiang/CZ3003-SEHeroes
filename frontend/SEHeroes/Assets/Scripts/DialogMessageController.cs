@@ -33,6 +33,11 @@ public class DialogMessageController : MonoBehaviour
                         break;
                 }
                 break;
+
+            case "Assignment Selection":
+                Debug.Log(ProgramStateController.assName);
+                textMesh.text = "Attempting\n" + ProgramStateController.assName;
+                break;
         }
         dialogCanvas.enabled = true;
     }

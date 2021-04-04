@@ -27,7 +27,7 @@ public class SceneLoader : MonoBehaviour
         yield return StartCoroutine(FadeLoadingScreen(1, 2));
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneToLoad);
-        while (!operation.isDone)
+        while (!operation.isDone && !BattleSceneController.APIdone)
         {
             yield return null;
         }

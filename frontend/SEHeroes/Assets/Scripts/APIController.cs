@@ -16,9 +16,9 @@ public static class APIController
     // Story Mode API
     public static List<JSONNode> allQA = new List<JSONNode>();
     private static readonly string baseStoryModeQuesAPIURL = "https://seheroes.herokuapp.com/storyModeQuestion?";
-    public static bool APIdone = false;
 
     // Assignment API
+    private static readonly string baseAssListAPIURL = "https://seheroes.herokuapp.com/assignment?";
     private static readonly string baseAssQuesAPIURL = "https://seheroes.herokuapp.com/assignmentQuestion?assignmentId=";
 
     public static IEnumerator RequestLogin(string matricNo, string password) {
@@ -84,10 +84,31 @@ public static class APIController
             MissingInputField.promptMissingField();
         }
     }
+
+    // Get Assignment List
+    public static IEnumerator RequestAssignments(string matricNo) {
+
+        string RequestAssignmentsURL = baseAssListAPIURL +
+                                    "matricNo=" + matricNo;
+                                    
+        UnityWebRequest assignmentsRequest = UnityWebRequest.Get(RequestAssignmentsURL);
+        yield return assignmentsRequest.SendWebRequest();
+
+        if (assignmentsRequest.isNetworkError || assignmentsRequest.isHttpError)
+        {
+            Debug.LogError(assignmentsRequest.error);
+            // yield break;
+        }
+
+        JSONNode assignments = JSON.Parse(assignmentsRequest.downloadHandler.text);
+        for (int i = 0; i < assignments.Count; i++){
+            AssignmentContainer.allAssignments.Add(assignments[i]);
+        }
+        AssignmentContainer.APIdone = true;
+    }
     
     // Get Story Mode Questions and Answers
     public static IEnumerator GetStoryModeQuesAPI() {
-        APIdone = false;
         string QuesURL = baseStoryModeQuesAPIURL +
                                 "world=" +ProgramStateController.world +
                                     "&section=" + ProgramStateController.section +
@@ -105,10 +126,9 @@ public static class APIController
         for (int i = 0; i < quesInfo.Count; i++)
             BattleSceneController.allQA.Add(quesInfo[i]);
 
-        APIdone = true;
+        BattleSceneController.APIdone = true;
     }
     public static IEnumerator GetAssignmentQuesAPI() {
-        APIdone = false;
         string QuesURL = baseAssQuesAPIURL + ProgramStateController.assID;
         UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
         yield return quesRequest.SendWebRequest();
@@ -123,6 +143,6 @@ public static class APIController
         for (int i = 0; i < quesInfo.Count; i++)
             AssignmentBattleSceneController.allQA.Add(quesInfo[i]);
 
-        APIdone = true;
+        AssignmentBattleSceneController.APIdone = true;
     }
 }

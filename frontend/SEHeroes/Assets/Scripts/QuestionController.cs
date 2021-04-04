@@ -47,7 +47,7 @@ public class QuestionController : MonoBehaviour
 
             }
         }
-        if (APIController.APIdone == true && BattleSceneController.q1Ready == true)
+        if (BattleSceneController.APIdone == true && BattleSceneController.q1Ready == true)
         {
             textMesh = gameObject.GetComponent<TextMeshProUGUI>();
             questionText = BattleSceneController.question;
@@ -65,13 +65,11 @@ public class QuestionController : MonoBehaviour
             }
 
         }
-        
-        
     }
 
     public void onClickButton()
     {
-        BattleSceneController.userAnswer = answerNo;
         Debug.Log(answerNo);
+        BattleSceneController.userAnswer = answerNo;
     }
 }
