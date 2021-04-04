@@ -38,15 +38,7 @@ public class Assignment_Entry_Script : MonoBehaviour
         }));
         assignmentList = new List<Assignment>();
         for(int i = 0; i < jsonNode.Count; i++){
-            Assignment asg = new Assignment();
-            asg.assignmentName = jsonNode[i]["assignmentName"];
-            asg.tries = jsonNode[i]["tries"];
-            asg.startDate = DateTime.ParseExact(jsonNode[i]["startDate"], "yyyy/MM/dd HH:mm", null);
-            asg.dueDate = DateTime.ParseExact(jsonNode[i]["dueDate"], "yyyy/MM/dd HH:mm", null);
-            asg.questions = new List<string>();
-            for(int j = 0; j < jsonNode[i]["questions"].Count; j++)
-                asg.questions.Add(jsonNode[i]["questions"][j]);
-            assignmentList.Add(asg);
+            assignmentList.Add(new Assignment(jsonNode[i]));
         }
     }
     void tableInitialize()
@@ -60,9 +52,19 @@ public class Assignment_Entry_Script : MonoBehaviour
             Transform entryTransform = Instantiate(entryTemplate, entryContainer);
             RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
             entryTransform.gameObject.SetActive(true);
-            entryTransform.Find("Text_No").GetComponent<Text>().text = i.ToString();
+            entryTransform.Find("Text_No").GetComponent<Text>().text = (i+1).ToString();
             entryTransform.Find("Text_Name").GetComponent<Text>().text = assignmentList[i].assignmentName;
-            entryTransform.Find("Text_Status").GetComponent<Text>().text = assignmentList[i].dueDate.ToString();
+            if(assignmentList[i].dueDate.time() <= DateTime.Now){
+                entryTransform.Find("Text_Status").GetComponent<Text>().text = "Passed";
+                entryTransform.Find("Text_Status").GetComponent<Text>().color = Color.red;    
+            }
+            else if(assignmentList[i].startDate.time() <= DateTime.Now){
+                entryTransform.Find("Text_Status").GetComponent<Text>().text = "Ongoing till " + assignmentList[i].dueDate.printTime();
+                entryTransform.Find("Text_Status").GetComponent<Text>().color = new Color(0.11f, 0.51f, 0.04f, 1.0f);
+            }
+            else{
+                entryTransform.Find("Text_Status").GetComponent<Text>().text = "From " + assignmentList[i].startDate.printTime();
+            }
             entryTransform.Find("Text_Name").Find("Button_Edit").Find("Text").GetComponent<Text>().text = "View";
             entryTransform.Find("Text_Name").Find("Button_Edit").GetComponent<Button>().onClick.AddListener(() => {
                 assignmentName = entryTransform.Find("Text_Name").GetComponent<Text>().text;

@@ -51,43 +51,43 @@ public class Create_Assignment_Meta_Script : MonoBehaviour
         return panelObject.transform.Find(dropdownSection).Find(dropdownName).GetComponent<Dropdown>();
     }
     public bool verifyFields(){
-        List<Dropdown> dropdowns = new List<Dropdown>();
-        List<int> time = new List<int>();
+        // List<Dropdown> dropdowns = new List<Dropdown>();
+        // List<int> time = new List<int>();
 
-        Dropdown dropdown = panelObject.transform.Find("Dropdown_Try").GetComponent<Dropdown>();
-        Dropdown startMonthD = getDropdown("Handle_Start_Date", "Dropdown_Month");
-        Dropdown endMonthD = getDropdown("Handle_End_Date", "Dropdown_Month");
-        newAsg.assignmentName = panelObject.transform.Find("InputField_Name").Find("Text").GetComponent<Text>().text;
-        newAsg.tries = int.Parse(dropdown.options[dropdown.value].text);
-        string startMonth = startMonthD.options[startMonthD.value].text;
-        string endMonth = endMonthD.options[endMonthD.value].text;
+        // Dropdown dropdown = panelObject.transform.Find("Dropdown_Try").GetComponent<Dropdown>();
+        // Dropdown startMonthD = getDropdown("Handle_Start_Date", "Dropdown_Month");
+        // Dropdown endMonthD = getDropdown("Handle_End_Date", "Dropdown_Month");
+        // newAsg.assignmentName = panelObject.transform.Find("InputField_Name").Find("Text").GetComponent<Text>().text;
+        // newAsg.tries = int.Parse(dropdown.options[dropdown.value].text);
+        // string startMonth = startMonthD.options[startMonthD.value].text;
+        // string endMonth = endMonthD.options[endMonthD.value].text;
 
-        dropdowns.Add(getDropdown("Handle_Start_Date", "Dropdown_Year"));
-        dropdowns.Add(getDropdown("Handle_Start_Date", "Dropdown_Day"));
-        dropdowns.Add(getDropdown("Handle_Start_Time", "Dropdown_Hour"));
-        dropdowns.Add(getDropdown("Handle_Start_Time", "Dropdown_Minute"));
-        dropdowns.Add(getDropdown("Handle_End_Date", "Dropdown_Year"));
-        dropdowns.Add(getDropdown("Handle_End_Date", "Dropdown_Day"));
-        dropdowns.Add(getDropdown("Handle_End_Time", "Dropdown_Hour"));
-        dropdowns.Add(getDropdown("Handle_End_Time", "Dropdown_Minute"));
-        foreach(var dp in dropdowns){
-            time.Add(int.Parse(dp.options[dp.value].text));
-        }
+        // dropdowns.Add(getDropdown("Handle_Start_Date", "Dropdown_Year"));
+        // dropdowns.Add(getDropdown("Handle_Start_Date", "Dropdown_Day"));
+        // dropdowns.Add(getDropdown("Handle_Start_Time", "Dropdown_Hour"));
+        // dropdowns.Add(getDropdown("Handle_Start_Time", "Dropdown_Minute"));
+        // dropdowns.Add(getDropdown("Handle_End_Date", "Dropdown_Year"));
+        // dropdowns.Add(getDropdown("Handle_End_Date", "Dropdown_Day"));
+        // dropdowns.Add(getDropdown("Handle_End_Time", "Dropdown_Hour"));
+        // dropdowns.Add(getDropdown("Handle_End_Time", "Dropdown_Minute"));
+        // foreach(var dp in dropdowns){
+        //     time.Add(int.Parse(dp.options[dp.value].text));
+        // }
         
-        newAsg.startDate = DateTime.Parse(String.Format("{0} {1} {2} {3}:{4}:{5}", time[0], startMonth, time[1], time[2], time[3], 0));
-        newAsg.dueDate = DateTime.Parse(String.Format("{0} {1} {2} {3}:{4}:{5}", time[4], endMonth, time[5], time[6], time[7], 0));
-        if(newAsg.assignmentName == ""){
-            incompletePopup("Please give the assignment a name.");
-            return false;
-        }
-        if(newAsg.startDate <= DateTime.Now){
-            incompletePopup("Start date has passed. Please choose another date");
-            return false;
-        }
-        if(newAsg.startDate >= newAsg.dueDate){
-            incompletePopup("Start date cannot be later than the due date");
-            return false;
-        }
+        // newAsg.startDate = DateTime.Parse(String.Format("{0} {1} {2} {3}:{4}:{5}", time[0], startMonth, time[1], time[2], time[3], 0));
+        // newAsg.dueDate = DateTime.Parse(String.Format("{0} {1} {2} {3}:{4}:{5}", time[4], endMonth, time[5], time[6], time[7], 0));
+        // if(newAsg.assignmentName == ""){
+        //     incompletePopup("Please give the assignment a name.");
+        //     return false;
+        // }
+        // if(newAsg.startDate <= DateTime.Now){
+        //     incompletePopup("Start date has passed. Please choose another date");
+        //     return false;
+        // }
+        // if(newAsg.startDate >= newAsg.dueDate){
+        //     incompletePopup("Start date cannot be later than the due date");
+        //     return false;
+        // }
         return true;
     }
 }
