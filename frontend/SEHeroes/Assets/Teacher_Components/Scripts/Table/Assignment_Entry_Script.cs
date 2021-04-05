@@ -46,6 +46,7 @@ public class Assignment_Entry_Script : MonoBehaviour
     void tableInitialize()
     {
         entryContainer = content.transform.Find("Assignment_Entry_Container");
+        entryContainer.gameObject.SetActive(true);
         entryTemplate = entryContainer.Find("Assignment_Entry_Template").transform;
         entryTemplate.gameObject.SetActive(false);
         float templateHeight = 50f;
@@ -80,6 +81,7 @@ public class Assignment_Entry_Script : MonoBehaviour
                 chosenAsg = assignmentList[i-1];
                 deleteAssignment();
             });
+            entryTransform.Find("Text_Name").Find("Button_Share").GetComponent<Button>().onClick.AddListener(shareAssignment);
             entryTransform.localScale = new Vector2(1, 1);
             entryTransform.localPosition = new Vector2(0, -templateHeight * i);
         }
@@ -112,5 +114,8 @@ public class Assignment_Entry_Script : MonoBehaviour
     public void exitDelete(){
         popUp.transform.Find("Popup_Delete").gameObject.SetActive(false);   
         popUp.SetActive(false);
+    }
+    public void shareAssignment(){
+        print("Still need to connect to API");
     }
 }

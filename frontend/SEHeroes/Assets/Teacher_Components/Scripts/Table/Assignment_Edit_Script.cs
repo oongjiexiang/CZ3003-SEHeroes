@@ -7,212 +7,194 @@ using UnityEngine.UI;
 public class Assignment_Edit_Script : MonoBehaviour
 {
     // variables
-    // private List<Choice> asgQuestionList;
-    // private Choice current_question;
+    private Assignment asg = Assignment_Edit_Meta_Script.editAsg;
+    private AssignmentQuestion current_question;
+    private List<AssignmentQuestion> asgQuestionList;
+    private int cur;
 
     // display
     public GameObject panelObject;
     public GameObject mainContentPanel;
     private Transform entryContainer;
     private GameObject popUp;
+    private Dropdown dropdownAnswer;
+    
 
     // Start is called before the first frame update
-    // void Awake()
-    // {
-    //     // display
-    //     popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
-    //     popUp.SetActive(false);
-    //     entryContainer = panelObject.transform.Find("Panel_Question_Creation");
-    //     panelObject.transform.Find("Header_Text").GetComponent<Text>().text = Assignment_Entry_Script.assignmentName;
+//     void Awake()
+//     {
+//         // display
+//         popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
+//         entryContainer = panelObject.transform.Find("Panel_Question_Creation");
+//         dropdownAnswer = entryContainer.Find("Dropdown_Answer").GetComponent<Dropdown>();
+//         panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = false;
+//         popUp.SetActive(false);
+//         // panelObject.transform.Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(() => clickCancel());
 
-    //     // buttons
-    //     panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = false;
-    //     entryContainer.Find("Button_A").GetComponent<Button>().onClick.AddListener(() => selectCorrectAnswer(0));
-    //     entryContainer.Find("Button_B").GetComponent<Button>().onClick.AddListener(() => selectCorrectAnswer(1));
-    //     entryContainer.Find("Button_C").GetComponent<Button>().onClick.AddListener(() => selectCorrectAnswer(2));
-    //     entryContainer.Find("Button_D").GetComponent<Button>().onClick.AddListener(() => selectCorrectAnswer(3));
+//         // variables: questions
+//         asgQuestionList = editAsg.questions;    // need to fetch editAsg
+//         current_question = asgQuestionList[0];
+//         cur = 0;
+//         populateFields(current_question, false);
+//     }
+//     public void ClickSaveAndComplete()
+//     {
+//         if(validateFields()){
+//             popUp.SetActive(true);
+//             popUp.transform.Find("Popup_Create").gameObject.SetActive(true);
+//         }
+//         else{
+//             popupQuestionIncomplete();
+//         }
+//     }
+//     public void ClickSaveAndPrevious(){
+//         if(validateFields()){
+//             current_question = asgQuestionList[--cur];
+//             if(cur > 0) populateFields(current_question, true);
+//             else populateFields(current_question, false);
+//         }
+//         else{
+//             popupQuestionIncomplete();
+//         }
+//     }
+//     public void ClickSaveAndNext(){
+//         if(validateFields()){
+//             try{
+//                 current_question = asgQuestionList[cur+1];
+//                 populateFields(current_question, true);
+//                 cur++;
+//             }
+//             catch(ArgumentOutOfRangeException){
+//                 current_question = new AssignmentQuestion();
+//                 asgQuestionList.Add(current_question);
+//                 cur++;
+//                 populateFields(current_question, true);
+//             }
+//         }
+//         else{
+//             popupQuestionIncomplete();
+//         }
+//     }
+//     public void ClickClear()
+//     {
+//         entryContainer.Find("InputField_Question").GetComponent<InputField>().text = "";
+//         entryContainer.Find("InputField_A").GetComponent<InputField>().text = "";
+//         entryContainer.Find("InputField_B").GetComponent<InputField>().text = "";
+//         entryContainer.Find("InputField_C").GetComponent<InputField>().text = "";
+//         entryContainer.Find("InputField_D").GetComponent<InputField>().text = "";
+//         dropdownAnswer.value = 0;
+//     }
+//     public void ClickDelete(){
+//         popUp.SetActive(true);
+//         popUp.transform.Find("Popup_Delete").gameObject.SetActive(true);
+//     }
+//     public void confirmSaveAndCreate(){ // do at 7pm
+//         API_Assignment asg_conn = new API_Assignment();
+//         print(new API_Connection());
+//         foreach(var asgQuestion in asgQuestionList){
+//             StartCoroutine(asg_conn.saveBack(asgQuestion));
+//             asg.questions.Add(asgQuestion.assignmentQuestionId);
+//         }
+//         StartCoroutine(asg_conn.saveBack(asg));
+//         print("Whole process is successful");
+//         SceneManager.LoadScene("Assignments");
+//     }
+//     public void exitSaveAndCreate(){
+//         popUp.transform.Find("Popup_Create").gameObject.SetActive(false);
+//         popUp.gameObject.SetActive(false);
+//     }
+//     public void popupQuestionIncompleteAcknowledge(){
+//         popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(false);
+//         popUp.gameObject.SetActive(false);
+//     }
+//     public void confirmDelete(){ //
+//         exitDelete();
+//         if(cur < asgQuestionList.Count - 1){
+//             asgQuestionList.RemoveAt(cur);
+//             current_question = asgQuestionList[cur];
+//             if(cur == 0) populateFields(current_question, false);
+//             else populateFields(current_question, true);
+//         }
+//         else{
+//             asgQuestionList.RemoveAt(cur);
+//             current_question = asgQuestionList[--cur];
+//             if(cur == 0) populateFields(current_question, false);
+//             else populateFields(current_question, true);
+//         }
+//     }
+//     public void exitDelete(){
+//         popUp.transform.Find("Popup_Delete").gameObject.SetActive(false);
+//         popUp.gameObject.SetActive(false);
+//     }
+//     private void setPopupMessage(string message){   // helper function to set popup's message easily
+//         popUp.transform.Find("Popup_Incomplete").Find("Text").GetComponent<Text>().text = message;
+//     }
+//     private bool validateFields(){
+//         current_question.question = entryContainer.Find("InputField_Question").GetComponent<InputField>().text;
+//         current_question.answer[0] = entryContainer.Find("InputField_A").GetComponent<InputField>().text;
+//         current_question.answer[1] = entryContainer.Find("InputField_B").GetComponent<InputField>().text;
+//         current_question.answer[2] = entryContainer.Find("InputField_C").GetComponent<InputField>().text;
+//         current_question.answer[3] = entryContainer.Find("InputField_D").GetComponent<InputField>().text;
+        
+//         // There must be a question string
+//         if(current_question.question == ""){
+//             setPopupMessage("There is no question to be saved");
+//             return false;
+//         }
 
-    //     // variables: questions
-    //     asgQuestionList = LoadQuestions();
-    //     current_question = asgQuestionList[0];
-    //     populateFields(current_question, false);
-    // }
-    // private List<Choice> LoadQuestions()
-    // {
-    //     List<Choice> list_dummy = new List<Choice>();
-    //     for(int i = 0; i < 4; i++)
-    //     {
-    //         list_dummy.Add(createDummyQuestion(i.ToString(), i));
-    //     }
-    //     return list_dummy;
-    // }
-    // public void ClickSave()
-    // {
-    //     popUp.SetActive(true);
-    //     popUp.transform.Find("Popup_Cancel").gameObject.SetActive(false);
-    //     popUp.transform.Find("Popup_Save").gameObject.SetActive(true);
-    //     popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(false);
-    // }
-    // public void ClickCancel()
-    // {
-    //     popUp.SetActive(true);
-    //     popUp.transform.Find("Popup_Cancel").gameObject.SetActive(true);
-    //     popUp.transform.Find("Popup_Save").gameObject.SetActive(false);
-    //     popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(false);
-    // }
-    // public void popupQuestionIncomplete()
-    // {
-    //     popUp.SetActive(true);
-    //     popUp.transform.Find("Popup_Cancel").gameObject.SetActive(false);
-    //     popUp.transform.Find("Popup_Save").gameObject.SetActive(false);
-    //     popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(true);
-    // }
-    // public void ClickPreviousQuestion()
-    // {
-    //     retrieveFields(current_question);
-    //     if(current_question.question_num == asgQuestionList.Count || validateFields())
-    //     {
-    //         current_question = asgQuestionList[current_question.question_num - 1];
-    //         if (current_question.question_num == 0) populateFields(current_question, false);
-    //         else populateFields(current_question, true);
-    //     }
-    //     else popupQuestionIncomplete();
-    // }
-    // void retrieveFields(Choice current_question)
-    // {
-    //     current_question.question = entryContainer.Find("InputField_Question").GetComponent<InputField>().text;
-    //     current_question.A = entryContainer.Find("InputField_A").GetComponent<InputField>().text;
-    //     current_question.B = entryContainer.Find("InputField_B").GetComponent<InputField>().text;
-    //     current_question.C = entryContainer.Find("InputField_C").GetComponent<InputField>().text;
-    //     current_question.D = entryContainer.Find("InputField_D").GetComponent<InputField>().text;
-    // }
-    // Choice createNewQuestion()
-    // {
-    //     Choice current_question = new Choice();
-    //     current_question.question_num = asgQuestionList.Count;
-    //     current_question.A = current_question.B = current_question.C = current_question.D = "";
-    //     current_question.correct_ans = -1;
-    //     current_question.correct_ans_string = "";
-    //     return current_question;
-    // }
-    // Choice createDummyQuestion(string text, int count)
-    // {
-    //     Choice current_question = new Choice();
-    //     current_question.question_num = count;
-    //     current_question.A = current_question.B = current_question.C = current_question.D = text + "test";
-    //     current_question.correct_ans = 0;
-    //     current_question.correct_ans_string = text + " test";
-    //     return current_question;
-    // }
-    // public void ClickNextQuestion()
-    // {
-    //     if (current_question.question_num == asgQuestionList.Count)
-    //     {
-    //         retrieveFields(current_question);
-    //         if (!validateFields()) popupQuestionIncomplete();
-    //         else
-    //         {
-    //             selectCorrectAnswer(current_question.correct_ans);
-    //             asgQuestionList.Add(current_question);
-    //             current_question = createNewQuestion();
-    //             populateFields(current_question, true);
-    //         }
-    //     }
-    //     else if (current_question.question_num == asgQuestionList.Count - 1)
-    //     {
-    //         retrieveFields(current_question);
-    //         if (!validateFields()) popupQuestionIncomplete();
-    //         else
-    //         {
-    //             current_question = createNewQuestion();
-    //             populateFields(current_question, true);
-    //         }
-    //     }
-    //     else
-    //     {
-    //         retrieveFields(current_question);
-    //         if (!validateFields()) popupQuestionIncomplete();
-    //         else
-    //         {
-    //             current_question = asgQuestionList[current_question.question_num + 1];
-    //             populateFields(current_question, true);
-    //         }
-    //     }
-    // }
-    // private bool validateFields()
-    // {
-    //     if (current_question.A == "" || current_question.B == "" || current_question.question == "") return false;
-    //     selectCorrectAnswer(current_question.correct_ans);
-    //     if (current_question.correct_ans_string == "" || current_question.correct_ans == -1) return false;
-    //     return true;
-    // }
-    // private void populateFields(Choice current_question, bool buttonInteractable)
-    // {
-    //     entryContainer.Find("InputField_Question").GetComponent<InputField>().text = current_question.question;
-    //     entryContainer.Find("InputField_A").GetComponent<InputField>().text = current_question.A;
-    //     entryContainer.Find("InputField_B").GetComponent<InputField>().text = current_question.B;
-    //     entryContainer.Find("InputField_C").GetComponent<InputField>().text = current_question.C;
-    //     entryContainer.Find("InputField_D").GetComponent<InputField>().text = current_question.D;
-    //     entryContainer.Find("Text_Question").GetComponent<Text>().text = "Question " + (current_question.question_num + 1).ToString();
-    //     selectCorrectAnswer(current_question.correct_ans);
-    //     panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = buttonInteractable;
-    // }
-    // private void selectCorrectAnswer(int answerIndex)
-    // {
-    //     entryContainer.Find("Button_A").GetComponent<Button>().GetComponent<Image>().color = Color.red;
-    //     entryContainer.Find("Button_B").GetComponent<Button>().GetComponent<Image>().color = Color.red;
-    //     entryContainer.Find("Button_C").GetComponent<Button>().GetComponent<Image>().color = Color.red;
-    //     entryContainer.Find("Button_D").GetComponent<Button>().GetComponent<Image>().color = Color.red;
-    //     current_question.correct_ans = answerIndex;
-    //     switch (answerIndex)
-    //     {
-    //         case 0:
-    //             {
-    //                 entryContainer.Find("Button_A").GetComponent<Button>().GetComponent<Image>().color = Color.green;
-    //                 current_question.correct_ans_string = entryContainer.Find("InputField_A").Find("Text").GetComponent<Text>().text;
-    //                 break;
-    //             }
-    //         case 1:
-    //             {
-    //                 entryContainer.Find("Button_B").GetComponent<Button>().GetComponent<Image>().color = Color.green;
-    //                 current_question.correct_ans_string = entryContainer.Find("InputField_B").Find("Text").GetComponent<Text>().text;
-    //                 break;
-    //             }
-    //         case 2:
-    //             {
-    //                 entryContainer.Find("Button_C").GetComponent<Button>().GetComponent<Image>().color = Color.green;
-    //                 current_question.correct_ans_string = entryContainer.Find("InputField_C").Find("Text").GetComponent<Text>().text;
-    //                 break;
-    //             }
-    //         case 3:
-    //             {
-    //                 entryContainer.Find("Button_D").GetComponent<Button>().GetComponent<Image>().color = Color.green;
-    //                 current_question.correct_ans_string = entryContainer.Find("InputField_D").Find("Text").GetComponent<Text>().text;
-    //                 break;
-    //             }
-    //         default:
-    //             break;
-    //     }
-    // }
-    // public void confirmCancel()
-    // {
-    //     SceneManager.LoadScene("Assignments");
-    // }
-    // public void exitCancel()
-    // {
-    //     popUp.gameObject.SetActive(false);
-    // }
-    // public void confirmSave()
-    // {
-    //     SceneManager.LoadScene("Assignments");
-    // }
-    // public void exitSave()
-    // {
-    //     popUp.gameObject.SetActive(false);
-    // }
-    // public void popupQuestionIncompleteAcknowledge()
-    // {
-    //     popUp.gameObject.SetActive(false);
-    // }
+//         // All four answers must be given
+//         for(int i = 0; i < current_question.answer.Count; i++){
+//             if(current_question.answer[i] == ""){
+//                 setPopupMessage("All four answers must be given");
+//                 return false;
+//             }
+//         }
+//         for(int i = 0; i < current_question.answer.Count-1; i++){
+//             for(int j = i+1; j < current_question.answer.Count; j++){
+//                 if(current_question.answer[i].Equals(current_question.answer[j])){
+//                     setPopupMessage("All answers must be unique");
+//                     return false;
+//                 }
+//             }
+//         }
+//         // Score must be integer
+//         try{
+//             current_question.score = int.Parse(entryContainer.Find("InputField_Score").GetComponent<InputField>().text);
+//         }
+//         catch(FormatException){
+//             setPopupMessage("Score must be a whole number");
+//             return false;
+//         }
+//         if(dropdownAnswer.value == 0){
+//             setPopupMessage("Please choose an answer");
+//             return false;
+//         }
+//         current_question.correctAnswer = dropdownAnswer.value-1;
+//         return true;
+//     }
+//     private void populateFields(AssignmentQuestion current_question, bool buttonInteractable)
+//     {
+//         entryContainer.Find("InputField_Question").GetComponent<InputField>().text = current_question.question;
+//         entryContainer.Find("InputField_A").GetComponent<InputField>().text = current_question.answer[0];
+//         entryContainer.Find("InputField_B").GetComponent<InputField>().text = current_question.answer[1];
+//         entryContainer.Find("InputField_C").GetComponent<InputField>().text = current_question.answer[2];
+//         entryContainer.Find("InputField_D").GetComponent<InputField>().text = current_question.answer[3];
+//         entryContainer.Find("Text_Question").GetComponent<Text>().text = "Question " + (cur + 1).ToString();
+//         entryContainer.Find("InputField_Score").GetComponent<InputField>().text = current_question.score.ToString();
+//         if(current_question.correctAnswer == -1) dropdownAnswer.value = 0;
+//         else dropdownAnswer.value = current_question.correctAnswer + 1;
+//         if(asgQuestionList.Count > 1){
+//             panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = true;
+//         }
+//         else{
+//             panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = false;
+//         }
+//         panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = buttonInteractable;
+//     }
+//     private void popupQuestionIncomplete(){
+//         popUp.SetActive(true);
+//         popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(true);
+//     }
+// }
+
 }
-

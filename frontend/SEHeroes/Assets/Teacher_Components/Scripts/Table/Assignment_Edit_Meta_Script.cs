@@ -11,7 +11,7 @@ public class Assignment_Edit_Meta_Script : MonoBehaviour
     private GameObject popUp;
     public GameObject panelObject;
     public GameObject mainContentPanel;
-    private static Assignment editAsg;
+    public static Assignment editAsg;
     void Start()
     {
         editAsg = Assignment_Entry_Script.chosenAsg;
