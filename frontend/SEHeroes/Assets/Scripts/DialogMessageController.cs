@@ -38,6 +38,11 @@ public class DialogMessageController : MonoBehaviour
                 Debug.Log(ProgramStateController.assName);
                 textMesh.text = "Attempting\n" + ProgramStateController.assName;
                 break;
+
+            case "Section Selection":
+                textMesh.text =  "World: " + ProgramStateController.world + "\n" +
+                                    "Section: " + ProgramStateController.section + "\n is locked!";
+                break;
         }
         dialogCanvas.enabled = true;
     }

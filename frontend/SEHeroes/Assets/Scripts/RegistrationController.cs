@@ -30,7 +30,6 @@ public class RegistrationController : MonoBehaviour
 
     public static void registerSuccessful() {
         DialogMessageController.showMessage("Registration");
-        SceneManager.LoadScene(sceneName:"Login");
     }
 
     public void backButton() {

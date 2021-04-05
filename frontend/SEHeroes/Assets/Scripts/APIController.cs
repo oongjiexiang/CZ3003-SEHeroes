@@ -16,10 +16,16 @@ public static class APIController
     // Story Mode API
     public static List<JSONNode> allQA = new List<JSONNode>();
     private static readonly string baseStoryModeQuesAPIURL = "https://seheroes.herokuapp.com/storyModeQuestion?";
+    private static readonly string baseGetUnlockedSectAPIURL = "https://seheroes.herokuapp.com/world/unlocked?";
+    private static readonly string baseStoryModeResultAPIURL = "https://seheroes.herokuapp.com/storyModeResult";
 
-    // Assignment API
+    // Open Challenge API
+    private static readonly string baseGetLeaderboardAPIURL = "https://seheroes.herokuapp.com/leaderboard";
+
+    // Boss Battle API
     private static readonly string baseAssListAPIURL = "https://seheroes.herokuapp.com/assignment?";
     private static readonly string baseAssQuesAPIURL = "https://seheroes.herokuapp.com/assignmentQuestion?assignmentId=";
+    private static readonly string baseAssResultAPIURL = "https://seheroes.herokuapp.com/assignmentResult";
 
     public static IEnumerator RequestLogin(string matricNo, string password) {
         WWWForm form = new WWWForm();
@@ -34,7 +40,7 @@ public static class APIController
         if (loginRequest.isNetworkError || loginRequest.isHttpError)
         {
             Debug.LogError(loginRequest.error);
-            // yield break;
+            yield break;
         }
 
         JSONNode loginInfo = JSON.Parse(loginRequest.downloadHandler.text);
@@ -45,6 +51,7 @@ public static class APIController
             ProgramStateController.email = loginInfo["email"];
             ProgramStateController.characterType = loginInfo["character"];
             ProgramStateController.matricNo = loginInfo["matricNo"];
+            yield return GetUnlockedStates(loginInfo["matricNo"]);
             LoginController.loginSuccessful();
         }
         else{
@@ -71,7 +78,7 @@ public static class APIController
         if (registerRequest.isNetworkError || registerRequest.isHttpError)
         {
             Debug.LogError(registerRequest.error);
-            // yield break;
+            yield break;
         }
 
         JSONNode registerInfo = JSON.Parse(registerRequest.downloadHandler.text);
@@ -85,28 +92,28 @@ public static class APIController
         }
     }
 
-    // Get Assignment List
-    public static IEnumerator RequestAssignments(string matricNo) {
+    // Get Unlocked World, Sections, and respective Levels
+    public static IEnumerator GetUnlockedStates(string matricNo) {
+        string unlockedSectionsURL = baseGetUnlockedSectAPIURL +
+                                "matricNo=" + matricNo;
+        UnityWebRequest unlockedSectRequest = UnityWebRequest.Get(unlockedSectionsURL);
+        yield return unlockedSectRequest.SendWebRequest();
 
-        string RequestAssignmentsURL = baseAssListAPIURL +
-                                    "matricNo=" + matricNo;
-                                    
-        UnityWebRequest assignmentsRequest = UnityWebRequest.Get(RequestAssignmentsURL);
-        yield return assignmentsRequest.SendWebRequest();
-
-        if (assignmentsRequest.isNetworkError || assignmentsRequest.isHttpError)
+        if (unlockedSectRequest.isNetworkError || unlockedSectRequest.isHttpError)
         {
-            Debug.LogError(assignmentsRequest.error);
-            // yield break;
+            Debug.LogError(unlockedSectRequest.error);
+            yield break;
         }
 
-        JSONNode assignments = JSON.Parse(assignmentsRequest.downloadHandler.text);
-        for (int i = 0; i < assignments.Count; i++){
-            AssignmentContainer.allAssignments.Add(assignments[i]);
+        JSONNode unlockedSectionsInfo = JSON.Parse(unlockedSectRequest.downloadHandler.text);
+        for (int i = 0; i < unlockedSectionsInfo.Count; i++){
+            ProgramStateController.allUnlockedState.Add(unlockedSectionsInfo[i]);
         }
-        AssignmentContainer.APIdone = true;
+
+        SectionController.APIdone = true;
+        LevelSelectionController.APIdone = true;
     }
-    
+
     // Get Story Mode Questions and Answers
     public static IEnumerator GetStoryModeQuesAPI() {
         string QuesURL = baseStoryModeQuesAPIURL +
@@ -128,6 +135,75 @@ public static class APIController
 
         BattleSceneController.APIdone = true;
     }
+
+    // Post StoryMode Battle Result
+    public static IEnumerator PostStoryModeResult(int star) {
+        WWWForm form = new WWWForm();
+        form.AddField("world", ProgramStateController.world);
+        form.AddField("section", ProgramStateController.section);
+        form.AddField("level", ProgramStateController.level);
+        form.AddField("matricNo", ProgramStateController.matricNo);
+        form.AddField("star", star);
+
+        string PostStoryModeResultURL = baseStoryModeResultAPIURL;
+                                    
+        UnityWebRequest storyModeResultPostRequest = UnityWebRequest.Post(PostStoryModeResultURL, form);
+        yield return storyModeResultPostRequest.SendWebRequest();
+
+        if (storyModeResultPostRequest.isNetworkError || storyModeResultPostRequest.isHttpError)
+        {
+            Debug.LogError(storyModeResultPostRequest.error);
+            yield break;
+        }
+
+        JSONNode storyModeResultInfo = JSON.Parse(storyModeResultPostRequest.downloadHandler.text);
+        Debug.Log(storyModeResultInfo);
+    }
+
+    // Get Story Mode Questions and Answers
+    public static IEnumerator GetLeaderboard() {
+        string leaderboardURL = baseGetLeaderboardAPIURL;
+        UnityWebRequest leaderboardRequest = UnityWebRequest.Get(leaderboardURL);
+        yield return leaderboardRequest.SendWebRequest();
+
+        if (leaderboardRequest.isNetworkError || leaderboardRequest.isHttpError)
+        {
+            Debug.LogError(leaderboardRequest.error);
+            yield break;
+        }
+
+        JSONNode leaderboardInfo = JSON.Parse(leaderboardRequest.downloadHandler.text);
+        for (int i = 0; i < leaderboardInfo.Count; i++){
+            Debug.Log(leaderboardInfo[i]);
+            LeaderboardContainer.allLeaderboardStudents.Add(leaderboardInfo[i]);
+        }
+        LeaderboardContainer.APIdone = true;
+    }
+
+    // Get Assignment List
+    public static IEnumerator GetAssignments(string matricNo) {
+
+        string RequestAssignmentsURL = baseAssListAPIURL +
+                                    "matricNo=" + matricNo;
+                                    
+        UnityWebRequest assignmentsRequest = UnityWebRequest.Get(RequestAssignmentsURL);
+        yield return assignmentsRequest.SendWebRequest();
+
+        if (assignmentsRequest.isNetworkError || assignmentsRequest.isHttpError)
+        {
+            Debug.LogError(assignmentsRequest.error);
+            yield break;
+        }
+
+        JSONNode assignments = JSON.Parse(assignmentsRequest.downloadHandler.text);
+        AssignmentContainer.allAssignments.Clear();
+        for (int i = 0; i < assignments.Count; i++){
+            AssignmentContainer.allAssignments.Add(assignments[i]);
+        }
+        AssignmentContainer.APIdone = true;
+    }
+
+    // Get Assignment Questions    
     public static IEnumerator GetAssignmentQuesAPI() {
         string QuesURL = baseAssQuesAPIURL + ProgramStateController.assID;
         UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
@@ -144,5 +220,27 @@ public static class APIController
             AssignmentBattleSceneController.allQA.Add(quesInfo[i]);
 
         AssignmentBattleSceneController.APIdone = true;
+    }
+
+    // Post Assignment Result
+    public static IEnumerator PostAssignmentResult(string assignmentId, string matricNo, string score) {
+        WWWForm form = new WWWForm();
+        form.AddField("assignmentId", assignmentId);
+        form.AddField("matricNo", matricNo);
+        form.AddField("score", score);
+
+        string PostAssignmentResultURL = baseAssResultAPIURL;
+                                    
+        UnityWebRequest assignmentResultPostRequest = UnityWebRequest.Post(PostAssignmentResultURL, form);
+        yield return assignmentResultPostRequest.SendWebRequest();
+
+        if (assignmentResultPostRequest.isNetworkError || assignmentResultPostRequest.isHttpError)
+        {
+            Debug.LogError(assignmentResultPostRequest.error);
+            yield break;
+        }
+
+        JSONNode assignmentResultInfo = JSON.Parse(assignmentResultPostRequest.downloadHandler.text);
+        Debug.Log(assignmentResultInfo);
     }
 }

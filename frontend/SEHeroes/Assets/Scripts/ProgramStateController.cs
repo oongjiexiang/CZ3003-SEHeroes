@@ -1,25 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SimpleJSON;
+using System.Linq;
 
 public class ProgramStateController : MonoBehaviour
 {
     // Login
     public static bool loggedIn = false;
 
-    // Character Selection Registration
+    // Character Selection during Registration
     public static string characterSelected;
 
-    // User Information
-    public static string username = "brys0001";
+    // User Information -- Fetch during LOGIN
+    public static string username;
     public static string email;
-    public static string matricNo = "U13572468";
-    public static string characterType = "Warrior";
+    public static string matricNo = "U1920640A";
+    public static string characterType;
+
+    // Lock State
+    public static List<JSONNode> allUnlockedState = new List<JSONNode>();
 
     // Game State
-    public static string world="Planning";
-    public static string section="Introduction";
-    public static string level="Easy";
+    public static string world;
+    public static string section;
+    public static string level;
     
     // Assignment
     public static string assName;

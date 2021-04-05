@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class MainMenuController : MonoBehaviour
 {
     void Start() {
-
     }
 
     void Update() {
@@ -21,7 +20,7 @@ public class MainMenuController : MonoBehaviour
     }
 
     public void loadBossBattle() {
-
+        SceneManager.LoadScene(sceneName:"AssignmentSelection");
     }
 
     public void loadProfile() {

@@ -23,6 +23,13 @@ public class AssignmentSelection : MonoBehaviour
     }
 
     public void backButton() {
+        destroyDuplicates();
         SceneManager.LoadScene(sceneName:"MainMenu");
+    }
+    void destroyDuplicates() {
+        GameObject[] clones = GameObject.FindGameObjectsWithTag("Clones");
+        foreach(GameObject clone in clones){
+            Destroy(clone);
+        }
     }
 }

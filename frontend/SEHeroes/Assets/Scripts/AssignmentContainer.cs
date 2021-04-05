@@ -10,28 +10,25 @@ public class AssignmentContainer : MonoBehaviour
 {
     public static List<JSONNode> allAssignments = new List<JSONNode>();
     private GameObject[] AssignmentContainerPrefab;
-    private int height_offset = 730;
+    private GameObject[] clones;
+    private int height_offset = -200;
     private int margin = 340;
     public static bool APIdone = false;
 
     void Start() {
-        StartCoroutine(APIController.RequestAssignments(ProgramStateController.matricNo));
+        StartCoroutine(APIController.GetAssignments(ProgramStateController.matricNo));
     }
 
     void Update() {
-
         if(APIdone){
-            for(int i = 0; i < allAssignments.Count; i++){
-                Debug.Log(allAssignments[i]["assignmentName"]);
-            }
-
             if(allAssignments.Count == 0){
                 NoAssignment();
             }
             else{
+                // debugPrint();
                 AssignmentContainerPrefab = new GameObject[allAssignments.Count];
-                // Loading prefab
-                // Load assignment details fetched from API
+                clones = new GameObject[allAssignments.Count];
+                // Loading prefab & assignment details fetched from API
                 for(int i = 0; i < AssignmentContainerPrefab.Length; i++){
                     AssignmentContainerPrefab[i] = Instantiate(Resources.Load<GameObject>("Prefabs/AssignmentContainer"));
                     TextMeshProUGUI textMesh = AssignmentContainerPrefab[i].GetComponentInChildren<TextMeshProUGUI>();
@@ -43,27 +40,28 @@ public class AssignmentContainer : MonoBehaviour
                     AssignmentSelection script = AssignmentContainerPrefab[i].GetComponentInChildren<Button>().GetComponent<AssignmentSelection>();
                     script.currentAssignmentName = allAssignments[i]["assignmentName"];
                     script.currentAssignmentID = allAssignments[i]["assignmentId"];
-                }
 
-                // Place assignment containers in a list of scrollable manner
-                for(int i = 0; i < AssignmentContainerPrefab.Length; i++){
-                    var newAssignmentContainer = Instantiate(AssignmentContainerPrefab[i], new Vector3(0, height_offset, 0), Quaternion.identity);
-                    newAssignmentContainer.transform.SetParent(gameObject.transform.parent, false);
+                    // Place assignment containers in a list of scrollable manner
+                    clones[i] = Instantiate(AssignmentContainerPrefab[i], new Vector3(0, height_offset, 0), Quaternion.identity);
+                    Destroy(AssignmentContainerPrefab[i]);
+                    clones[i].transform.SetParent(gameObject.transform.parent, false);
                     height_offset = height_offset - margin;
                 }
             }
         }
         APIdone = false;
     }
-
+    void debugPrint() {
+        for(int i = 0; i < allAssignments.Count; i++){
+            Debug.Log(allAssignments[i]["assignmentName"]);
+            Debug.Log(allAssignments[i]["dueDate"]);
+            Debug.Log(allAssignments[i]["tries"]);
+            Debug.Log(allAssignments[i]["score"]);
+        }
+    }
     void NoAssignment() {
         GameObject noAssignment = Resources.Load<GameObject>("Prefabs/NoAssignmentText");
         var newAssignmentContainer = Instantiate(noAssignment, new Vector3(0, 560, 0), Quaternion.identity);
         newAssignmentContainer.transform.SetParent(gameObject.transform.parent, false);    
-    }
-
-    void loadAssignmentInformation() {
-        for(int i = 0; i < AssignmentContainerPrefab.Length; i++){
-        }
     }
 }

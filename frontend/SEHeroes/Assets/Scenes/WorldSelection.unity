@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d7bdede50fdf4babaeea1ac56014b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWorld: Snowland - Implementation
+  currentWorld: Implementation
 --- !u!60 &109957271
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -769,7 +769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d7bdede50fdf4babaeea1ac56014b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWorld: Ashland - Maintenance
+  currentWorld: Maintenance
 --- !u!60 &364853317
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1406,7 +1406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d7bdede50fdf4babaeea1ac56014b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWorld: Village - Design
+  currentWorld: Design
 --- !u!60 &843436598
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1743,7 +1743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d7bdede50fdf4babaeea1ac56014b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWorld: Desert - Testing
+  currentWorld: Testing
 --- !u!60 &1391055710
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -2069,7 +2069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d7bdede50fdf4babaeea1ac56014b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWorld: Forest - Planning
+  currentWorld: Planning
 --- !u!60 &1412629382
 PolygonCollider2D:
   m_ObjectHideFlags: 0

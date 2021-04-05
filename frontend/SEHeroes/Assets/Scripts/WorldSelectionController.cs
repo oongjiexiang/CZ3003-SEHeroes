@@ -29,15 +29,15 @@ public class WorldSelectionController : MonoBehaviour
     void OnMouseDown() {
         ProgramStateController.world = currentWorld;
 
-        if(currentWorld.Contains("Forest"))
+        if(currentWorld.Contains("Planning"))
                 SceneManager.LoadScene(sceneName:"Forest");
-        else if(currentWorld.Contains("Village"))
+        else if(currentWorld.Contains("Design"))
                 SceneManager.LoadScene(sceneName:"Village");
-        else if(currentWorld.Contains("Snowland"))
+        else if(currentWorld.Contains("Implementation"))
                 SceneManager.LoadScene(sceneName:"Snowland");
-        else if(currentWorld.Contains("Desert"))                
+        else if(currentWorld.Contains("Testing"))                
                 SceneManager.LoadScene(sceneName:"Desert");
-        else if(currentWorld.Contains("Ashland"))    
+        else if(currentWorld.Contains("Maintenance"))    
                 SceneManager.LoadScene(sceneName:"Ashland");
     }
 

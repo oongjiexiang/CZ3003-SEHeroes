@@ -24,21 +24,15 @@ public class LoginController : MonoBehaviour
     public void login() {
         Debug.Log("Login Button Clicked!");
         getForm();
-
         StartCoroutine(APIController.RequestLogin(matricNo, password));
     }
 
     public static void loginSuccessful() {
-        if(ProgramStateController.loggedIn)
             SceneManager.LoadScene(sceneName:"MainMenu");
     }
 
     public void socialMediaLogin() {
         Debug.Log("Social Media Login Button Clicked!");
-    }
-
-    public void forgotPassword() {
-        Debug.Log("Forgot Password Button Clicked!");
     }
 
     public void exitGame() {

@@ -12,6 +12,7 @@ using System.Linq;
 //TODOOOO:GET CHAR ATTACK AND HIT IN BATTLESCNECHARCONT
 public class FriendBattleSceneController : MonoBehaviour
 {
+    public static bool APIdone = false;
     // Start is called before the first frame update
     private string level = ChallengeFriendRoomController.challengeLevel;
     private string section = ChallengeFriendRoomController.challengeSection;
@@ -86,7 +87,7 @@ public class FriendBattleSceneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (APIController.APIdone == true && questionCounter == 0)
+        if (APIdone == true && questionCounter == 0)
         {
             currQuestion = allQA.ElementAt(questionCounter);
             question = currQuestion["question"];
