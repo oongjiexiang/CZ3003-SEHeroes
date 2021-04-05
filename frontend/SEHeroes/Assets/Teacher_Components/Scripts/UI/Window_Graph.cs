@@ -52,18 +52,19 @@ public class Window_Graph : MonoBehaviour
             yield break;
         }
 
-        string storyReportInfo = JSON.Parse(StoryModeReportRequest.downloadHandler.text);
+        JSONNode storyReportInfo = JSON.Parse(StoryModeReportRequest.downloadHandler.text);
 
         int sum = 0;
         int noStudents = 0;
         int avgScore = 0;
         
-        for (int i = 0; i < storyReportInfo.Count(); i++)
+        for (int i = 0; i < storyReportInfo.Count; i++)
         {
-           // worldTextArray.Add(storyReportInfo[i]["world"]);
-           // allSectionArray.Add(storyReportInfo[i]["section"]);
-           // allLevelArray.Add(storyReportInfo[i]["level"]);
-           // allScoreArray.Add(storyReportInfo[i]["data"]);
+           worldTextArray.Add(storyReportInfo[i]["world"]);
+           allSectionArray.Add(storyReportInfo[i]["section"]);
+           allLevelArray.Add(storyReportInfo[i]["level"]);
+           allScoreArray.Add(storyReportInfo[i]["data"]);
+           //Debug.log(storyReportInfo[i]);
             
             //Calculate average score in a level
             sum = sum + allScoreArray[i]["1"]*1 + allScoreArray[i]["2"]*2 + allScoreArray[i]["3"]*3;

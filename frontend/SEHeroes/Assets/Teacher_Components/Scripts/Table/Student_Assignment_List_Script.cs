@@ -27,11 +27,13 @@ public class Student_Assignment_List_Script : MonoBehaviour
     public static string currentStudentMatric= Student_List_Script.matricNumber;
     
 
-    private readonly string baseAssignmentInfoURL = "https://seheroes.herokuapp.com/assignmentResult?matricNo=" + currentStudentMatric;
+    private static string baseAssignmentInfoURL = "https://seheroes.herokuapp.com/assignmentResult?matricNo=" + currentStudentMatric;
     
     //use this for initialization
     void Start () 
     { 
+       currentStudentMatric= Student_List_Script.matricNumber;
+        baseAssignmentInfoURL = "https://seheroes.herokuapp.com/assignmentResult?matricNo=" + currentStudentMatric; 
        StartCoroutine(GetAssignmentId());
        
     }
@@ -52,9 +54,9 @@ public class Student_Assignment_List_Script : MonoBehaviour
         
         for (int i = 0; i < assignmentInfo.Count; i++)
         {
-            assignmentIdTextArray.Add(assignmentInfo[i]["assignmentId"]);
+            assignmentIdTextArray.Add(assignmentInfo[i]["assignmentName"]);
             allScoreArray.Add(assignmentInfo[i]["score"]);
-            allTriesArray.Add(assignmentInfo[i]["tries"]);
+            allTriesArray.Add(assignmentInfo[i]["tried"]);
             //Debug.Log();
             
         }

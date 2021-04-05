@@ -9,12 +9,13 @@ public class SceneLoader : MonoBehaviour
     const string homeScene = "Home";
     const string tutorialGroupScene = "Tutorial_Group";
     const string storyModeScene = "Story_Mode";
-    const string questionBankScene = "Question_Bank";
+    const string questionBankScene = "Question_Bank_World";
     const string leaderboardScene = "Leaderboard";
     const string assignmentScene = "Assignments";
     const string settingsScene = "Settings";
     const string tutorialGroupManagementScene = "Tutorial_Group_Management";
     const string tutorialGroupEditorScene = "Tutorial_Group_Editor";
+    const string tutorialGroupCreatorScene = "Tutorial_Group_Creator";
     const string studentManagementScene = "Student_Management";
     const string createAssignmentScene = "Assignments_Creation";
     const string addAssignmentScene = "Assignments_Creation_Add";
@@ -70,6 +71,11 @@ public class SceneLoader : MonoBehaviour
     public void LoadTutorialGroupEditorScene()
     {
     	SceneManager.LoadScene(tutorialGroupEditorScene);
+    }
+
+    public void LoadTutorialGroupCreatorScene()
+    {
+    	SceneManager.LoadScene(tutorialGroupCreatorScene);
     }
 
     public void LoadStudentManagementScene()

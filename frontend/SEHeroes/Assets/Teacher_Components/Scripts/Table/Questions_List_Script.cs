@@ -25,21 +25,24 @@ public class Questions_List_Script : MonoBehaviour
     List<JSONNode> questionLevelArray = new List<JSONNode>();
     List<JSONNode> questionIdArray = new List<JSONNode>();
     public static string questionId;
-    public static string selectedWorld= Tutorial_List_Script.indexNumber;
-    public static string selectedSectionUnformat= Tutorial_List_Script.indexNumber;
+    public static string selectedWorld= World_Select_Script.worldChoice;
+    public static string selectedSectionUnformat= Section_Select_Script.sectionChoice;
     public static string selectedSection = selectedSectionUnformat.Replace(" ", "%20");
 
 
 
     
 
-    private readonly string baseQuestionInfoURL = "https://seheroes.herokuapp.com/storyModeQuestion?world=" + selectedWorld + "&section=" + selectedSection;
+    private static string baseQuestionInfoURL = "https://seheroes.herokuapp.com/storyModeQuestion?world=" + selectedWorld + "&section=" + selectedSection;
     
     //use this for initialization
     void Start () 
     { 
+       selectedWorld= World_Select_Script.worldChoice;
+       selectedSectionUnformat= Section_Select_Script.sectionChoice;
+       selectedSection = selectedSectionUnformat.Replace(" ", "%20");
+       baseQuestionInfoURL = "https://seheroes.herokuapp.com/storyModeQuestion?world=" + selectedWorld + "&section=" + selectedSection;
        StartCoroutine(GetQuestionInfo());
-       
     }
 
     IEnumerator GetQuestionInfo()
@@ -111,7 +114,7 @@ public class Questions_List_Script : MonoBehaviour
     public void viewQuestionEditor()
     {
         //Add your question editor scene here
-        SceneManager.LoadScene("Student_Management");
+        SceneManager.LoadScene("Question_Bank_Editor");
     }
 
     public void hideQuestionListPopUp() 

@@ -31,11 +31,13 @@ public class Tutorial_Assignment_Report_List_Script : MonoBehaviour
      public static string currentTutorialIndex= Tutorial_List_Script.indexNumber;
     
 
-    private readonly string baseAssignmentInfoURL = "https://seheroes.herokuapp.com/assignmentReport?tutorialGroupId=" + currentTutorialIndex;
+    private static string baseAssignmentInfoURL = "https://seheroes.herokuapp.com/assignmentReport?tutorialGroupId=" + currentTutorialIndex;
     
     //use this for initialization
     void Start () 
     { 
+       currentTutorialIndex= Tutorial_List_Script.indexNumber;
+        baseAssignmentInfoURL = "https://seheroes.herokuapp.com/assignmentReport?tutorialGroupId=" + currentTutorialIndex;
        StartCoroutine(GetAssignmentResults());
        
     }
@@ -56,7 +58,7 @@ public class Tutorial_Assignment_Report_List_Script : MonoBehaviour
         
         for (int i = 0; i < assignmentInfo.Count; i++)
         {
-            assignmentIdTextArray.Add(assignmentInfo[i]["assignmentId"]);
+            assignmentIdTextArray.Add(assignmentInfo[i]["assignmentName"]);
             allMinArray.Add(assignmentInfo[i]["data"]["min"]);
             allMaxArray.Add(assignmentInfo[i]["data"]["max"]);
             allMeanArray.Add(assignmentInfo[i]["data"]["mean"]);

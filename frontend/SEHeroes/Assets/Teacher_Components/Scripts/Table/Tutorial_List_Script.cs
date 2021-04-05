@@ -81,6 +81,7 @@ public class Tutorial_List_Script : MonoBehaviour
                 
                 playerTextPanel.transform.Find("Text_Students").transform.Find("Button_View").GetComponent<Button>().onClick.AddListener(() => {
                 indexNumber = playerTextPanel.transform.Find("Text_Index").GetComponent<Text>().text;
+                Debug.Log(indexNumber);
                 viewTutorial();
             });
             }
