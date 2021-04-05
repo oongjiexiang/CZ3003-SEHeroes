@@ -42,6 +42,7 @@ public class Tutorial_Editor_Script : MonoBehaviour
     {
         
         matricNum = inputField.GetComponent<Text>().text;
+        inputField.GetComponent<Text>().text = " ";
         
 
         //creating instance of class
@@ -59,7 +60,7 @@ public class Tutorial_Editor_Script : MonoBehaviour
         byte[] bytes_add_student = System.Text.Encoding.UTF8.GetBytes(json_remove_student);
 
         //Using UnityWebRequest to do a put request to the database
-        using (UnityWebRequest studentAddRequest = UnityWebRequest.Put("baseAddStudentURL", bytes_add_student))
+        using (UnityWebRequest studentAddRequest = UnityWebRequest.Put(baseAddStudentURL, bytes_add_student))
         {
             studentAddRequest.SetRequestHeader("Content-Type", "application/json");
  

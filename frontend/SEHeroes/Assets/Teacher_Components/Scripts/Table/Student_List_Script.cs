@@ -27,12 +27,14 @@ public class Student_List_Script : MonoBehaviour
     public static string currentTutorialIndex= Tutorial_List_Script.indexNumber;
     
 
-    private readonly string baseStudentInfoURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex;
-    private readonly string baseUsersURL = "https://seheroes.herokuapp.com/user";
+    private static string baseStudentInfoURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex;
+    private static string baseUsersURL = "https://seheroes.herokuapp.com/user";
     
     //use this for initialization
     void Start () 
     { 
+        currentTutorialIndex= Tutorial_List_Script.indexNumber;
+        baseStudentInfoURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex;
        StartCoroutine(GetStudentInfo());
        
     }

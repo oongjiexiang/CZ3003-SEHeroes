@@ -23,11 +23,13 @@ public class Student_Report_Overall : MonoBehaviour
     public static string currentStudentMatric= Student_List_Script.matricNumber;
     
 
-    private readonly string baseAssignmentInfoURL = "https://seheroes.herokuapp.com/assignmentResult?matricNo=" + currentStudentMatric;
+    private static string baseAssignmentInfoURL = "https://seheroes.herokuapp.com/assignmentResult?matricNo=" + currentStudentMatric;
     
     //use this for initialization
     void Start () 
     { 
+       currentStudentMatric= Student_List_Script.matricNumber;
+       baseAssignmentInfoURL = "https://seheroes.herokuapp.com/assignmentResult?matricNo=" + currentStudentMatric;
        StartCoroutine(GetAssignmentInfo());
        
     }
@@ -62,9 +64,20 @@ public class Student_Report_Overall : MonoBehaviour
  
             RectTransform rt = (RectTransform)mainScrollContentView.transform;
             int counter = 0;
+            int minScore = 500;
+            int maxScore = 0;
             for (int i = 0; i < assignmentScore.Count; i++)
             { 
                 counter = counter + System.Convert.ToInt16(assignmentScore[i]);
+                if (System.Convert.ToInt16(assignmentScore[i])<minScore)
+                {
+                    minScore = System.Convert.ToInt16(assignmentScore[i]);
+                }
+
+                if (System.Convert.ToInt16(assignmentScore[i])>maxScore)
+                {
+                    maxScore = System.Convert.ToInt16(assignmentScore[i]);
+                }
             }
             float averageFloat = counter/assignmentScore.Count;
             string averageString = averageFloat.ToString();
@@ -75,6 +88,8 @@ public class Student_Report_Overall : MonoBehaviour
             playerTextPanel.transform.localScale = new Vector3(1,1,1);
             playerTextPanel.transform.localPosition = new Vector3(0,0,0);
             playerTextPanel.transform.Find("Text_Average_Score").GetComponent<Text>().text = "Average Assignment Score: " + averageString;
+            playerTextPanel.transform.Find("Text_Min_Score").GetComponent<Text>().text = "Minimum Assignment Score: " + minScore;
+            playerTextPanel.transform.Find("Text_Max_Score").GetComponent<Text>().text = "Maximum Assignment Score: " + maxScore;
         }
 
         

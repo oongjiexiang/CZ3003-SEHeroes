@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 2503989542437176398}
   - component: {fileID: 3690373613760461511}
   m_Layer: 5
-  m_Name: Text_Overall_Grade
+  m_Name: Text_Min_Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,8 +112,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -382, y: 41}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -223.98, y: 41}
+  m_SizeDelta: {x: 476.04736, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2503989542437176398
 CanvasRenderer:
@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 901707869304462412}
   - component: {fileID: 7416782752289355811}
   m_Layer: 5
-  m_Name: Text_Story_Mode_Score
+  m_Name: Text_Max_Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -267,8 +267,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 152, y: 41}
-  m_SizeDelta: {x: 173.6417, y: 30}
+  m_AnchoredPosition: {x: 294.9, y: 41}
+  m_SizeDelta: {x: 459.5115, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &901707869304462412
 CanvasRenderer:

@@ -16,7 +16,7 @@ public class Questions_View_Script : MonoBehaviour
     void Awake()
     {
         // display
-        panelObject.transform.Find("World_Section_Subheader_Text").GetComponent<Text>().text = "World/Section: " + Tutorial_List_Script.indexNumber + "/" + Tutorial_List_Script.indexNumber;
+        panelObject.transform.Find("World_Section_Subheader_Text").GetComponent<Text>().text = "World/Section: " + World_Select_Script.worldChoice + "/" + Section_Select_Script.sectionChoice;
 
     }
 }

@@ -15,9 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Teacher UI/Story_Mode.unity
     guid: ed8d4918afda143d0984b4cb2a75796e
   - enabled: 1
-    path: Assets/Scenes/Teacher UI/Question_Bank_World.unity
-    guid: 098b8cf63de1e4b39a4a31773fd5317f
-  - enabled: 1
     path: Assets/Scenes/Teacher UI/Leaderboard.unity
     guid: fece9aa2bd2254f5f8b32f311c45073c
   - enabled: 1
@@ -32,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Teacher UI/Tutorial_Group_Editor.unity
     guid: bff0c1343dc904a0b99dca0a6b894aed
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Tutorial_Group_Creator.unity
+    guid: 4e57301627c0e492d9c5177e602b70d5
   - enabled: 1
     path: Assets/Scenes/Teacher UI/Student_Management.unity
     guid: 2ab4edebd3863420b964fdec6e81d76a
@@ -57,9 +57,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Teacher UI/Student_Report.unity
     guid: 587601a9b1116472e8d4620853288db0
   - enabled: 1
+    path: Assets/Scenes/Teacher UI/Question_Bank_World.unity
+    guid: 098b8cf63de1e4b39a4a31773fd5317f
+  - enabled: 1
     path: Assets/Scenes/Teacher UI/Question_Bank_Section.unity
     guid: eea28ca0071db484badbdc3b2b383eae
   - enabled: 1
     path: Assets/Scenes/Teacher UI/Question_Bank_Management.unity
     guid: 75467ecd0fcdb479c80620c1b5651933
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Question_Bank_Editor.unity
+    guid: 824e7f4a7bf02426f9cbb14508270695
   m_configObjects: {}

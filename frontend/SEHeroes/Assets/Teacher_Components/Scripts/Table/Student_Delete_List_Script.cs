@@ -27,13 +27,17 @@ public class Student_Delete_List_Script : MonoBehaviour
     public static string currentTutorialIndex= Tutorial_List_Script.indexNumber;
     
 
-    private readonly string baseStudentInfoURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex;
-    private readonly string baseUsersURL = "https://seheroes.herokuapp.com/user";
-    private readonly string baseRemoveStudentURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex + "/remove";
+    private static string baseStudentInfoURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex;
+    private static string baseUsersURL = "https://seheroes.herokuapp.com/user";
+    private static string baseRemoveStudentURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex + "/remove";
     
     //use this for initialization
     void Start () 
     { 
+        currentTutorialIndex= Tutorial_List_Script.indexNumber;
+        baseStudentInfoURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex;
+        baseRemoveStudentURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex + "/remove";
+
        StartCoroutine(GetStudentInfo());
        
     }
@@ -107,7 +111,8 @@ public class Student_Delete_List_Script : MonoBehaviour
                 
                 playerTextPanel.transform.Find("Text_Name").transform.Find("Button_Remove").GetComponent<Button>().onClick.AddListener(() => {
                 matricNumber = playerTextPanel.transform.Find("Text_Matric").GetComponent<Text>().text;
-                StartCoroutine(removeStudentFromGroup(matricNumber));
+                callRemoveStudent(matricNumber);
+
             });
             }
         }
@@ -117,6 +122,11 @@ public class Student_Delete_List_Script : MonoBehaviour
         }
         
 
+    }
+
+    void callRemoveStudent(string matricNumber)
+    {
+        StartCoroutine(removeStudentFromGroup(matricNumber));
     }
 
     //class to describe what variables you want to store in your JSON data.
@@ -143,7 +153,7 @@ public class Student_Delete_List_Script : MonoBehaviour
         byte[] bytes_remove_student = System.Text.Encoding.UTF8.GetBytes(json_remove_student);
 
         //Using UnityWebRequest to do a put request to the database
-        using (UnityWebRequest studentRemoveRequest = UnityWebRequest.Put("baseRemoveStudentURL", bytes_remove_student))
+        using (UnityWebRequest studentRemoveRequest = UnityWebRequest.Put(baseRemoveStudentURL, bytes_remove_student))
         {
             studentRemoveRequest.SetRequestHeader("Content-Type", "application/json");
  

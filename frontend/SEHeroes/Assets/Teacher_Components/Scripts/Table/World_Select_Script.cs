@@ -9,7 +9,7 @@ using System.Linq;
 public class World_Select_Script : MonoBehaviour
 {
 
-    public string worldChoice;
+    public static string worldChoice;
 
     // Start is called before the first frame update
     public void onPlanningSelect()

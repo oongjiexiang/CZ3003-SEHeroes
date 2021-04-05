@@ -277,7 +277,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 145004480}
         m_MethodName: LoadQuestionBankScene
         m_Mode: 1
         m_Arguments:
@@ -450,7 +450,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 145004480}
         m_MethodName: LoadStoryModeScene
         m_Mode: 1
         m_Arguments:
@@ -734,7 +734,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 145004480}
         m_MethodName: LoadHomeScene
         m_Mode: 1
         m_Arguments:
@@ -1405,7 +1405,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 145004480}
         m_MethodName: LoadAssignmentsScene
         m_Mode: 1
         m_Arguments:
@@ -1535,7 +1535,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 145004480}
         m_MethodName: LoadTutorialGroupScene
         m_Mode: 1
         m_Arguments:
@@ -2329,7 +2329,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 145004480}
         m_MethodName: LoadLeaderboardScene
         m_Mode: 1
         m_Arguments:
@@ -2411,8 +2411,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -362.55, y: 282.4}
-  m_SizeDelta: {x: 399.64197, y: 82.99678}
+  m_AnchoredPosition: {x: -228.2, y: 282.4}
+  m_SizeDelta: {x: 668.30164, y: 82.99678}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1613032648
 MonoBehaviour:
@@ -2435,7 +2435,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 40
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0

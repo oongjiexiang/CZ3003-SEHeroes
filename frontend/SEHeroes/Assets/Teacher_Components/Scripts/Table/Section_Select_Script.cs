@@ -9,13 +9,46 @@ using System.Linq;
 public class Section_Select_Script : MonoBehaviour
 {
 
-    public string sectionChoice;
-    public GameObject inputField;
+    public static string sectionChoice;
+
+    void Start()
+    {
+        var dropdown = transform.GetComponent<Dropdown>();
+
+        dropdown.options.Clear();
+
+        List<string> items = new List<string>();
+
+        if (World_Select_Script.worldChoice == "Planning")
+        {
+            items.Add("Introduction");
+            items.Add("Requirement Elicitation");
+            items.Add("Requirement Analysis");
+            items.Add("Analysis Model");
+            items.Add("Documentation(SRS)");
+        }
+
+        foreach (var item in items)
+        {
+            dropdown.options.Add(new Dropdown.OptionData() { text = item });
+        }
+
+        DropdownItemSelected(dropdown);
+
+        dropdown.onValueChanged.AddListener(delegate { DropdownItemSelected(dropdown); });
+
+    }
+
+    public void DropdownItemSelected(Dropdown dropdown)
+    {
+        int index = dropdown.value;
+
+        sectionChoice = dropdown.options[index].text;
+    }
 
     // Start is called before the first frame update
     public void onSectionSelect()
     {
-        sectionChoice = inputField.GetComponent<Text>().text;
         SceneManager.LoadScene("Question_Bank_Management");
     }
  

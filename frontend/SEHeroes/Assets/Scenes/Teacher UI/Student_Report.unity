@@ -811,7 +811,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &634704370
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2740,14 +2740,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc95c0707e2f495db7c0114fb796143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonsPanel: {fileID: 77149875}
-  contentsPanel: {fileID: 1932414011}
-  normalColor: {r: 0.007843138, g: 0.08235294, b: 0.13725491, a: 1}
-  mouseEnterColor: {r: 0, g: 0.28235295, b: 0.54901963, a: 1}
-  mouseClickColor: {r: 0, g: 0.28235295, b: 0.54901963, a: 1}
-  TabSelectionChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1878103395
 GameObject:
   m_ObjectHideFlags: 0
