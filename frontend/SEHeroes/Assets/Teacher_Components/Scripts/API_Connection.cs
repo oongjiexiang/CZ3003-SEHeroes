@@ -94,7 +94,7 @@ public class API_Connection
                 Debug.Log(putRequest.downloadHandler.text);
             }
         }
-        Debug.Log("Status Code for post: " + putRequest.responseCode);
+        // Debug.Log("Status Code for post: " + putRequest.responseCode);
         Debug.Log("put successful");
         if(callback != null){
             Debug.Log("response callback is not null");

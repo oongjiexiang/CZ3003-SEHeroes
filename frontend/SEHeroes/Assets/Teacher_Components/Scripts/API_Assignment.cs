@@ -70,15 +70,12 @@ public class API_Assignment : MonoBehaviour{
     public IEnumerator addQuestion(Assignment asg, AssignmentQuestion asgQuestion){
         asgQAddDone = false;
         API_Connection conn = new API_Connection();
+        // AssignmentQuestionForAPI asgQAPI = new AssignmentQuestionForAPI(asgQuestion);
         string jsonString = JsonUtility.ToJson(asgQuestion);
         Debug.Log(jsonString + " for assignment question");
         yield return StartCoroutine(conn.PutData("assignment/" + asg.assignmentId + "/addQuestion", jsonString, s => {
-            Debug.Log(s);
-            Debug.Log(JSON.Parse(s));
             asgQuestion.assignmentQuestionId = JSON.Parse(s);
         }));
-        Debug.Log(asgQuestion.assignmentQuestionId + " is this question's id ");
         asgQAddDone = true;
-        // yield return null;
     }
 }

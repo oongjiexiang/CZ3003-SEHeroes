@@ -32,3 +32,10 @@ public class AssignmentQuestion{
         }
     }
 }
+
+public class AssignmentQuestionForAPI{
+    public AssignmentQuestion question;
+    public AssignmentQuestionForAPI(AssignmentQuestion asgQ){
+        question = asgQ;
+    }
+}

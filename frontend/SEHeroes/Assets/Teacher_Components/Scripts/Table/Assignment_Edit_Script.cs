@@ -13,6 +13,7 @@ public class Assignment_Edit_Script : MonoBehaviour
     private List<AssignmentQuestion> asgQuestionList;
     private int cur;
     private int originLength;
+    private bool newQuestion;
 
     // display
     public GameObject panelObject;
@@ -34,6 +35,7 @@ public class Assignment_Edit_Script : MonoBehaviour
         panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = false;    // need to change
         popUp.SetActive(false);
         conn = (API_Assignment)transform.GetComponent(typeof(API_Assignment));
+        panelObject.gameObject.SetActive(false);
 
         // button events
         panelObject.transform.Find("Button_NextQ").GetComponent<Button>().onClick.AddListener(ClickNextOrAdd);
@@ -48,6 +50,7 @@ public class Assignment_Edit_Script : MonoBehaviour
         
         // variables: questions
         fetchQuestions(asg); 
+        newQuestion = false;
         current_question = new AssignmentQuestion();
         asgQuestionList = new List<AssignmentQuestion>();
         cur = 0;
@@ -64,6 +67,7 @@ public class Assignment_Edit_Script : MonoBehaviour
             current_question = asgQuestionList[0];
             populateFields(current_question, false);
             originLength = asgQuestionList.Count;
+            panelObject.gameObject.SetActive(true);
             // print(asgQuestionList.Count);
         }
         if(API_Assignment.asgQAddDone){
@@ -84,9 +88,15 @@ public class Assignment_Edit_Script : MonoBehaviour
     {
         if(validateFields()){
             // compare all fields. If yes, call API POST
-            if(originLength == cur - 1){
+            if(newQuestion && cur == asgQuestionList.Count - 1){
                 print("add question");
+                newQuestion = false;    //
+                print(current_question.question);
+                // print()
                 StartCoroutine(conn.addQuestion(asg, current_question));
+            }
+            else if(newQuestion){
+                print("update question");
             }
             // popUp.SetActive(true);
             // popUp.transform.Find("Popup_Create").gameObject.SetActive(true);
@@ -97,23 +107,33 @@ public class Assignment_Edit_Script : MonoBehaviour
     }
     public void ClickPrevious(){
         current_question = asgQuestionList[--cur];
+        panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = true;
         if(cur > 0) populateFields(current_question, true);
         else populateFields(current_question, false);
     }
     public void ClickNextOrAdd(){
+        // print("before entering: " + asgQuestionList.Count.ToString());
+        // print("Current Question Number " + cur.ToString());
         try{
             current_question = asgQuestionList[cur+1];
-            print(current_question.question);
-            populateFields(current_question, true);
+            // print(current_question.question);
             cur++;
-            if(cur == asgQuestionList.Count - 1) 
-                panelObject.transform.Find("Button_PrevQ").Find("Text").GetComponent<Text>().text = "Add Question";
+            populateFields(current_question, true);
+            if(cur == asgQuestionList.Count - 1){
+                // print("Should change text on next button");
+                panelObject.transform.Find("Button_NextQ").Find("Text").GetComponent<Text>().text = "Add Question";
+            }
         }
         catch(ArgumentOutOfRangeException){
-            current_question = new AssignmentQuestion();
-            asgQuestionList.Add(current_question);
-            cur++;
-            populateFields(current_question, true);
+            print(asgQuestionList.Count);
+            if(!newQuestion){
+                current_question = new AssignmentQuestion();
+                asgQuestionList.Add(current_question);
+                cur++;
+                newQuestion = true;
+                populateFields(current_question, true);
+            }
+            panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = false;
         }
     }
     public void ClickClear()
@@ -160,12 +180,14 @@ public class Assignment_Edit_Script : MonoBehaviour
         popUp.transform.Find("Popup_Incomplete").Find("Text").GetComponent<Text>().text = message;
     }
     private bool validateFields(){
-        current_question.question = entryContainer.Find("InputField_Question").GetComponent<InputField>().text;
-        current_question.answer[0] = entryContainer.Find("InputField_A").GetComponent<InputField>().text;
-        current_question.answer[1] = entryContainer.Find("InputField_B").GetComponent<InputField>().text;
-        current_question.answer[2] = entryContainer.Find("InputField_C").GetComponent<InputField>().text;
-        current_question.answer[3] = entryContainer.Find("InputField_D").GetComponent<InputField>().text;
-        
+        try{
+            current_question.question = entryContainer.Find("InputField_Question").GetComponent<InputField>().text;
+            current_question.answer[0] = entryContainer.Find("InputField_A").GetComponent<InputField>().text;
+            current_question.answer[1] = entryContainer.Find("InputField_B").GetComponent<InputField>().text;
+            current_question.answer[2] = entryContainer.Find("InputField_C").GetComponent<InputField>().text;
+            current_question.answer[3] = entryContainer.Find("InputField_D").GetComponent<InputField>().text;
+        }
+        catch(ArgumentOutOfRangeException){}
         // There must be a question string
         if(current_question.question == ""){
             setPopupInfoMessage("There is no question to be saved");
@@ -173,20 +195,27 @@ public class Assignment_Edit_Script : MonoBehaviour
         }
 
         // All four answers must be given
-        for(int i = 0; i < current_question.answer.Count; i++){
-            if(current_question.answer[i] == ""){
-                setPopupInfoMessage("All four answers must be given");
-                return false;
-            }
-        }
-        for(int i = 0; i < current_question.answer.Count-1; i++){
-            for(int j = i+1; j < current_question.answer.Count; j++){
-                if(current_question.answer[i].Equals(current_question.answer[j])){
-                    setPopupInfoMessage("All answers must be unique");
+        try{
+            for(int i = 0; i < current_question.answer.Count; i++){
+                if(current_question.answer[i] == ""){
+                    setPopupInfoMessage("All four answers must be given");
                     return false;
                 }
             }
         }
+        catch(ArgumentOutOfRangeException){}
+
+        try{
+            for(int i = 0; i < current_question.answer.Count-1; i++){
+                for(int j = i+1; j < current_question.answer.Count; j++){
+                    if(current_question.answer[i].Equals(current_question.answer[j])){
+                        setPopupInfoMessage("All answers must be unique");
+                        return false;
+                    }
+                }
+            }
+        }
+        catch(ArgumentOutOfRangeException){}
         // Score must be integer
         try{
             current_question.score = int.Parse(entryContainer.Find("InputField_Score").GetComponent<InputField>().text);
