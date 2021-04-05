@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class BattleSceneCharacterController : MonoBehaviour
 {   
-    
-    private string world;
-    private string section;
-    private string level;
-    private string character;
+    private string character = ProgramStateController.characterType;
 
-    Dictionary<string, object> redwarrior = new Dictionary<string, object>();
-    Dictionary<string, object> magician = new Dictionary<string, object>();
-    Dictionary<string, object> bowman = new Dictionary<string, object>();
-    Dictionary<string, object> swordman = new Dictionary<string, object>();
+    public static Dictionary<string, object> warrior = new Dictionary<string, object>();
+    public static Dictionary<string, object> magician = new Dictionary<string, object>();
+    public static Dictionary<string, object> bowman = new Dictionary<string, object>();
+    public static Dictionary<string, object> swordman = new Dictionary<string, object>();
 
     public float maxHealth = 5.0f;
     public float health { get { return currentHealth; }}
@@ -22,26 +18,40 @@ public class BattleSceneCharacterController : MonoBehaviour
     Animator animator;
     
     // Start is called before the first frame update
+    void Awake() {
+        warrior.Add("Health", 20);
+        warrior.Add("Damage", 3);
+        warrior.Add("Hit", 2);
+        warrior.Add("HealChance", 0f);
+        warrior.Add("Crit", 0.10f);
+        warrior.Add("CritDamage", 5);
+
+        magician.Add("Health", 20);
+        magician.Add("Damage", 2);
+        magician.Add("Hit", 2);
+        // Heal Chance = 35%
+        magician.Add("HealChance", 0.35f);
+        magician.Add("Crit", 0f);
+        magician.Add("CritDamage", 0);
+
+        bowman.Add("Health", 20);
+        bowman.Add("Damage", 2);
+        bowman.Add("Hit", 2);
+        // Critical Chance = 35%
+        bowman.Add("HealChance", 0f);
+        bowman.Add("Crit", 0.35f);
+        bowman.Add("CritDamage", 4);
+
+
+        swordman.Add("Health", 20);
+        swordman.Add("Damage", 2);
+        swordman.Add("Hit", 1);
+        swordman.Add("HealChance", 0f);
+        swordman.Add("Crit", 0f);
+        swordman.Add("CritDamage", 0);
+        Debug.Log("Done dict");
+    }
     void Start() {
-        world = ProgramStateController.world;
-        section = ProgramStateController.section;
-        level = ProgramStateController.level;
-        character = ProgramStateController.characterType;
-
-        if(world!=null) {
-            if(world.Contains("Forest"))
-                GameObject.FindGameObjectWithTag("ForestMusic").GetComponent<MusicController>().StopMusic();
-            // else if(world.Contains("Village"))
-            //     GameObject.FindGameObjectWithTag("VillageMusic").GetComponent<MusicController>().StopMusic();
-            // else if(world.Contains("Snowland"))
-            //     GameObject.FindGameObjectWithTag("SnowlandMusic").GetComponent<MusicController>().StopMusic();
-            // else if(world.Contains("Desert"))                
-            //     GameObject.FindGameObjectWithTag("DesertMusic").GetComponent<MusicController>().StopMusic();
-            // else if(world.Contains("Ashland"))    
-            //     GameObject.FindGameObjectWithTag("AshlandMusic").GetComponent<MusicController>().StopMusic();
-        }
-
-
         animator = GetComponent<Animator>();   
         if(character.Equals("Warrior"))
             animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/RedWarrior");
@@ -52,54 +62,5 @@ public class BattleSceneCharacterController : MonoBehaviour
         else if(character.Equals("Swordman"))
             animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Swordman");
 
-        redwarrior.Add("Health", 20);
-        redwarrior.Add("Damage", 1.5);
-        redwarrior.Add("Hit", 0.75);
-
-        magician.Add("Health", 20);
-        magician.Add("Damage", 1);
-        magician.Add("Hit", 1);
-        // Heal Chance = 35%
-        magician.Add("HealChance", 35);
-
-        bowman.Add("Health", 20);
-        bowman.Add("Damage", 1);
-        bowman.Add("Hit", 1);
-        // Critical Chance = 35%
-        bowman.Add("Crit", 35);
-        bowman.Add("CritDamage", 2);
-
-        swordman.Add("Health", 20);
-        swordman.Add("Damage", 1);
-        swordman.Add("Hit", 0.5);
-        
-        currentHealth = maxHealth;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    
-    }
-    
-    void FixedUpdate()
-    {
-
-    }
-
-    public void Attack() {
-        animator.Play("CorrectAttack");
-    }
-
-    public void ChangeHealth(float amount)
-    {
-        if (amount < 0)
-        {
-            animator.Play("Hit");
-        }
-        
-        
-        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        Debug.Log(currentHealth + "/" + maxHealth);
     }
 }
