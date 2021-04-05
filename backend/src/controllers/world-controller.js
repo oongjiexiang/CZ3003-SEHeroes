@@ -1,11 +1,13 @@
 const admin = require('firebase-admin');
 const db = admin.firestore();
-const worldCollection = db.collection('world');
+const WorldCollection = db.collection('world');
+const UsersCollection = db.collection('users');
+const storyModeResultCollection = db.collection("storyModeResult") 
 
 module.exports['update_add_restrictions'] = async function(record,callback) {
     
     // Are we assuming that all the data we obtained using the 3 parameter must be unique
-    if (record['section'] == null|| record['world']== null || record['tutorialGroupID']== null || record['unlockDate']== null) {
+    if (record['section'] == null|| record['world']== null || record['tutorialGroupId']== null || record['unlockDate']== null) {
         callback('Missing fields', null)
         return
     }
@@ -13,24 +15,24 @@ module.exports['update_add_restrictions'] = async function(record,callback) {
     try {
         const section = record['section'];
         const world = record['world'];
-        const tutorialGroupID = record['tutorialGroupID'];
+        const tutorialGroupId = record['tutorialGroupId'];
         const unlockDate = record['unlockDate'];
 
-        const result = await worldCollection.where('section', '==', section).where('world', '==', world)
-                            .where('tutorialGroupID', '==', tutorialGroupID).get();
+        const result = await WorldCollection.where('section', '==', section).where('world', '==', world)
+                            .where('tutorialGroupId', '==', tutorialGroupId).get();
         if (result.empty) {
             // just create a new item with random id //
-            await worldCollection.doc().set(record);
+            await WorldCollection.doc().set(record);
             callback(null, "new restriction added for section number " + String(section) + 
-                        " world number " + String(world) + " tutorial group " + tutorialGroupID);
+                        " world number " + String(world) + " tutorial group " + tutorialGroupId);
             return;
         }
         // assuming that we already have the object with same section, 
         // world-number and tutorial group, we just update the object's unlockDate
         const id = result.docs[0].id
         
-        await worldCollection.doc(id).update({ 'unlockDate': unlockDate });
-        callback(null,"restriction modified for section number " +String(section) +" world number " +String(world) +" tutorial group " +tutorialGroupID);
+        await WorldCollection.doc(id).update({ 'unlockDate': unlockDate });
+        callback(null,"restriction modified for section number " +String(section) +" world number " +String(world) +" tutorial group " +tutorialGroupId);
         
     }
     catch (err) {
@@ -40,27 +42,27 @@ module.exports['update_add_restrictions'] = async function(record,callback) {
  
 
 module.exports['remove_restriction'] = async function (record, callback) {
-    if (record['section'] == null|| record['world']== null || record['tutorialGroupID']== null) {
+    if (record['section'] == null|| record['world']== null || record['tutorialGroupId']== null) {
         callback('Missing fields', null)
         return
     }
-    //section, world, tutorialGroupID
+    //section, world, tutorialGroupId
     try {
         const section = record['section'];
         const world = record['world'];
-        const tutorialGroupID = record['tutorialGroupID'];
+        const tutorialGroupId = record['tutorialGroupId'];
         
-        const result = await worldCollection.where('section', '==', section).where('world', '==', world)
-                            .where('tutorialGroupID', '==', tutorialGroupID).get();
+        const result = await WorldCollection.where('section', '==', section).where('world', '==', world)
+                            .where('tutorialGroupId', '==', tutorialGroupId).get();
         if (result.empty) {
             callback(null, "No exisiting document found");
             return;
         }
 
         const id = result.docs[0].id
-        await worldCollection.doc(id).delete();
+        await WorldCollection.doc(id).delete();
         callback(null, "restriction removed for section number " + String(section) + " world number " + world 
-                        + " tutorial group " + tutorialGroupID);
+                        + " tutorial group " + tutorialGroupId);
     }
     catch (err) {
         callback(err, null);
@@ -69,7 +71,7 @@ module.exports['remove_restriction'] = async function (record, callback) {
 
 module.exports['getRestriction'] = async function(queryMap, callback) {
     try{ 
-        let result = worldCollection
+        let result = WorldCollection
         for (const key in queryMap) {
             result = result.where(key, "==", queryMap[key])
         }
@@ -88,6 +90,51 @@ module.exports['getRestriction'] = async function(queryMap, callback) {
     }
 }
 
+module.exports['getUnlockedByMatricNo'] = async function(matricNo, callback) {
+    try{
+        let result = await UsersCollection.where("matricNo", "==", matricNo).get();
+        if (result.empty) {
+            callback("User does not exists", null)
+            return
+        }
+        
+        let tutorialGroup = result.docs[0].data()['tutorialGroup']
+
+        if(!tutorialGroup){
+            callback(null, []) //All lock
+            return
+        }
+
+        const now = new Date();
+        result = await WorldCollection.where('unlockDate', '<=', now).get();
+
+        let unlocked = []
+        result.forEach((doc) => {
+            let data = doc.data();
+            if(data.tutorialGroupId == tutorialGroup) unlocked.push({world: data.world, section: data.section, level: ["Easy"]});
+        });
+
+        result = await storyModeResultCollection.where('matricNo', '==', matricNo).get();
+        const passResult = []
+        result.forEach((doc) => passResult.push(doc.data()));
+
+        unlocked.forEach((data) => {
+            passResult.forEach((passData) =>{
+                if(passData.world == data.world && passData.section == data.section){
+                    if(parseInt(passData.star) >= 2){
+                        if(passData.level == "Easy") data.level.push("Medium");
+                        if(passData.level == "Medium") data.level.push("Hard");
+                    }
+                }
+            })
+        })
+        console.log(unlocked);
+        callback(null, unlocked);
+        
+    } catch(err) {
+        callback(err, null)
+    }
+}
 
 function dateToObject(date){
     return{
@@ -95,7 +142,6 @@ function dateToObject(date){
         month: date.getMonth(),
         day: date.getDay(),
         hour: date.getHours(),
-        minute: date.getMinutes(),
-        second: date.getSeconds()
+        minute: date.getMinutes()
     }
 }

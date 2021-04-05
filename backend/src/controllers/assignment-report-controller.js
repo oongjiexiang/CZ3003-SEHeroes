@@ -2,6 +2,7 @@ const admin = require('firebase-admin');
 const db = admin.firestore();
 const assignmentResultCollection = db.collection("assignmentResult")
 const tutorialGroupCollection = db.collection("tutorialGroup")
+const AssignmentCollection = db.collection("assignment")
 
 module.exports['getAssignmentReport'] = async function(queryMap, callback) {
     
@@ -10,6 +11,11 @@ module.exports['getAssignmentReport'] = async function(queryMap, callback) {
         let resultData = []
         result.forEach((doc) => resultData.push(doc.data()));
         let assignmentIds = new Set();
+
+
+        const res = await AssignmentCollection.get();
+        const assignmentNameMap = {}
+        res.forEach((doc) => assignmentNameMap[doc.id] = doc.data().assignmentName);
 
         if(queryMap['tutorialGroupId'] != null){
             const record = await tutorialGroupCollection.doc(queryMap['tutorialGroupId']).get();
@@ -48,8 +54,14 @@ module.exports['getAssignmentReport'] = async function(queryMap, callback) {
                 median: med,
                 rawData: raw_data
             }
+
+            if(assignmentNameMap[assignmentResult.assignmentId]) 
+                assignmentResult['assignmentName'] = assignmentNameMap[assignmentResult.assignmentId];
+
             report.push(assignmentResult)          
         })
+
+
         callback(null, report)
     } catch(err) {
         callback(err, null)

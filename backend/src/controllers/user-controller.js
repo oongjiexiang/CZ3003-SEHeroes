@@ -13,6 +13,7 @@ module.exports['createUser'] = async function(record, callback){
         const result = await usersCollection.where("matricNo", "==", matricNumber).get();
         if (result.empty) {
             // just create a new item with random id 
+            record['openChallengeRating'] = 0;
             await usersCollection.doc().set(record);
             callback(null, "User created");
         }
@@ -33,6 +34,7 @@ module.exports['updateUser'] = async function (matricNo, updateMap, callback) {
             callback("User does not exists",null)
         }
         else {
+            
             result.forEach((doc) => {
                 usersCollection.doc(doc.id).update(updateMap);
                 callback(null,"Update sucessfully")
@@ -104,3 +106,23 @@ module.exports['getAllUsers'] = async function (queryMap, callback) {
         callback(err, null);
     }
 }
+
+module.exports['getLeaderboard'] = async function (callback) {
+    try {
+        const snapshot = await usersCollection.get()
+        if (snapshot.empty) {
+            callback("User does not exists!",null)
+            return
+        }
+        let users = []
+        snapshot.forEach((doc) => {users.push(doc.data());})
+        users = users.filter(data => !isNaN(data.openChallengeRating))
+        users.forEach(data => data.openChallengeRating = parseInt(data.openChallengeRating))
+        users.sort((a, b) => b.openChallengeRating - a.openChallengeRating);
+        callback(null, users);
+    }
+    catch (err) {
+        callback(err, null);
+    }
+}
+

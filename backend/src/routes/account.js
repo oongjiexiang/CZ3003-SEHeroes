@@ -51,6 +51,7 @@ router.post('/login',
         if(!errors.isEmpty()){
             return res.status(500).send({ message: `${errors.array()[0].msg}` });
         }
+    
 
         const {password, matricNo} = req.body;
         

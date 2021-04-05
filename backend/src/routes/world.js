@@ -4,13 +4,12 @@ const WorldController = require("../controllers/world-controller");
 
 //Add or update
 router.post("/", (req, res) => {
-    const { section, world, tutorialGroupID, unlockDate } = req.body;
-
+    const { section, world, tutorialGroupId, unlockDate } = req.body;
     WorldController.update_add_restrictions(
         {
                 section: section,
                 world: world,
-                tutorialGroupID: tutorialGroupID,
+                tutorialGroupId: tutorialGroupId,
                 unlockDate: objectToDate(unlockDate)
         },
 
@@ -25,13 +24,13 @@ router.post("/", (req, res) => {
 });
 
 router.delete("/", (req, res) => {
-    const { section, world, tutorialGroupID } = req.body;
+    const { section, world, tutorialGroupId } = req.body;
 
     WorldController.remove_restriction(
         {
             section: section,
             world: world,
-            tutorialGroupID: tutorialGroupID,
+            tutorialGroupId: tutorialGroupId,
         },
 
         (err, msg) => {
@@ -46,12 +45,12 @@ router.delete("/", (req, res) => {
 
 
 router.get("/", (req, res) => {
-    const { section, world, tutorialGroupID } = req.query;
+    const { section, world, tutorialGroupId } = req.query;
 
     let queryMap = {}
     if(section != null) queryMap['section'] = section;
     if(world != null) queryMap['world'] = world;
-    if(tutorialGroupID != null) queryMap['tutorialGroupID'] = tutorialGroupID;
+    if(tutorialGroupId != null) queryMap['tutorialGroupId'] = tutorialGroupId;
 
     WorldController.getRestriction(
         queryMap,
@@ -63,6 +62,25 @@ router.get("/", (req, res) => {
             }
         }
     );
+});
+
+router.get("/unlocked",  (req, res) => {
+    const { matricNo } = req.query;
+
+    if(!matricNo) return res.status(500).send({ message: "Please provide matricNo"})
+    
+    WorldController.getUnlockedByMatricNo(
+        matricNo,
+        (err, assignemnts) => {
+            if(err){
+                return res.status(500).send({ message: `${err}`})
+            }
+            else{
+                return res.status(200).send(assignemnts)
+            }
+        }
+    )
+
 });
 
 function objectToDate(obj){

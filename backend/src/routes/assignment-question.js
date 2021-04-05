@@ -4,15 +4,14 @@ const AssignmentQuestionController  = require("../controllers/assignment-questio
 const AssignmentController  = require("../controllers/assignment-controller");
 
 router.post('/', (req, res) => {
-    const { answer, correctAnswer, question, score, image } = req.body;
+    const { answer, correctAnswer, question, score } = req.body;
 
     AssignmentQuestionController.createAssignmentQuestion(
         {
             answer: answer,
             correctAnswer: correctAnswer,
             question: question,
-            score: parseInt(score),
-            image: image
+            score: parseInt(score)
         }, 
         (err, assignmentQuestionId) => {
             if(err){

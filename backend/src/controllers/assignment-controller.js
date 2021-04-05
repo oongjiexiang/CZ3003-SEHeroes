@@ -1,8 +1,9 @@
 const admin = require('firebase-admin');
 const db = admin.firestore();
-const assignmentCollection = db.collection("assignment")
-const usersCollection = db.collection('users');
-const assignmentResultCollection = db.collection("assignmentResult")
+const AssignmentCollection = db.collection("assignment")
+const UsersCollection = db.collection('users');
+const AssignmentResultCollection = db.collection("assignmentResult")
+const AssignmentQuestionCollection = db.collection("assignmentQuestion")
 
 
 module.exports['createAssignment'] = async function(record, callback) {
@@ -12,7 +13,21 @@ module.exports['createAssignment'] = async function(record, callback) {
         return
     }
     try{
-        const reply = await assignmentCollection.add(record)
+
+        const questionIds = []
+
+        for(let i = 0; i < record['questions'].length; i++){
+            const ques = record['questions'][i];
+            if (ques['answer'] == null || ques['correctAnswer'] == null  || ques['question'] == null || ques['score'] == null ) {
+                callback('Missing fields on question', null)
+                return
+            }
+            const reply = await AssignmentQuestionCollection.add(ques)
+            questionIds.push(reply.id)
+        }
+
+        record['questions'] = questionIds
+        const reply = await AssignmentCollection.add(record)
         callback(null, reply.id)
         
     } catch(err) {
@@ -22,12 +37,12 @@ module.exports['createAssignment'] = async function(record, callback) {
 
 module.exports['updateAssignment'] = async function(assignmentId, updateMap, callback){
     try{
-        const assignment = await assignmentCollection.doc(assignmentId).get();
+        const assignment = await AssignmentCollection.doc(assignmentId).get();
         if(!assignment.exists){
             callback('Asssignment does not exist', null)
         }
         else{
-            const res = await assignmentCollection.doc(assignmentId).update(updateMap)
+            const res = await AssignmentCollection.doc(assignmentId).update(updateMap)
             callback(null, "Update successfully");
         }
     } catch(err) {
@@ -35,9 +50,76 @@ module.exports['updateAssignment'] = async function(assignmentId, updateMap, cal
     }
 }
 
+
+module.exports['addQuestionToAssignment'] = async function(assignmentId, question, callback){
+    if(!question){
+        callback('Missing question', null)
+    }
+
+    try{
+        if (question['answer'] == null || question['correctAnswer'] == null  || question['question'] == null || question['score'] == null ) {
+            callback('Missing fields on question', null)
+            return
+        }
+        const reply = await AssignmentQuestionCollection.add(question)
+        const questionId = reply.id
+
+
+        const assignment = await AssignmentCollection.doc(assignmentId).get();
+        if(!assignment.exists){
+            callback('Asssignment does not exist', null)
+            return
+        }
+
+        const record = AssignmentCollection.doc(assignmentId);
+        const unionRes = await record.update({
+            questions: admin.firestore.FieldValue.arrayUnion(questionId)
+        })
+        callback(null, "Update successfully");
+
+    } catch(err) {
+        callback(err, null)
+    }
+}
+
+
+module.exports['removeQuestionFromAssignment'] = async function(assignmentId, assignmentQuestionId, callback){
+    if(!assignmentQuestionId){
+        callback('Missing assignmentQuestionId', null)
+    }
+
+    try{
+        const assignment = await AssignmentCollection.doc(assignmentId).get();
+        if(!assignment.exists){
+            callback('Asssignment does not exist', null)
+            return
+        }
+        const assignemntData = assignment.data();
+
+        let found = false;
+        for(let i = 0; i < assignemntData['questions'].length; i++){
+            if(assignemntData['questions'][i] == assignmentQuestionId) found = true;
+        }
+        if(!found){
+            callback('Asssignment question does not exist', null)
+            return
+        }
+         
+        await AssignmentQuestionCollection.doc(assignmentQuestionId).delete();
+        const record = AssignmentCollection.doc(assignmentId);
+        const removeRes = await record.update({
+            questions: admin.firestore.FieldValue.arrayRemove(assignmentQuestionId)
+        })
+        callback(null, "Update successfully");
+
+    } catch(err) {
+        callback(err, null)
+    }
+}
+
 module.exports['deleteAssignment'] = async function(assignmentId, callback){
     try{
-        const res = await assignmentCollection.doc(assignmentId).delete();
+        const res = await AssignmentCollection.doc(assignmentId).delete();
         callback(null, "Delete successfully")
     } catch(err) {
         callback(err, null)
@@ -46,7 +128,7 @@ module.exports['deleteAssignment'] = async function(assignmentId, callback){
 
 module.exports['getAssignment'] = async function(assignmentId, callback){
     try{
-        const assignment = await assignmentCollection.doc(assignmentId).get();
+        const assignment = await AssignmentCollection.doc(assignmentId).get();
         if(!assignment.exists){
             callback('Asssignment does not exist', null)
         }
@@ -64,14 +146,14 @@ module.exports['getAssignment'] = async function(assignmentId, callback){
 
 module.exports['getAssignmentsByMatricNo'] = async function(matricNo, callback){
     try{
-        let result = await usersCollection.where("matricNo", "==", matricNo).get();
+        let result = await UsersCollection.where("matricNo", "==", matricNo).get();
         if (result.empty) {
             callback("User does not exists", null)
             return
         }
 
         const now = new Date();
-        result = await assignmentCollection.where('dueDate', '>=', now).get();
+        result = await AssignmentCollection.where('dueDate', '>=', now).get();
         
 
         let assignmentsData = {}
@@ -79,20 +161,25 @@ module.exports['getAssignmentsByMatricNo'] = async function(matricNo, callback){
             if(doc.data()['startDate'].toDate() <= now) assignmentsData[doc.id] = {"assignmentId":doc.id, "score": 0, ...doc.data()}
         });
 
-        result = await assignmentResultCollection.where("matricNo","==", matricNo).get();
+        result = await AssignmentResultCollection.where("matricNo","==", matricNo).get();
         result.forEach((doc) => {
             let assignmentResult = doc.data();
-            assignmentsData[assignmentResult['assignmentId']]['tries'] -= assignmentResult['tried'];
-            assignmentsData[assignmentResult['assignmentId']]['score'] = assignmentResult['score'];
+            if(assignmentsData[assignmentResult['assignmentId']]){
+                assignmentsData[assignmentResult['assignmentId']]['tries'] -= assignmentResult['tried'];
+                assignmentsData[assignmentResult['assignmentId']]['score'] = assignmentResult['score'];
+            }
+            
         })
         
         const assignments = []
         for (const key in assignmentsData) {
             let data = {assignmentId: key, ...assignmentsData[key]};
-            data['startDate'] = dateToObject(data['startDate'].toDate())
-            data['dueDate'] = dateToObject(data['dueDate'].toDate())
+            data['startDate'] = dateToString(data['startDate'].toDate())
+            data['dueDate'] =  dateToString(data['dueDate'].toDate())
             assignments.push(data);
         }
+
+        assignments.sort((a, b) => a.assignmentName < b.assignmentName ? -1 : (a.assignmentName > b.assignmentName ? 1 : 0));
 
         callback(null, assignments)
         
@@ -103,7 +190,7 @@ module.exports['getAssignmentsByMatricNo'] = async function(matricNo, callback){
 
 module.exports['getAllAssignments'] = async function(callback){
     try{
-        const snapshot = await assignmentCollection.get();
+        const snapshot = await AssignmentCollection.get();
         
         const assignments = []
         snapshot.forEach(doc =>{
@@ -113,6 +200,7 @@ module.exports['getAllAssignments'] = async function(callback){
             data['dueDate'] = dateToObject(data['dueDate'].toDate())
             assignments.push(data);
         });
+
         callback(null, assignments);
         
     } catch(err) {
@@ -126,7 +214,16 @@ function dateToObject(date){
         month: date.getMonth(),
         day: date.getDay(),
         hour: date.getHours(),
-        minute: date.getMinutes(),
-        second: date.getSeconds()
+        minute: date.getMinutes()
     }
+}
+
+
+function dateToString(m){
+    return m.getFullYear()+ "/" +
+        ("0" + (m.getMonth()+1)).slice(-2) + "/" +
+        ("0" + m.getDay()).slice(-2) + " " +
+        ("0" + m.getHours()).slice(-2) + ":" +
+        ("0" + m.getMinutes()).slice(-2)
+    
 }

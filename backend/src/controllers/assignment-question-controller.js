@@ -1,17 +1,14 @@
 const admin = require('firebase-admin');
 const db = admin.firestore();
-const assignmentQuestionCollection = db.collection("assignmentQuestion")
+const AssignmentQuestionCollection = db.collection("assignmentQuestion")
 
 module.exports['createAssignmentQuestion'] = async function(record, callback) {
     if (record['answer'] == null || record['correctAnswer'] == null  || record['question'] == null || record['score'] == null ) {
         callback('Missing fields', null)
         return
     }
-    if(!record['image']){
-        delete record['image']
-    }
     try{
-        const reply = await assignmentQuestionCollection.add(record)
+        const reply = await AssignmentQuestionCollection.add(record)
         callback(null, reply.id)
         
     } catch(err) {
@@ -21,12 +18,12 @@ module.exports['createAssignmentQuestion'] = async function(record, callback) {
 
 module.exports['updateAssignmentQuestion'] = async function(assignmentQuestionId, updateMap, callback){
     try{
-        const assignmentQuestion = await assignmentQuestionCollection.doc(assignmentQuestionId).get();
+        const assignmentQuestion = await AssignmentQuestionCollection.doc(assignmentQuestionId).get();
         if(!assignmentQuestion.exists){
             callback('Asssignment question does not exist', null)
         }
         else{
-            const res = await assignmentQuestionCollection.doc(assignmentQuestionId).update(updateMap)
+            const res = await AssignmentQuestionCollection.doc(assignmentQuestionId).update(updateMap)
             callback(null, "Update successfully");
         }
     } catch(err) {
@@ -36,7 +33,7 @@ module.exports['updateAssignmentQuestion'] = async function(assignmentQuestionId
 
 module.exports['deleteAssignmentQuestion'] = async function(assignmentQuestionId, callback){
     try{
-        const res = await assignmentQuestionCollection.doc(assignmentQuestionId).delete();
+        const res = await AssignmentQuestionCollection.doc(assignmentQuestionId).delete();
         callback(null, "Delete successfully")
     } catch(err) {
         callback(err, null)
@@ -45,7 +42,7 @@ module.exports['deleteAssignmentQuestion'] = async function(assignmentQuestionId
 
 module.exports['getAssignmentQuestion'] = async function(assignmentQuestionId, callback){
     try{
-        const assignmentQuestion = await assignmentQuestionCollection.doc(assignmentQuestionId).get();
+        const assignmentQuestion = await AssignmentQuestionCollection.doc(assignmentQuestionId).get();
         if(!assignmentQuestion.exists){
             callback('Asssignment question does not exist', null)
         }
@@ -69,7 +66,7 @@ module.exports['getAssignmentQuestions'] = async function(assignmentQuestionIds,
         
         const assignmentQuestions = []
         for(let i = 0; i < assignmentQuestionIds.length; i++){
-            let assignmentQuestion = await assignmentQuestionCollection.doc(assignmentQuestionIds[i]).get();
+            let assignmentQuestion = await AssignmentQuestionCollection.doc(assignmentQuestionIds[i]).get();
             let data = assignmentQuestion.data();
             if(data != null){
                 data['assignmentQuestionId'] = assignmentQuestionIds[i];

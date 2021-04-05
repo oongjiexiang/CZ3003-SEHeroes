@@ -15,7 +15,7 @@ module.exports['register'] = async function(record, callback){
         }
         
         const newAccount = {email, password, matricNo};
-        const newUser = {matricNo, character, username};
+        const newUser = {matricNo, character, username, openChallengeRating: 0};
         const salt = await bcrypt.genSalt(10);
         newAccount.password = await bcrypt.hash(password, salt);
 
@@ -31,7 +31,6 @@ module.exports['register'] = async function(record, callback){
 module.exports['login'] = async function(record, callback){
     try {
         const {password, matricNo} = record;
-
         const result = await accountCollection.where("matricNo", "==", matricNo).get();
         if (result.empty) {
             callback("Invalid credentials!", null);
@@ -49,7 +48,7 @@ module.exports['login'] = async function(record, callback){
             callback("Invalid credentials!", null);
             return;
         }
-
+        
         callback(null, {email: account.email, ...user})
     } catch (err) {
       callback(err, null);

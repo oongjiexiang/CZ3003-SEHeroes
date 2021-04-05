@@ -29,7 +29,8 @@ router.put("/:matricNo", (req, res) => {
     if(username) updateMap['username'] = username;
 
     if(tutorialGroup) return res.status(500).send({ message: "Update tutorial group only using tutorialGroup endpoint" });
-    if(openChallengeRating) return res.status(500).send({ message: "You cannot change open challenge rating directly" });
+    if(openChallengeRating) updateMap['openChallengeRating'] = openChallengeRating;
+    //return res.status(500).send({ message: "You cannot change open challenge rating directly" });
     if(req.body.matricNo) return res.status(500).send({ message: "You cannot change matricNo" });
 
     UserController.updateUser(

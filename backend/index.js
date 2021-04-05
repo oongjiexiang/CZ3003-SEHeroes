@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const config = require("./config");
+const passport = require("passport");
 
 const credentials = {
 	"project_id": config.firebaseProjectId,
@@ -19,6 +20,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({ origin: true }));
+app.use(passport.initialize());
 
 db = admin.firestore();
 
@@ -42,6 +44,9 @@ db = admin.firestore();
 // 	testingMiddleWareFunction
 // )
 
+const userRouter = require('./src/auth/facebook-auth');
+app.use("/auth", userRouter);
+
 const Account = require("./src/routes/account");
 app.use("/", Account);
 
@@ -56,6 +61,7 @@ const StoryModeResult = require("./src/routes/story-mode-result");
 const OpenChallengeRecord = require("./src/routes/open-challenge-record");
 const AssignmentReport = require("./src/routes/assignment-report");
 const StoryModeReport = require("./src/routes/story-mode-report");
+const Learderboard = require("./src/routes/leaderboard");
 
 app.use('/user', User)
 app.use('/tutorialGroup', TutorialGroup)
@@ -68,8 +74,9 @@ app.use('/assignment', Assignment)
 app.use('/assignmentQuestion', AssignmentQuestion)
 app.use('/assignmentResult', AssignmentResult)
 app.use('/assignmentReport', AssignmentReport)
+app.use('/leaderboard', Learderboard)
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
 	console.log(`App running on port ${PORT}...`);
 	console.log(`http://localhost:${PORT}/`)

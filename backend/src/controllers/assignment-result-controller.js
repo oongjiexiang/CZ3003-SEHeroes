@@ -1,6 +1,8 @@
 const admin = require('firebase-admin');
 const db = admin.firestore();
-const assignmentResultCollection = db.collection("assignmentResult")
+const AssignmentResultCollection = db.collection("assignmentResult")
+const AssignmentCollection = db.collection("assignment")
+
 
 module.exports['createOrUpdateAssignmentResult'] = async function(record, callback) {
 
@@ -11,18 +13,18 @@ module.exports['createOrUpdateAssignmentResult'] = async function(record, callba
     try{
         const matricNo = record['matricNo']
         const assignmentId = record['assignmentId']
-        const assignmentResult = await assignmentResultCollection.where('matricNo', '==', matricNo)
+        const assignmentResult = await AssignmentResultCollection.where('matricNo', '==', matricNo)
                                                             .where('assignmentId', '==', assignmentId).get();
         
         if(assignmentResult.empty){
             record['tried'] = 1
-            await assignmentResultCollection.add(record)
+            await AssignmentResultCollection.add(record)
             callback(null, "Result added");
             return;
         }
         
         let id = assignmentResult.docs[0].id;
-        await assignmentResultCollection.doc(id).update({ 
+        await AssignmentResultCollection.doc(id).update({ 
             'score': Math.max(record['score'], assignmentResult.docs[0].data()['score']),
             'tried': assignmentResult.docs[0].data()['tried']+1
         });
@@ -36,7 +38,7 @@ module.exports['createOrUpdateAssignmentResult'] = async function(record, callba
 
 module.exports['deleteAssignmentResult'] = async function(assignmentResultId, callback){
     try{
-        const res = await assignmentResultCollection.doc(assignmentResultId).delete();
+        const res = await AssignmentResultCollection.doc(assignmentResultId).delete();
         callback(null, "Delete successfully")       
     } catch(err) {
         callback(err, null)
@@ -45,23 +47,29 @@ module.exports['deleteAssignmentResult'] = async function(assignmentResultId, ca
 
 module.exports['getAllAssignmentResults'] = async function(queryMap, callback){
     try{
-        let results = assignmentResultCollection
+        let results = AssignmentResultCollection
         for (const key in queryMap) {
             results = results.where(key, "==", queryMap[key])
         }
         const snapshot = await results.get()
         if(snapshot.empty){
             callback('Asssignment result does not exist', null)
+            return;
         }
-        else{
-            const assignmentResults = []
-            snapshot.forEach(doc =>{
-                const data = doc.data();
-                data['assignmentResultId'] = doc.id;
-                assignmentResults.push(data);
-            });
-            callback(null, assignmentResults);
-        }
+        
+        const result = await AssignmentCollection.get();
+        const assignmentNameMap = {}
+        result.forEach((doc) => assignmentNameMap[doc.id] = doc.data().assignmentName);
+
+        const assignmentResults = []
+        snapshot.forEach(doc =>{
+            const data = doc.data();
+            data['assignmentResultId'] = doc.id;
+            if(assignmentNameMap[data.assignmentId]) data['assignmentName'] = assignmentNameMap[data.assignmentId];
+            assignmentResults.push(data);
+        });
+        callback(null, assignmentResults);
+    
     } catch(err) {
         callback(err, null)
     }

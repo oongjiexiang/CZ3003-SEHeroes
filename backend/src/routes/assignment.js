@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const AssignmentController  = require("../controllers/assignment-controller");
+const AssignmentQuestionController  = require("../controllers/assignment-question-controller");
+
 
 router.post('/', (req, res) => {
     const { assignmentName, startDate, dueDate, questions, tries } = req.body;
-    
+
     AssignmentController.createAssignment(
         {
             assignmentName: assignmentName,
@@ -27,7 +29,7 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
     const{ matricNo } = req.query;
 
-    if(matricNo){
+    if(matricNo != null){
         AssignmentController.getAssignmentsByMatricNo(
             matricNo,
             (err, assignemnts) => {
@@ -78,12 +80,50 @@ router.put('/:assignmentId', (req, res) => {
     if(assignmentName != null) updateMap['assignmentName'] = assignmentName;
     if(startDate != null) updateMap['startDate'] = objectToDate(startDate);
     if(dueDate != null) updateMap['dueDate'] = objectToDate(dueDate);
-    if(questions != null) updateMap['questions'] = questions;
+    
+    //if(questions != null) updateMap['questions'] = questions;
+    
     if(tries != null) updateMap['tries'] = tries;
     
     AssignmentController.updateAssignment(
         assignmentId,
         updateMap, 
+        (err, assignemntId) => {
+            if(err){
+                return res.status(500).send({ message: `${err}`})
+            }
+            else{
+                return res.status(200).send(assignemntId)
+            }
+        }
+    )
+});
+
+router.put('/:assignmentId/addQuestion', (req, res) => {
+    const { assignmentId } = req.params;
+    const { question } = req.body;
+    
+    AssignmentController.addQuestionToAssignment(
+        assignmentId,
+        question, 
+        (err, assignemntId) => {
+            if(err){
+                return res.status(500).send({ message: `${err}`})
+            }
+            else{
+                return res.status(200).send(assignemntId)
+            }
+        }
+    )
+});
+
+router.put('/:assignmentId/removeQuestion', (req, res) => {
+    const { assignmentId } = req.params;
+    const { assignmentQuestionId } = req.body;
+    
+    AssignmentController.removeQuestionFromAssignment(
+        assignmentId,
+        assignmentQuestionId, 
         (err, assignemntId) => {
             if(err){
                 return res.status(500).send({ message: `${err}`})

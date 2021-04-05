@@ -23,8 +23,8 @@ module.exports['createOrUpdateStoryModeResult'] = async function(record, callbac
             return;
         }
 
-        let id = assignmentResult.docs[0].id;
-        await storyModeResultCollection.doc(id).update({ 'star': record['star'] });
+        let id = result.docs[0].id;
+        if(result.docs[0].data().star < record['star']) await storyModeResultCollection.doc(id).update({ 'star': record['star'] });
         callback(null, "Result updated");
         
     } catch(err) {
