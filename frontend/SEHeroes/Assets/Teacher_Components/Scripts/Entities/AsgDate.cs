@@ -31,6 +31,12 @@ public class AsgDate{
     public string printTime(){
         return String.Format("{0}/{1}/{2} {3:d2}:{4:d2}", year, month, day, hour, minute);
     }
+    public string printOnlyDate(){
+        return String.Format("{0}/{1}/{2}", year, month, day);
+    }
+    public string printOnlyTime(){
+        return String.Format("{0:d2}:{1:d2}", hour, minute);
+    }
     public DateTime time(){
         return DateTime.Parse(String.Format("{0}/{1}/{2} {3}:{4}:00", year, month, day, hour, minute));
     }

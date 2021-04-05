@@ -69,9 +69,8 @@ public class Assignment_Entry_Script : MonoBehaviour
             }
             entryTransform.Find("Text_Name").Find("Button_Edit").Find("Text").GetComponent<Text>().text = "View";
             entryTransform.Find("Text_Name").Find("Button_Edit").GetComponent<Button>().onClick.AddListener(() => {
-                // assignmentName = entryTransform.Find("Text_Name").GetComponent<Text>().text;
                 int chosenAsgIndex = int.Parse(entryTransform.Find("Text_No").GetComponent<Text>().text);
-                chosenAsg = assignmentList[i-1];
+                chosenAsg = assignmentList[chosenAsgIndex-1];
                 viewAssignment();
             });
             entryTransform.Find("Text_Name").Find("Button_Delete").Find("Text").GetComponent<Text>().text = "Delete";
@@ -95,7 +94,7 @@ public class Assignment_Entry_Script : MonoBehaviour
     }
     public void viewAssignment()
     {
-        SceneManager.LoadScene("Assignments_View");
+        SceneManager.LoadScene("Assignment_Edit_Meta");
     }
     public void scheduleAssignment()
     {
