@@ -19,6 +19,7 @@ public class SceneLoader : MonoBehaviour
     const string createAssignmentScene = "Assignments_Creation";
     const string addAssignmentScene = "Assignments_Creation_Add";
     const string tutorialReport = "Tutorial_Group_Report";
+    const string addAssignmentMetaScene = "Assignment_Creation_Meta";
     const string studentReport = "Student_Report";
     public void LoadNextScene() 
     {
@@ -89,7 +90,9 @@ public class SceneLoader : MonoBehaviour
     {
         SceneManager.LoadScene(tutorialReport);
     }
-
+    public void LoadCreateAssignmentMetaScene(){
+        SceneManager.LoadScene(addAssignmentMetaScene);
+    }
     public void LoadStudentReportScene()
     {
         SceneManager.LoadScene(studentReport);

@@ -9,9 +9,10 @@ public class Create_Assignment_Meta_Script : MonoBehaviour
 {
     const int NUM_TRY = 10;
     private Assignment newAsg;
+    private GameObject popUp;
     public GameObject panelObject;
     public GameObject mainContentPanel;
-    private GameObject popUp;
+    public static Assignment tentAssignment;
     void Start()
     {
         newAsg = new Assignment();
@@ -34,7 +35,10 @@ public class Create_Assignment_Meta_Script : MonoBehaviour
         SceneManager.LoadScene("Assignments");
     }
     public void clickCreate(){
-        if(verifyFields()) SceneManager.LoadScene("Assignments_Creation");
+        if(verifyFields()){
+            tentAssignment = newAsg;
+            SceneManager.LoadScene("Assignments_Creation");
+        }
         else{
             popUp.SetActive(true);
             popUp.transform.Find("Popup_Incomplete").gameObject.SetActive(true);
@@ -52,39 +56,37 @@ public class Create_Assignment_Meta_Script : MonoBehaviour
     }
     public bool verifyFields(){
         List<Dropdown> dropdowns = new List<Dropdown>();
-        List<int> time = new List<int>();
+        List<string> time = new List<string>();
 
         Dropdown dropdown = panelObject.transform.Find("Dropdown_Try").GetComponent<Dropdown>();
-        Dropdown startMonthD = getDropdown("Handle_Start_Date", "Dropdown_Month");
-        Dropdown endMonthD = getDropdown("Handle_End_Date", "Dropdown_Month");
         newAsg.assignmentName = panelObject.transform.Find("InputField_Name").Find("Text").GetComponent<Text>().text;
         newAsg.tries = int.Parse(dropdown.options[dropdown.value].text);
-        string startMonth = startMonthD.options[startMonthD.value].text;
-        string endMonth = endMonthD.options[endMonthD.value].text;
 
         dropdowns.Add(getDropdown("Handle_Start_Date", "Dropdown_Year"));
+        dropdowns.Add(getDropdown("Handle_Start_Date", "Dropdown_Month"));
         dropdowns.Add(getDropdown("Handle_Start_Date", "Dropdown_Day"));
         dropdowns.Add(getDropdown("Handle_Start_Time", "Dropdown_Hour"));
         dropdowns.Add(getDropdown("Handle_Start_Time", "Dropdown_Minute"));
         dropdowns.Add(getDropdown("Handle_End_Date", "Dropdown_Year"));
+        dropdowns.Add(getDropdown("Handle_End_Date", "Dropdown_Month"));
         dropdowns.Add(getDropdown("Handle_End_Date", "Dropdown_Day"));
         dropdowns.Add(getDropdown("Handle_End_Time", "Dropdown_Hour"));
         dropdowns.Add(getDropdown("Handle_End_Time", "Dropdown_Minute"));
         foreach(var dp in dropdowns){
-            time.Add(int.Parse(dp.options[dp.value].text));
+            time.Add(dp.options[dp.value].text);
         }
         
-        newAsg.startDate = DateTime.Parse(String.Format("{0} {1} {2} {3}:{4}:{5}", time[0], startMonth, time[1], time[2], time[3], 0));
-        newAsg.dueDate = DateTime.Parse(String.Format("{0} {1} {2} {3}:{4}:{5}", time[4], endMonth, time[5], time[6], time[7], 0));
+        newAsg.startDate = new AsgDate(DateTime.Parse(String.Format("{0} {1} {2} {3}:{4}:{5}", time[0], time[1], time[2], time[3], time[4], 0)));
+        newAsg.dueDate = new AsgDate(DateTime.Parse(String.Format("{0} {1} {2} {3}:{4}:{5}", time[5], time[6], time[7], time[8], time[9], 0)));
         if(newAsg.assignmentName == ""){
             incompletePopup("Please give the assignment a name.");
             return false;
         }
-        if(newAsg.startDate <= DateTime.Now){
+        if(newAsg.startDate.time() <= DateTime.Now){
             incompletePopup("Start date has passed. Please choose another date");
             return false;
         }
-        if(newAsg.startDate >= newAsg.dueDate){
+        if(newAsg.startDate.time() >= newAsg.dueDate.time()){
             incompletePopup("Start date cannot be later than the due date");
             return false;
         }
