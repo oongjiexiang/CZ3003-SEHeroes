@@ -14,6 +14,7 @@ public class AssignmentContainer : MonoBehaviour
     private int height_offset = -200;
     private int margin = 340;
     public static bool APIdone = false;
+    public static bool noAssignment = false;
 
     void Start() {
         StartCoroutine(APIController.GetAssignments(ProgramStateController.matricNo));
@@ -21,7 +22,7 @@ public class AssignmentContainer : MonoBehaviour
 
     void Update() {
         if(APIdone){
-            if(allAssignments.Count == 0){
+            if(noAssignment){
                 NoAssignment();
             }
             else{

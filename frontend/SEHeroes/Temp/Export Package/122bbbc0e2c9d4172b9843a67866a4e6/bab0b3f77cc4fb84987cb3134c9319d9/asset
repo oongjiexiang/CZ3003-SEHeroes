@@ -1,0 +1,214 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Networking;
+using SimpleJSON;
+using System.Linq;
+
+public static class APIController
+{
+    // Login API
+    private static readonly string baseLoginAPIURL = "https://seheroes.herokuapp.com/login?";
+
+    // Register API
+    private static readonly string baseRegisterAPIURL = "https://seheroes.herokuapp.com/register?";
+
+    // Story Mode API
+    public static List<JSONNode> allQA = new List<JSONNode>();
+    private static readonly string baseStoryModeQuesAPIURL = "https://seheroes.herokuapp.com/storyModeQuestion?";
+
+    // Boss Battle API
+    private static readonly string baseAssListAPIURL = "https://seheroes.herokuapp.com/assignment?";
+    private static readonly string baseAssQuesAPIURL = "https://seheroes.herokuapp.com/assignmentQuestion?assignmentId=";
+    private static readonly string baseAssResultAPIURL = "https://seheroes.herokuapp.com/assignmentResult";
+
+    public static IEnumerator RequestLogin(string matricNo, string password) {
+        WWWForm form = new WWWForm();
+        form.AddField("matricNo", matricNo);
+        form.AddField("password", password);
+
+        string RequestLoginURL = baseLoginAPIURL;
+                                    
+        UnityWebRequest loginRequest = UnityWebRequest.Post(RequestLoginURL, form);
+        yield return loginRequest.SendWebRequest();
+
+        if (loginRequest.isNetworkError || loginRequest.isHttpError)
+        {
+            Debug.LogError(loginRequest.error);
+            // yield break;
+        }
+
+        JSONNode loginInfo = JSON.Parse(loginRequest.downloadHandler.text);
+        Debug.Log(loginInfo);
+        if(loginInfo["message"].Equals("Login successfully")){
+            ProgramStateController.loggedIn = true;
+            ProgramStateController.username = loginInfo["username"];
+            ProgramStateController.email = loginInfo["email"];
+            ProgramStateController.characterType = loginInfo["character"];
+            ProgramStateController.matricNo = loginInfo["matricNo"];
+            LoginController.loginSuccessful();
+        }
+        else{
+            MissingInputField.setText(loginInfo["message"]);
+            MissingInputField.promptMissingField();
+        }
+    }
+
+    public static IEnumerator RequestRegister(string username, string password, string email, string character, string matricNo, string confirmPassword) {
+        
+        WWWForm form = new WWWForm();
+        form.AddField("username", username);
+        form.AddField("password", password);
+        form.AddField("password2", confirmPassword);
+        form.AddField("email", email);
+        form.AddField("character", character);
+        form.AddField("matricNo", matricNo);
+
+        string RequestRegisterURL = baseRegisterAPIURL;
+                                    
+        UnityWebRequest registerRequest = UnityWebRequest.Post(RequestRegisterURL, form);
+        yield return registerRequest.SendWebRequest();
+
+        if (registerRequest.isNetworkError || registerRequest.isHttpError)
+        {
+            Debug.LogError(registerRequest.error);
+            // yield break;
+        }
+
+        JSONNode registerInfo = JSON.Parse(registerRequest.downloadHandler.text);
+        Debug.Log(registerInfo);
+        if(registerInfo["message"].Equals("Register successfully")){
+            RegistrationController.registerSuccessful();
+        }
+        else{
+            MissingInputField.setText(registerInfo["message"]);
+            MissingInputField.promptMissingField();
+        }
+    }
+
+    // Get Assignment List
+    public static IEnumerator RequestAssignments(string matricNo) {
+
+        string RequestAssignmentsURL = baseAssListAPIURL +
+                                    "matricNo=" + matricNo;
+                                    
+        UnityWebRequest assignmentsRequest = UnityWebRequest.Get(RequestAssignmentsURL);
+        yield return assignmentsRequest.SendWebRequest();
+
+        if (assignmentsRequest.isNetworkError || assignmentsRequest.isHttpError)
+        {
+            Debug.LogError(assignmentsRequest.error);
+            // yield break;
+        }
+
+        JSONNode assignments = JSON.Parse(assignmentsRequest.downloadHandler.text);
+        for (int i = 0; i < assignments.Count; i++){
+            AssignmentContainer.allAssignments.Add(assignments[i]);
+        }
+        AssignmentContainer.APIdone = true;
+    }
+    
+    // Get Story Mode Questions and Answers
+    public static IEnumerator GetStoryModeQuesAPI() {
+        string QuesURL = baseStoryModeQuesAPIURL +
+                                "world=" +ProgramStateController.world +
+                                    "&section=" + ProgramStateController.section +
+                                        "&level=" + ProgramStateController.level;
+        UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
+        yield return quesRequest.SendWebRequest();
+
+        if (quesRequest.isNetworkError || quesRequest.isHttpError)
+        {
+            Debug.LogError(quesRequest.error);
+            yield break;
+        }
+
+        JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
+        for (int i = 0; i < quesInfo.Count; i++)
+            BattleSceneController.allQA.Add(quesInfo[i]);
+
+        BattleSceneController.APIdone = true;
+    }
+
+    public static IEnumerator GetMultipStoryModeQuesAPI() {
+        string QuesURL = baseStoryModeQuesAPIURL +
+                                "world=" +MultiPlayerBattleSceneController.world +
+                                    "&section=" + MultiPlayerBattleSceneController.section +
+                                        "&level=" + MultiPlayerBattleSceneController.level;
+        UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
+        yield return quesRequest.SendWebRequest();
+
+        if (quesRequest.isNetworkError || quesRequest.isHttpError)
+        {
+            Debug.LogError(quesRequest.error);
+            yield break;
+        }
+
+        JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
+        for (int i = 0; i < quesInfo.Count; i++)
+            MultiPlayerBattleSceneController.allQA.Add(quesInfo[i]);
+
+        MultiPlayerBattleSceneController.APIdone = true;
+    }
+
+    public static IEnumerator GetFriendStoryModeQuesAPI() {
+        string QuesURL = baseStoryModeQuesAPIURL +
+                                "world=" +MultiPlayerBattleSceneController.world +
+                                    "&section=" + MultiPlayerBattleSceneController.section +
+                                        "&level=" + MultiPlayerBattleSceneController.level;
+        UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
+        yield return quesRequest.SendWebRequest();
+
+        if (quesRequest.isNetworkError || quesRequest.isHttpError)
+        {
+            Debug.LogError(quesRequest.error);
+            yield break;
+        }
+
+        JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
+        for (int i = 0; i < quesInfo.Count; i++)
+            FriendBattleSceneController.allQA.Add(quesInfo[i]);
+
+        FriendBattleSceneController.APIdone = true;
+    }
+
+    public static IEnumerator GetAssignmentQuesAPI() {
+        string QuesURL = baseAssQuesAPIURL + ProgramStateController.assID;
+        UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
+        yield return quesRequest.SendWebRequest();
+
+        if (quesRequest.isNetworkError || quesRequest.isHttpError)
+        {
+            Debug.LogError(quesRequest.error);
+            yield break;
+        }
+
+        JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
+        for (int i = 0; i < quesInfo.Count; i++)
+            AssignmentBattleSceneController.allQA.Add(quesInfo[i]);
+
+        AssignmentBattleSceneController.APIdone = true;
+    }
+
+    // Post Assignment Result
+    public static IEnumerator PostAssignmentResult(string assignmentId, string matricNo, string score) {
+        WWWForm form = new WWWForm();
+        form.AddField("assignmentId", assignmentId);
+        form.AddField("matricNo", matricNo);
+        form.AddField("score", score);
+
+        string PostAssignmentResultURL = baseAssResultAPIURL;
+                                    
+        UnityWebRequest assignmentResultPostRequest = UnityWebRequest.Post(PostAssignmentResultURL, form);
+        yield return assignmentResultPostRequest.SendWebRequest();
+
+        if (assignmentResultPostRequest.isNetworkError || assignmentResultPostRequest.isHttpError)
+        {
+            Debug.LogError(assignmentResultPostRequest.error);
+            yield break;
+        }
+
+        JSONNode assignmentResultInfo = JSON.Parse(assignmentResultPostRequest.downloadHandler.text);
+        Debug.Log(assignmentResultInfo);
+    }
+}

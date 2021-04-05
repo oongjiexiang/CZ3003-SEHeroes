@@ -24,15 +24,15 @@ public class SceneLoader : MonoBehaviour
     IEnumerator StartLoad()
     {
         loadingScreen.SetActive(true);
-        yield return StartCoroutine(FadeLoadingScreen(1, 2));
+        yield return StartCoroutine(FadeLoadingScreen(1, 3));
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneToLoad);
-        while (!operation.isDone && !BattleSceneController.APIdone)
+        while (!operation.isDone)
         {
             yield return null;
         }
 
-        yield return StartCoroutine(FadeLoadingScreen(0, 2));
+        yield return StartCoroutine(FadeLoadingScreen(0, 3));
         loadingScreen.SetActive(false);
     }
 

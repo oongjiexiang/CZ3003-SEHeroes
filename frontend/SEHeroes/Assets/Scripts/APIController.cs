@@ -37,26 +37,24 @@ public static class APIController
         UnityWebRequest loginRequest = UnityWebRequest.Post(RequestLoginURL, form);
         yield return loginRequest.SendWebRequest();
 
+        JSONNode loginInfo = JSON.Parse(loginRequest.downloadHandler.text);
+        Debug.Log(loginInfo);
+
         if (loginRequest.isNetworkError || loginRequest.isHttpError)
         {
             Debug.LogError(loginRequest.error);
-            yield break;
-        }
-
-        JSONNode loginInfo = JSON.Parse(loginRequest.downloadHandler.text);
-        Debug.Log(loginInfo);
-        if(loginInfo["message"].Equals("Login successfully")){
-            ProgramStateController.loggedIn = true;
-            ProgramStateController.username = loginInfo["username"];
-            ProgramStateController.email = loginInfo["email"];
-            ProgramStateController.characterType = loginInfo["character"];
-            ProgramStateController.matricNo = loginInfo["matricNo"];
-            yield return GetUnlockedStates(loginInfo["matricNo"]);
-            LoginController.loginSuccessful();
-        }
-        else{
             MissingInputField.setText(loginInfo["message"]);
             MissingInputField.promptMissingField();
+            yield break;
+        }
+        else if(loginInfo["message"].Equals("Login successfully")){
+                ProgramStateController.loggedIn = true;
+                ProgramStateController.username = loginInfo["username"];
+                ProgramStateController.email = loginInfo["email"];
+                ProgramStateController.characterType = loginInfo["character"];
+                ProgramStateController.matricNo = loginInfo["matricNo"];
+                yield return GetUnlockedStates(loginInfo["matricNo"]);
+                LoginController.loginSuccessful();
         }
     }
 
@@ -75,20 +73,16 @@ public static class APIController
         UnityWebRequest registerRequest = UnityWebRequest.Post(RequestRegisterURL, form);
         yield return registerRequest.SendWebRequest();
 
+        JSONNode registerInfo = JSON.Parse(registerRequest.downloadHandler.text);
         if (registerRequest.isNetworkError || registerRequest.isHttpError)
         {
             Debug.LogError(registerRequest.error);
-            yield break;
-        }
-
-        JSONNode registerInfo = JSON.Parse(registerRequest.downloadHandler.text);
-        Debug.Log(registerInfo);
-        if(registerInfo["message"].Equals("Register successfully")){
-            RegistrationController.registerSuccessful();
-        }
-        else{
             MissingInputField.setText(registerInfo["message"]);
             MissingInputField.promptMissingField();
+            yield break;
+        }
+        else if(registerInfo["message"].Equals("Register successfully")){
+            RegistrationController.registerSuccessful();
         }
     }
 
@@ -192,6 +186,8 @@ public static class APIController
         if (assignmentsRequest.isNetworkError || assignmentsRequest.isHttpError)
         {
             Debug.LogError(assignmentsRequest.error);
+            AssignmentContainer.APIdone = true;
+            AssignmentContainer.noAssignment = true;
             yield break;
         }
 

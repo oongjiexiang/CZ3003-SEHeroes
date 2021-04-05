@@ -51,6 +51,16 @@ public class LevelSelectionController : MonoBehaviour
 
     public void EnterBattle() {
         ProgramStateController.sceneToLoad = "StoryModeBattle";
+        if(world.Contains("Planning"))
+                GameObject.FindGameObjectWithTag("PlanningMusic").GetComponent<MusicController>().StopMusic();
+            // else if(world.Contains("Village"))
+            //     GameObject.FindGameObjectWithTag("VillageMusic").GetComponent<MusicController>().PlayMusic();
+            // else if(world.Contains("Snowland"))
+            //     GameObject.FindGameObjectWithTag("SnowlandMusic").GetComponent<MusicController>().PlayMusic();
+            // else if(world.Contains("Desert"))                
+            //     GameObject.FindGameObjectWithTag("DesertMusic").GetComponent<MusicController>().PlayMusic();
+            // else if(world.Contains("Ashland"))    
+            //     GameObject.FindGameObjectWithTag("AshlandMusic").GetComponent<MusicController>().PlayMusic();
         SceneManager.LoadScene(sceneName:"Loading");
     }
     public void closeConfirmation() {
