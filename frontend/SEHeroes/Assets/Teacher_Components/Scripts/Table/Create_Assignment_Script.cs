@@ -172,7 +172,7 @@ public class Create_Assignment_Script : MonoBehaviour
             setPopupMessage("Please choose an answer");
             return false;
         }
-        current_question.correctAnswer = current_question.answer[dropdownAnswer.value-1];
+        current_question.correctAnswer = dropdownAnswer.value-1;
         return true;
     }
     private void populateFields(AssignmentQuestion current_question, bool buttonInteractable)
@@ -184,13 +184,8 @@ public class Create_Assignment_Script : MonoBehaviour
         entryContainer.Find("InputField_D").GetComponent<InputField>().text = current_question.answer[3];
         entryContainer.Find("Text_Question").GetComponent<Text>().text = "Question " + (cur + 1).ToString();
         entryContainer.Find("InputField_Score").GetComponent<InputField>().text = current_question.score.ToString();
-        for(int i = 0; i < 4; i++){
-            if(current_question.correctAnswer.Equals(current_question.answer[i])){
-                dropdownAnswer.value = i+1;
-                break;
-            }
-            dropdownAnswer.value = 0;
-        }
+        if(current_question.correctAnswer == -1) dropdownAnswer.value = 0;
+        else dropdownAnswer.value = current_question.correctAnswer + 1;
         if(asgQuestionList.Count > 1){
             panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = true;
         }

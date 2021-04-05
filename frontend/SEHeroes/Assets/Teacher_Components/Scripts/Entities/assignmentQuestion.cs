@@ -10,17 +10,15 @@ public class AssignmentQuestion{
     public string assignmentQuestionId;
     public int score;
     public List<string> answer;
-    public string correctAnswer;
-    public string image;
+    public int correctAnswer;
     public AssignmentQuestion(){
         question = "";
         assignmentQuestionId = "";
         score = 0;
-        correctAnswer = "";
+        correctAnswer = -1;
         answer = new List<string>();
         for(int i = 0; i < 4; i++){
             answer.Add("");
         }
-        image = "";
     }
 }
