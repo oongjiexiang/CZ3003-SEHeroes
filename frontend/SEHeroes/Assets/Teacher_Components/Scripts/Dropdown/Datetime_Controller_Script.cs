@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
+using System.Globalization;
 
 public class Datetime_Controller_Script : MonoBehaviour
 {
@@ -36,7 +37,8 @@ public class Datetime_Controller_Script : MonoBehaviour
         }
         for (int i = 0; i < 12; i++)
         {
-            options[1].Add(current.AddMonths(i).ToString("MMM"));
+            options[1].Add(DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(i+1));
+            // options[1].Add(current.AddMonths(i).ToString("MMM"));
         }
         for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
         {
@@ -59,7 +61,7 @@ public class Datetime_Controller_Script : MonoBehaviour
     }
     public void FocusValues(AsgDate time){
         dropdowns[0].value = time.year - int.Parse(DateTime.Now.ToString("yyyy"));
-        dropdowns[1].value = time.month;
+        dropdowns[1].value = time.month - 1;
         dropdowns[2].value = time.day - 1;
         dropdowns[3].value = time.hour;
         dropdowns[4].value = time.minute/5;

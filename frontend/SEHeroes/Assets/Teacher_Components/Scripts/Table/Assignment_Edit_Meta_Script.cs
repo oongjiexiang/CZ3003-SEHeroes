@@ -37,6 +37,8 @@ public class Assignment_Edit_Meta_Script : MonoBehaviour
             panelObject.transform.Find("Text_Time").gameObject.SetActive(true);
             panelObject.transform.Find("Text_Date").GetComponent<Text>().text = editAsg.startDate.printOnlyDate();
             panelObject.transform.Find("Text_Time").GetComponent<Text>().text = editAsg.startDate.printOnlyTime();
+            Datetime_Controller_Script handleEnd = (Datetime_Controller_Script)panelObject.transform.Find("Handle_End_Date").GetComponent(typeof(Datetime_Controller_Script));
+            handleEnd.FocusValues(editAsg.dueDate);
         }
         else{
             Datetime_Controller_Script handleStart = (Datetime_Controller_Script)panelObject.transform.Find("Handle_Start_Date").GetComponent(typeof(Datetime_Controller_Script));
@@ -103,7 +105,7 @@ public class Assignment_Edit_Meta_Script : MonoBehaviour
             incompletePopup("Please give the assignment a name.");
             return false;
         }
-        if(editAsg.startDate.time() <= DateTime.Now){
+        if(editAsg.startDate.time() <= DateTime.Now && !panelObject.transform.Find("Text_Date").gameObject.active){
             incompletePopup("Start date has passed. Please choose another date");
             return false;
         }
