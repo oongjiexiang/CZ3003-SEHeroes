@@ -33,6 +33,7 @@ public class Assignment_Entry_Script : MonoBehaviour
     IEnumerator setAssignmentList()
     {
         API_Connection conn = new API_Connection();
+        print(conn);
         JSONNode jsonNode = null;
         // print("in main: " + json_receivedData.Count);
         yield return StartCoroutine(conn.GetData("Assignment", null, s => {

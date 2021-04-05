@@ -16,10 +16,11 @@ public class Assignment{
     public AsgDate dueDate;        // will change
     public List<string> questions;  // represents list of questionId 
     public Assignment(){
-        // assignmentName = "Testing";
-        // startDate = new AsgDate();
-        // dueDate = new AsgDate();
-        // tries = 2;
+        assignmentName = "Testing";
+        startDate = new AsgDate();
+        dueDate = new AsgDate();
+        tries = 2;
+        questions = new List<string>();
     }
     public Assignment(JSONNode jsonAsg){
         assignmentName = jsonAsg["assignmentName"];

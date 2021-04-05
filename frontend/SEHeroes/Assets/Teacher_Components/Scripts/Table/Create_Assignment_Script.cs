@@ -94,11 +94,11 @@ public class Create_Assignment_Script : MonoBehaviour
     public void confirmSaveAndCreate(){
         API_Assignment asg_conn = new API_Assignment();
         print(new API_Connection());
-        foreach(var asgQuestion in asgQuestionList){
-            StartCoroutine(asg_conn.saveBack(asgQuestion));
-            asg.questions.Add(asgQuestion.assignmentQuestionId);
-        }
-        StartCoroutine(asg_conn.saveBack(asg));
+        // foreach(var asgQuestion in asgQuestionList){
+        //     StartCoroutine(asg_conn.addQuestion(asgQuestion));
+        //     asg.questions.Add(asgQuestion.assignmentQuestionId);
+        // }
+        // StartCoroutine(asg_conn.saveBack(asg));
         print("Whole process is successful");
         SceneManager.LoadScene("Assignments");
     }
@@ -163,6 +163,10 @@ public class Create_Assignment_Script : MonoBehaviour
         // Score must be integer
         try{
             current_question.score = int.Parse(entryContainer.Find("InputField_Score").GetComponent<InputField>().text);
+            if(current_question.score < 0){
+                setPopupMessage("Score must not be negative");
+                return false;
+            }
         }
         catch(FormatException){
             setPopupMessage("Score must be a whole number");

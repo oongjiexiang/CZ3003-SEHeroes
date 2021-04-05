@@ -21,4 +21,14 @@ public class AssignmentQuestion{
             answer.Add("");
         }
     }
+    public AssignmentQuestion(JSONNode jsonAsgQ){
+        question = jsonAsgQ["question"];
+        assignmentQuestionId = jsonAsgQ["assignmentQuestionId"];
+        score = jsonAsgQ["score"];
+        correctAnswer = int.Parse(jsonAsgQ["correctAnswer"]);
+        answer = new List<string>();
+        for(int i = 0; i < jsonAsgQ["answer"].Count; i++){
+            answer.Add(jsonAsgQ["answer"][i]);
+        }
+    }
 }
