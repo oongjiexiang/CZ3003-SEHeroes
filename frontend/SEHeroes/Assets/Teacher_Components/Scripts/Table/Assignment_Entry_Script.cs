@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using SimpleJSON;
 using System.Linq;
+using UnityEngine.Networking;
 
 
 public class Assignment_Entry_Script : MonoBehaviour
@@ -29,7 +30,6 @@ public class Assignment_Entry_Script : MonoBehaviour
         tableInitialize();
         popUp.transform.Find("Popup_Delete").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(confirmDelete);
         popUp.transform.Find("Popup_Delete").Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(exitDelete);
-        transform.Find("Popup_Delete").Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(exitDelete);
     }
     IEnumerator setAssignmentList()
     {
@@ -45,21 +45,37 @@ public class Assignment_Entry_Script : MonoBehaviour
             assignmentList.Add(new Assignment(jsonNode[i]));
         }
     }
-    void shareTele(){
+    
+    IEnumerator shareTele(){
         WWWForm form = new WWWForm();
-        form.AddField("assignmentId", );
+        form.AddField("assignmentId", chosenAsg.assignmentId);
 
         using (UnityWebRequest www = UnityWebRequest.Post("https://seheroes.herokuapp.com/tele", form))
         {
             yield return www.SendWebRequest();
 
-            if (www.result != UnityWebRequest.Result.Success)
-            {
+            if (www.isNetworkError){
                 Debug.Log(www.error);
             }
-            else
-            {
-                Debug.Log("Form upload complete!");
+            else{
+                Debug.Log(www.downloadHandler.text);
+            }
+        }
+    }
+    
+    IEnumerator shareTweet(){
+        WWWForm form = new WWWForm();
+        form.AddField("assignmentId", chosenAsg.assignmentId);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("https://seheroes.herokuapp.com/tweet", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError){
+                Debug.Log(www.error);
+            }
+            else{
+                Debug.Log(www.downloadHandler.text);
             }
         }
     }
@@ -101,7 +117,16 @@ public class Assignment_Entry_Script : MonoBehaviour
                 chosenAsg = assignmentList[i-1];
                 deleteAssignment();
             });
-            entryTransform.Find("Text_Name").Find("Button_Share").GetComponent<Button>().onClick.AddListener(shareAssignment);
+            entryTransform.Find("Text_Name").Find("Button_Share_Tele").GetComponent<Button>().onClick.AddListener(() => {
+                int chosenAsgIndex = int.Parse(entryTransform.Find("Text_No").GetComponent<Text>().text);
+                chosenAsg = assignmentList[i-1];
+                shareAssignmentTele();
+            });
+            entryTransform.Find("Text_Name").Find("Button_Share_Tweet").GetComponent<Button>().onClick.AddListener(() => {
+                int chosenAsgIndex = int.Parse(entryTransform.Find("Text_No").GetComponent<Text>().text);
+                chosenAsg = assignmentList[i-1];
+                shareAssignmentTweet();
+            });
             entryTransform.localScale = new Vector2(1, 1);
             entryTransform.localPosition = new Vector2(0, -templateHeight * i);
         }
@@ -113,6 +138,12 @@ public class Assignment_Entry_Script : MonoBehaviour
         {
             noRecordLabel.gameObject.SetActive(false);
         }
+    }
+    void shareAssignmentTele(){
+        StartCoroutine(shareTele());
+    }
+    void shareAssignmentTweet(){
+        StartCoroutine(shareTweet());
     }
     public void viewAssignment()
     {
