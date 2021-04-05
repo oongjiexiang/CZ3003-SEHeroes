@@ -6,12 +6,13 @@ using UnityEngine.Networking;
 using SimpleJSON;
 using System.Linq;
 
-public class API_Connection : MonoBehaviour
+public class API_Connection
 {
     private readonly string baseURL = "https://seheroes.herokuapp.com/";
     // Start is called before the first frame update
     public IEnumerator GetData(string apiEndpoint, Dictionary<string, string> queryParams, System.Action<string> callback = null)   //Verified: Working
     {
+        Debug.Log("Enter get data");
         string fullURL = baseURL + apiEndpoint;
         if(queryParams != null)
         {
@@ -23,7 +24,7 @@ public class API_Connection : MonoBehaviour
             fullURL += "\b";
         }
         UnityWebRequest response = UnityWebRequest.Get(fullURL);
-        print(response.url);
+        Debug.Log(response.url);
         yield return response.SendWebRequest();
         
         if (response.isNetworkError || response.isHttpError)
@@ -32,14 +33,14 @@ public class API_Connection : MonoBehaviour
             yield break;
         }
         if(callback != null){
-            print("response callback is not null");
+            Debug.Log("response callback is not null");
             callback(response.downloadHandler.text);
         }
     }
-    public IEnumerator PostData(string apiEndpoint, string json_toAdd){
+    public IEnumerator PostData(string apiEndpoint, string json_toAdd, System.Action<string> callback = null){
         string fullURL = baseURL + apiEndpoint;
         // byte[] bytes_toAdd = System.Text.Encoding.UTF8.GetBytes(json_toAdd);
-        print(fullURL);
+        Debug.Log(fullURL);
 
         var addRequest = new UnityWebRequest(fullURL, "POST");
         byte[] bytes_toAdd = System.Text.Encoding.UTF8.GetBytes(json_toAdd);
@@ -47,21 +48,23 @@ public class API_Connection : MonoBehaviour
         addRequest.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
         addRequest.SetRequestHeader("Content-Type", "application/json");
         yield return addRequest.SendWebRequest();
-        Debug.Log("Status Code: " + addRequest.responseCode);
-        if (addRequest.isNetworkError)
-        {
+        Debug.Log("Status Code for post: " + addRequest.responseCode);
+        if (addRequest.isNetworkError){
             Debug.Log(addRequest.error);
         }
-        else
-        {
+        else{
             Debug.Log(addRequest.downloadHandler.text);
         }
-        // }
-        print("post successful");
+        Debug.Log("post successful");
+        if(callback != null){
+            Debug.Log("response callback is not null");
+            callback(addRequest.downloadHandler.text);
+        }
     }
-    public IEnumerator PutData(string apiEndpoint, string json_toModify)
+    public IEnumerator PutData(string apiEndpoint, string json_toModify, System.Action<string> callback = null)
     {   // PUT method: as extra compiler must be installed for dynamic type, pass json instead of whole object
         string fullURL = baseURL + apiEndpoint;
+        UnityWebRequest putRequest;
         //creating instance of class
             // TutorialClass studentRemove = new TutorialClass();
             // studentRemove.matricNo = matricNum;
@@ -78,31 +81,37 @@ public class API_Connection : MonoBehaviour
         byte[] bytes_toModify = System.Text.Encoding.UTF8.GetBytes(json_toModify);
 
         //Using UnityWebRequest to do a put request to the database
-        using (UnityWebRequest removeRequest = UnityWebRequest.Put(fullURL, bytes_toModify))
+        using (putRequest = UnityWebRequest.Put(fullURL, bytes_toModify))
         {
-            removeRequest.SetRequestHeader("Content-Type", "application/json");
-            yield return removeRequest.SendWebRequest();
-            if (removeRequest.isNetworkError)
+            putRequest.SetRequestHeader("Content-Type", "application/json");
+            yield return putRequest.SendWebRequest();
+            if (putRequest.isNetworkError)
             {
-                Debug.Log(removeRequest.error);
+                Debug.Log(putRequest.error);
             }
             else
             {
-                Debug.Log(removeRequest.downloadHandler.text);
+                Debug.Log(putRequest.downloadHandler.text);
             }
+        }
+        Debug.Log("Status Code for post: " + putRequest.responseCode);
+        Debug.Log("put successful");
+        if(callback != null){
+            Debug.Log("response callback is not null");
+            callback(putRequest.downloadHandler.text);
         }
     }
 
     public IEnumerator DeleteData(string apiEndpoint){  // Verified: Working
         string fullURL = baseURL + apiEndpoint;
         UnityWebRequest response = UnityWebRequest.Delete(fullURL);
-        print(response.url);
+        Debug.Log(response.url);
         yield return response.SendWebRequest();
         if (response.isNetworkError || response.isHttpError)
         {
             Debug.LogError(response.error);
             yield break;
         }
-        print("Delete successfully");
+        Debug.Log("Delete successfully");
     }
 }

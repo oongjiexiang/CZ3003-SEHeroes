@@ -28,8 +28,22 @@ public class AsgDate{
         minute = time.Minute;
         second = time.Second;
     }
+    public AsgDate(){
+        year = 2022;
+        month = 3;
+        day = 30;
+        hour = 10;
+        minute = 22;
+        second = 00;
+    }
     public string printTime(){
         return String.Format("{0}/{1}/{2} {3:d2}:{4:d2}", year, month, day, hour, minute);
+    }
+    public string printOnlyDate(){
+        return String.Format("{0}/{1}/{2}", year, month, day);
+    }
+    public string printOnlyTime(){
+        return String.Format("{0:d2}:{1:d2}", hour, minute);
     }
     public DateTime time(){
         return DateTime.Parse(String.Format("{0}/{1}/{2} {3}:{4}:00", year, month, day, hour, minute));

@@ -4,10 +4,11 @@ using UnityEngine.UI;
 using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
+using System.Globalization;
 
 public class Datetime_Controller_Script : MonoBehaviour
 {
-    const int range_year = 5;
+    const int RANGE_YEAR = 5;
 
     public GameObject HandleDate;
     public GameObject HandleTime;
@@ -15,10 +16,8 @@ public class Datetime_Controller_Script : MonoBehaviour
     private List<Dropdown> dropdowns = new List<Dropdown>();
     //private GameObject popUp;
 
-    void Start()
+    void Awake()
     {
-        //popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
-        //popUp.SetActive(false);
         dropdowns.Add(HandleDate.transform.Find("Dropdown_Year").GetComponent<Dropdown>());
         dropdowns.Add(HandleDate.transform.Find("Dropdown_Month").GetComponent<Dropdown>());
         dropdowns.Add(HandleDate.transform.Find("Dropdown_Day").GetComponent<Dropdown>());
@@ -32,13 +31,14 @@ public class Datetime_Controller_Script : MonoBehaviour
         int year = int.Parse(current.ToString("yyyy"));
         int month = int.Parse(current.ToString("MM"));
 
-        for (int i = 0; i <= range_year; i++)
+        for (int i = 0; i <= RANGE_YEAR; i++)
         {
             options[0].Add((year + i).ToString());
         }
         for (int i = 0; i < 12; i++)
         {
-            options[1].Add(current.AddMonths(i).ToString("MMM"));
+            options[1].Add(DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(i+1));
+            // options[1].Add(current.AddMonths(i).ToString("MMM"));
         }
         for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
         {
@@ -59,29 +59,11 @@ public class Datetime_Controller_Script : MonoBehaviour
             dropdowns[i].AddOptions(options[i]);
         }
     }
-
-    //public void ClickSaveSchedule()
-    //{
-    //    popUp.SetActive(true);
-    //    if (saveSchedules())
-    //    {
-    //        popUp.transform.Find("Popup_Save").gameObject.SetActive(true);
-    //    }
-    //    else
-    //    {
-    //        popUp.transform.Find("Popup_Error").gameObject.SetActive(true);
-    //    }
-    //}
-    public void confirmSave()
-    {
-        SceneManager.LoadScene("Assignments");
+    public void FocusValues(AsgDate time){
+        dropdowns[0].value = time.year - int.Parse(DateTime.Now.ToString("yyyy"));
+        dropdowns[1].value = time.month - 1;
+        dropdowns[2].value = time.day - 1;
+        dropdowns[3].value = time.hour;
+        dropdowns[4].value = time.minute/5;
     }
-    //public void confirmError()
-    //{
-    //    popUp.gameObject.SetActive(false);
-    //}
-    //private Boolean saveSchedules()
-    //{
-    //    return false;
-    //}
 }

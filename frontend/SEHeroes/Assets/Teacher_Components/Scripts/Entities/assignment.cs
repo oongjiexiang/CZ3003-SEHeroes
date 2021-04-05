@@ -1,18 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using SimpleJSON;
 using System.Linq;
 
 public class Assignment{
     public string assignmentName;
+    [System.NonSerialized]
     public string assignmentId;
     public int tries;
     public AsgDate startDate;      // will change
     public AsgDate dueDate;        // will change
     public List<string> questions;  // represents list of questionId 
     public Assignment(){
-
+        assignmentName = "Testing";
+        startDate = new AsgDate();
+        dueDate = new AsgDate();
+        tries = 2;
+        questions = new List<string>();
     }
     public Assignment(JSONNode jsonAsg){
         assignmentName = jsonAsg["assignmentName"];

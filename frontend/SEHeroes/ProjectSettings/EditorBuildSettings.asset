@@ -68,4 +68,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Teacher UI/Question_Bank_Editor.unity
     guid: 824e7f4a7bf02426f9cbb14508270695
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Assignment_Edit_Meta.unity
+    guid: 3057802e23e8cf447a56721912a3827d
   m_configObjects: {}

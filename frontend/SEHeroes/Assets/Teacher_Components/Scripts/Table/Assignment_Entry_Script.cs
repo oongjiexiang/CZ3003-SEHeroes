@@ -19,8 +19,7 @@ public class Assignment_Entry_Script : MonoBehaviour
     public GameObject mainContentPanel;
     public GameObject content;
 
-    public static string assignmentName;
-    public static string assignmentId;
+    public static Assignment chosenAsg;
 
     IEnumerator Start()
     {
@@ -28,10 +27,14 @@ public class Assignment_Entry_Script : MonoBehaviour
         popUp.SetActive(false);
         yield return StartCoroutine(setAssignmentList());
         tableInitialize();
+        popUp.transform.Find("Popup_Delete").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(confirmDelete);
+        popUp.transform.Find("Popup_Delete").Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(exitDelete);
+        transform.Find("Popup_Delete").Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(exitDelete);
     }
     IEnumerator setAssignmentList()
     {
         API_Connection conn = new API_Connection();
+        print(conn);
         JSONNode jsonNode = null;
         // print("in main: " + json_receivedData.Count);
         yield return StartCoroutine(conn.GetData("Assignment", null, s => {
@@ -42,9 +45,28 @@ public class Assignment_Entry_Script : MonoBehaviour
             assignmentList.Add(new Assignment(jsonNode[i]));
         }
     }
+    void shareTele(){
+        WWWForm form = new WWWForm();
+        form.AddField("assignmentId", );
+
+        using (UnityWebRequest www = UnityWebRequest.Post("https://seheroes.herokuapp.com/tele", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log("Form upload complete!");
+            }
+        }
+    }
     void tableInitialize()
     {
         entryContainer = content.transform.Find("Assignment_Entry_Container");
+        entryContainer.gameObject.SetActive(true);
         entryTemplate = entryContainer.Find("Assignment_Entry_Template").transform;
         entryTemplate.gameObject.SetActive(false);
         float templateHeight = 50f;
@@ -68,14 +90,18 @@ public class Assignment_Entry_Script : MonoBehaviour
             }
             entryTransform.Find("Text_Name").Find("Button_Edit").Find("Text").GetComponent<Text>().text = "View";
             entryTransform.Find("Text_Name").Find("Button_Edit").GetComponent<Button>().onClick.AddListener(() => {
-                assignmentName = entryTransform.Find("Text_Name").GetComponent<Text>().text;
+                int chosenAsgIndex = int.Parse(entryTransform.Find("Text_No").GetComponent<Text>().text);
+                chosenAsg = assignmentList[chosenAsgIndex-1];
                 viewAssignment();
             });
             entryTransform.Find("Text_Name").Find("Button_Delete").Find("Text").GetComponent<Text>().text = "Delete";
             entryTransform.Find("Text_Name").Find("Button_Delete").GetComponent<Button>().onClick.AddListener(() => {
-                assignmentName = entryTransform.Find("Text_Name").GetComponent<Text>().text;
-                viewAssignment();
+                // This block should be delete
+                int chosenAsgIndex = int.Parse(entryTransform.Find("Text_No").GetComponent<Text>().text);
+                chosenAsg = assignmentList[i-1];
+                deleteAssignment();
             });
+            entryTransform.Find("Text_Name").Find("Button_Share").GetComponent<Button>().onClick.AddListener(shareAssignment);
             entryTransform.localScale = new Vector2(1, 1);
             entryTransform.localPosition = new Vector2(0, -templateHeight * i);
         }
@@ -90,7 +116,7 @@ public class Assignment_Entry_Script : MonoBehaviour
     }
     public void viewAssignment()
     {
-        SceneManager.LoadScene("Assignments_View");
+        SceneManager.LoadScene("Assignment_Edit_Meta");
     }
     public void scheduleAssignment()
     {
@@ -100,15 +126,16 @@ public class Assignment_Entry_Script : MonoBehaviour
     {
         popUp.SetActive(true);
         popUp.transform.Find("Popup_Delete").gameObject.SetActive(true);   
+    }
+    public void confirmDelete(){
+        // delete request to backend here
         SceneManager.LoadScene("Assignments");
     }
-    public void confirmDelete()
-    {
-        //
-        SceneManager.LoadScene("Assignments");
+    public void exitDelete(){
+        popUp.transform.Find("Popup_Delete").gameObject.SetActive(false);   
+        popUp.SetActive(false);
     }
-    public void exitDelete()
-    {
-        popUp.gameObject.SetActive(false);
+    public void shareAssignment(){
+        print("Still need to connect to API");
     }
 }
