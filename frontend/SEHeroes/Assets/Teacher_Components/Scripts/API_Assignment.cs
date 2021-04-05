@@ -13,6 +13,7 @@ public class API_Assignment : MonoBehaviour{
     public static Boolean asgQListRequestDone;
     public static Boolean asgQAddDone;
     public static Boolean asgQDeleteDone;
+    public static Boolean asgQUpdateDone;
     public static List<JSONNode> jsonNodeAsgQ;
 
     public API_Assignment(){
@@ -21,6 +22,7 @@ public class API_Assignment : MonoBehaviour{
         asgQRequestDone = true;
         asgQAddDone = true;
         asgQDeleteDone = true;
+        asgQUpdateDone = true;
     }
 
     // public Assignment getAssignment(string assignmentId){
@@ -54,21 +56,6 @@ public class API_Assignment : MonoBehaviour{
         }));
         asgQListRequestDone = true;
     }
-    public IEnumerator saveBack(Assignment asg){
-        API_Connection conn = new API_Connection();
-        string jsonString = JsonUtility.ToJson(asg);
-        Debug.Log(jsonString + " for assignment");
-        yield return StartCoroutine(conn.PostData("assignment", jsonString, s => {
-            Debug.Log(s);
-            Debug.Log(JSON.Parse(s));
-            asg.assignmentId = JSON.Parse(s);
-        }));
-        Debug.Log(asg.assignmentId + " is this assignment's id ");
-        // yield return null;
-    }
-    // public IEnumerator createAssignment(Assignment asg, List<AssignmentQuestion> asgQuestion){
-    //     Debug.Log("");
-    // }
     public IEnumerator addQuestion(Assignment asg, AssignmentQuestion asgQuestion){
         asgQAddDone = false;
         API_Connection conn = new API_Connection();
@@ -90,5 +77,15 @@ public class API_Assignment : MonoBehaviour{
             asgQuestion.assignmentQuestionId = JSON.Parse(s);
         }));
         asgQDeleteDone = true;
+    }
+    public IEnumerator updateQuestion(AssignmentQuestion asgQuestion){
+        asgQUpdateDone = false;
+        API_Connection conn = new API_Connection();
+        string jsonString = JsonUtility.ToJson(asgQuestion);
+        yield return StartCoroutine(conn.PutData("assignmentQUestion/" + asgQuestion.assignmentQuestionId, jsonString, s => {
+            print(JSON.Parse(s) == asgQuestion.assignmentQuestionId);
+        }));
+        asgQUpdateDone = true;
+        yield return null;
     }
 }

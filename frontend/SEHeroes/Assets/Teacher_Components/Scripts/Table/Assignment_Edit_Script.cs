@@ -85,19 +85,15 @@ public class Assignment_Edit_Script : MonoBehaviour
     public void ClickReturn(){
         SceneManager.LoadScene("Assignments");
     }
-    public void ClickSave() // not done
+    public void ClickSave()
     {
         if(validateFields()){
-            // compare all fields. If yes, call API POST
             if(newQuestion && cur == asgQuestionList.Count - 1){
-                print("add question");
-                newQuestion = false;    //
-                print(current_question.question);
-                // print()
+                newQuestion = false;
                 StartCoroutine(conn.addQuestion(asg, current_question));
             }
-            else if(newQuestion){
-                print("update question");
+            else{
+                StartCoroutine(conn.updateQuestion(current_question));
             }
             // popUp.SetActive(true);
             // popUp.transform.Find("Popup_Create").gameObject.SetActive(true);
@@ -158,7 +154,7 @@ public class Assignment_Edit_Script : MonoBehaviour
         popUp.transform.Find("Popup_Info").gameObject.SetActive(false);
         popUp.gameObject.SetActive(false);
     }
-    public void confirmDelete(){ //
+    public void confirmDelete(){
         print("confirm delete");
         exitDelete();
         StartCoroutine(conn.deleteQuestion(asg, current_question));
