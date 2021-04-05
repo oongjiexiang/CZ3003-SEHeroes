@@ -12,6 +12,7 @@ public class API_Assignment : MonoBehaviour{
     public static Boolean asgQRequestDone;
     public static Boolean asgQListRequestDone;
     public static Boolean asgQAddDone;
+    public static Boolean asgQDeleteDone;
     public static List<JSONNode> jsonNodeAsgQ;
 
     public API_Assignment(){
@@ -19,6 +20,7 @@ public class API_Assignment : MonoBehaviour{
         asgRequestDone = true;
         asgQRequestDone = true;
         asgQAddDone = true;
+        asgQDeleteDone = true;
     }
 
     // public Assignment getAssignment(string assignmentId){
@@ -77,5 +79,16 @@ public class API_Assignment : MonoBehaviour{
             asgQuestion.assignmentQuestionId = JSON.Parse(s);
         }));
         asgQAddDone = true;
+    }
+    public IEnumerator deleteQuestion(Assignment asg, AssignmentQuestion asgQuestion){
+        asgQDeleteDone = false;
+        API_Connection conn = new API_Connection();
+        // AssignmentQuestionForAPI asgQAPI = new AssignmentQuestionForAPI(asgQuestion);
+        string jsonString = "{\"assignmentQuestionId: \"" + asgQuestion.assignmentQuestionId + "\"}";
+        Debug.Log(jsonString + " for assignment question");
+        yield return StartCoroutine(conn.PutData("assignment/" + asg.assignmentId + "/removeQuestion", jsonString, s => {
+            asgQuestion.assignmentQuestionId = JSON.Parse(s);
+        }));
+        asgQDeleteDone = true;
     }
 }

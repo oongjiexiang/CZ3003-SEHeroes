@@ -45,8 +45,9 @@ public class Assignment_Edit_Script : MonoBehaviour
         panelObject.transform.Find("Button_Clear").GetComponent<Button>().onClick.AddListener(ClickClear);
         panelObject.transform.Find("Button_Delete").GetComponent<Button>().onClick.AddListener(ClickDelete);
         popUp.transform.Find("Popup_Incomplete").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(popupQuestionIncompleteAcknowledge);
-        popUp.transform.Find("Popup_Info").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(confirmDelete);
-        popUp.transform.Find("Popup_Delete").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(exitDelete);
+        popUp.transform.Find("Popup_Info").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(popupQuestionInfoAcknowledge);
+        popUp.transform.Find("Popup_Delete").Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(exitDelete);
+        popUp.transform.Find("Popup_Delete").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(confirmDelete);
         
         // variables: questions
         fetchQuestions(asg); 
@@ -158,7 +159,9 @@ public class Assignment_Edit_Script : MonoBehaviour
         popUp.gameObject.SetActive(false);
     }
     public void confirmDelete(){ //
+        print("confirm delete");
         exitDelete();
+        StartCoroutine(conn.deleteQuestion(asg, current_question));
         if(cur < asgQuestionList.Count - 1){
             asgQuestionList.RemoveAt(cur);
             current_question = asgQuestionList[cur];

@@ -29,7 +29,6 @@ public class API_Connection
         
         if (response.isNetworkError || response.isHttpError)
         {
-            //Debug.LogError(assignmentInfoRequest.error);
             yield break;
         }
         if(callback != null){
@@ -39,7 +38,6 @@ public class API_Connection
     }
     public IEnumerator PostData(string apiEndpoint, string json_toAdd, System.Action<string> callback = null){
         string fullURL = baseURL + apiEndpoint;
-        // byte[] bytes_toAdd = System.Text.Encoding.UTF8.GetBytes(json_toAdd);
         Debug.Log(fullURL);
 
         var addRequest = new UnityWebRequest(fullURL, "POST");
@@ -64,20 +62,9 @@ public class API_Connection
     public IEnumerator PutData(string apiEndpoint, string json_toModify, System.Action<string> callback = null)
     {   // PUT method: as extra compiler must be installed for dynamic type, pass json instead of whole object
         string fullURL = baseURL + apiEndpoint;
+        Debug.Log("in apiEndpoint " + apiEndpoint);
+        Debug.Log("in API_Connections " + fullURL); 
         UnityWebRequest putRequest;
-        //creating instance of class
-            // TutorialClass studentRemove = new TutorialClass();
-            // studentRemove.matricNo = matricNum;
-
-        //use the JsonUtility.ToJson method to serialize it (convert it) to the JSON format
-        //string json_toModify = JsonUtility.ToJson(toModify);    
-            // string json_remove_student = JsonUtility.ToJson(studentRemove);
-        // json now contains: '{"matricNo":<student_matric_number>}'
-
-        //To convert the JSON back into an object, use JsonUtility.FromJson:
-        // myObject = JsonUtility.FromJson<MyClass>(json);
-
-        //Convert the json format to byte form to prepare to pass to put api
         byte[] bytes_toModify = System.Text.Encoding.UTF8.GetBytes(json_toModify);
 
         //Using UnityWebRequest to do a put request to the database
@@ -97,8 +84,10 @@ public class API_Connection
         // Debug.Log("Status Code for post: " + putRequest.responseCode);
         Debug.Log("put successful");
         if(callback != null){
-            Debug.Log("response callback is not null");
-            callback(putRequest.downloadHandler.text);
+            try{
+                callback(putRequest.downloadHandler.text);
+            }
+            catch(Exception){}
         }
     }
 
