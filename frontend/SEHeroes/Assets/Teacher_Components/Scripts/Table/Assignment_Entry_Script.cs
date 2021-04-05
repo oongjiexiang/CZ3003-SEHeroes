@@ -29,6 +29,7 @@ public class Assignment_Entry_Script : MonoBehaviour
         tableInitialize();
         popUp.transform.Find("Popup_Delete").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(confirmDelete);
         popUp.transform.Find("Popup_Delete").Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(exitDelete);
+        transform.Find("Popup_Delete").Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(exitDelete);
     }
     IEnumerator setAssignmentList()
     {
@@ -42,6 +43,24 @@ public class Assignment_Entry_Script : MonoBehaviour
         assignmentList = new List<Assignment>();
         for(int i = 0; i < jsonNode.Count; i++){
             assignmentList.Add(new Assignment(jsonNode[i]));
+        }
+    }
+    void shareTele(){
+        WWWForm form = new WWWForm();
+        form.AddField("assignmentId", );
+
+        using (UnityWebRequest www = UnityWebRequest.Post("https://seheroes.herokuapp.com/tele", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log("Form upload complete!");
+            }
         }
     }
     void tableInitialize()
