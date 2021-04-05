@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Teacher UI/Story_Mode.unity
     guid: ed8d4918afda143d0984b4cb2a75796e
   - enabled: 1
-    path: Assets/Scenes/Teacher UI/Question_Bank.unity
+    path: Assets/Scenes/Teacher UI/Question_Bank_World.unity
     guid: 098b8cf63de1e4b39a4a31773fd5317f
   - enabled: 1
     path: Assets/Scenes/Teacher UI/Leaderboard.unity
@@ -53,4 +53,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Teacher UI/Student_Report.unity
     guid: 587601a9b1116472e8d4620853288db0
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Question_Bank_Section.unity
+    guid: eea28ca0071db484badbdc3b2b383eae
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Question_Bank_Management.unity
+    guid: 75467ecd0fcdb479c80620c1b5651933
   m_configObjects: {}
