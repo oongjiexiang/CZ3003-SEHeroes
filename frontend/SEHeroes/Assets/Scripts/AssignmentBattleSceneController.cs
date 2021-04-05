@@ -42,6 +42,7 @@ public class AssignmentBattleSceneController : MonoBehaviour
     [SerializeField] Button Dbutton;
     public Button DButton { get { return Dbutton; } }
     public Animator enemy;
+    public Animator player;
     public Canvas ForestBG;
     public Canvas VillageBG;
     public Canvas SnowlandBG;
@@ -90,17 +91,20 @@ public class AssignmentBattleSceneController : MonoBehaviour
                 if (correctAnswerIndex == userAnswer)
                 {
                     enemy.Play(level.ToLower() + "Hit");
+                    player.Play("CorrectAttack");
                     scoreCount+=score;
                 }
                 else
                 {
                      enemy.Play(level.ToLower() + "Attack");
+                     player.Play("Hit");
                 }
 
                 if (questionCounter == allQA.Count-1)
                 {
                     resultCanvas.gameObject.SetActive(true);
                     totalScore.SetText(scoreCount.ToString());
+                    APIController.PostAssignmentResult(ProgramStateController.assID,ProgramStateController.matricNo,scoreCount.ToString());
                 }
 
                 currQuestion = allQA.ElementAt(questionCounter);
@@ -136,29 +140,7 @@ public class AssignmentBattleSceneController : MonoBehaviour
 
 
     }
-    // IEnumerator GetQuesAPI()
-    // {
-    //     string QuesURL = baseQuesAPIURL + assID;
-    //     UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
-    //     yield return quesRequest.SendWebRequest();
-
-    //     if (quesRequest.isNetworkError || quesRequest.isHttpError)
-    //     {
-    //         Debug.LogError(quesRequest.error);
-    //         yield break;
-    //     }
-
-    //     JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
-    //     for (int i = 0; i < quesInfo.Count; i++)
-    //     {
-    //         Debug.Log(quesInfo[i]);
-    //         allQA.Add(quesInfo[i]);
-    //     }
-    //     APIdone = true;
-
-
-    // }
-
+    
     private IEnumerator HandleIt()
     {
         yield return new WaitForSeconds(2.0f);

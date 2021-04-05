@@ -27,6 +27,8 @@ public static class APIController
     private static readonly string baseAssQuesAPIURL = "https://seheroes.herokuapp.com/assignmentQuestion?assignmentId=";
     private static readonly string baseAssResultAPIURL = "https://seheroes.herokuapp.com/assignmentResult";
 
+    // ------------------------------ AUTHENTICATION ------------------------------ //
+
     public static IEnumerator RequestLogin(string matricNo, string password) {
         WWWForm form = new WWWForm();
         form.AddField("matricNo", matricNo);
@@ -86,6 +88,8 @@ public static class APIController
         }
     }
 
+    // ------------------------------ STORY MODE ------------------------------ //
+
     // Get Unlocked World, Sections, and respective Levels
     public static IEnumerator GetUnlockedStates(string matricNo) {
         string unlockedSectionsURL = baseGetUnlockedSectAPIURL +
@@ -107,7 +111,7 @@ public static class APIController
         SectionController.APIdone = true;
         LevelSelectionController.APIdone = true;
     }
-
+    
     // Get Story Mode Questions and Answers
     public static IEnumerator GetStoryModeQuesAPI() {
         string QuesURL = baseStoryModeQuesAPIURL +
@@ -154,6 +158,50 @@ public static class APIController
         Debug.Log(storyModeResultInfo);
     }
 
+    // ------------------------------ OPEN CHALLENGE ------------------------------ //
+
+    public static IEnumerator GetMultipStoryModeQuesAPI() {
+        string QuesURL = baseStoryModeQuesAPIURL +
+                                "world=" +MultiPlayerBattleSceneController.world +
+                                    "&section=" + MultiPlayerBattleSceneController.section +
+                                        "&level=" + MultiPlayerBattleSceneController.level;
+        UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
+        yield return quesRequest.SendWebRequest();
+
+        if (quesRequest.isNetworkError || quesRequest.isHttpError)
+        {
+            Debug.LogError(quesRequest.error);
+            yield break;
+        }
+
+        JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
+        for (int i = 0; i < quesInfo.Count; i++)
+            MultiPlayerBattleSceneController.allQA.Add(quesInfo[i]);
+
+        MultiPlayerBattleSceneController.APIdone = true;
+    }
+
+    public static IEnumerator GetFriendStoryModeQuesAPI() {
+        string QuesURL = baseStoryModeQuesAPIURL +
+                                "world=" +MultiPlayerBattleSceneController.world +
+                                    "&section=" + MultiPlayerBattleSceneController.section +
+                                        "&level=" + MultiPlayerBattleSceneController.level;
+        UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
+        yield return quesRequest.SendWebRequest();
+
+        if (quesRequest.isNetworkError || quesRequest.isHttpError)
+        {
+            Debug.LogError(quesRequest.error);
+            yield break;
+        }
+
+        JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
+        for (int i = 0; i < quesInfo.Count; i++)
+            FriendBattleSceneController.allQA.Add(quesInfo[i]);
+
+        FriendBattleSceneController.APIdone = true;
+    }
+
     // Get Story Mode Questions and Answers
     public static IEnumerator GetLeaderboard() {
         string leaderboardURL = baseGetLeaderboardAPIURL;
@@ -173,6 +221,8 @@ public static class APIController
         }
         LeaderboardContainer.APIdone = true;
     }
+
+    // ------------------------------ BOSS BATTLE ------------------------------ //
 
     // Get Assignment List
     public static IEnumerator GetAssignments(string matricNo) {
@@ -199,7 +249,6 @@ public static class APIController
         AssignmentContainer.APIdone = true;
     }
 
-    // Get Assignment Questions    
     public static IEnumerator GetAssignmentQuesAPI() {
         string QuesURL = baseAssQuesAPIURL + ProgramStateController.assID;
         UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);

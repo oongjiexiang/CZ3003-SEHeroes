@@ -38,11 +38,16 @@ public class BattleSceneController : MonoBehaviour
     private int enemyPerHealth;
     private int playerMaxHP;
     private int enemyMaxHP;
+    private int playerAttack;
+    private int playerHit;
+    private float playerHeal;
+    private float playerCri;
+    private int playerCrtHit;
     public Image[] playerhealthImages;
     public Image[] enemyhealthImages;
     public Sprite[] healthSprites;
     private int startHearts = 5;
-
+    private Dictionary<string, object> characterDict;
     [SerializeField] Button Abutton;
     public Button AButton { get { return Abutton; } }
     [SerializeField] Button Bbutton;
@@ -52,6 +57,7 @@ public class BattleSceneController : MonoBehaviour
     [SerializeField] Button Dbutton;
     public Button DButton { get { return Dbutton; } }
     public Animator enemy;
+    public Animator player;
     public Canvas ForestBG;
     public Canvas VillageBG;
     public Canvas SnowlandBG;
@@ -67,20 +73,69 @@ public class BattleSceneController : MonoBehaviour
         ProgramStateController.viewState();
         StartCoroutine(APIController.GetStoryModeQuesAPI());
         //StartCoroutine(GetQuesAPI());
+        initializeCharacter();
+        initializeHP();
         playerMaxHP = 20;
         enemyMaxHP = 10;
+
         playerPerHealth = playerMaxHP / 5;
         enemyPerHealth = enemyMaxHP / 5;
+
         playerHP = playerMaxHP;
         enemyHP = enemyMaxHP;
 
-        resultCanvas.gameObject.SetActive(false);
         checkHealthAmount(playerhealthImages);
         checkHealthAmount(enemyhealthImages);
+
         UpdateHearts(playerhealthImages, true);
         UpdateHearts(enemyhealthImages, false);
+        resultCanvas.gameObject.SetActive(false);
         UpdateBG(world);
         enemy.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/"+world+"MonsterController/"+level+world+"Monst");
+    }
+
+    void initializeCharacter(){
+        switch(ProgramStateController.characterType){
+            case "Warrior":
+            Debug.Log("1");
+            characterDict = BattleSceneCharacterController.warrior;
+            break;
+            case "Magician":
+             Debug.Log("2");
+            characterDict = BattleSceneCharacterController.magician;
+            break;
+            case "Bowman":
+             Debug.Log("3");
+            characterDict = BattleSceneCharacterController.bowman;
+            break;
+            case "Swordman":
+             Debug.Log("4");
+            characterDict = BattleSceneCharacterController.swordman;
+            break;
+        }
+        foreach (KeyValuePair<string, object> kvp in BattleSceneCharacterController.warrior)
+            Debug.Log ("Key = {0} + Value = {1}"+ kvp.Key + kvp.Value);
+        playerAttack = (int)characterDict["Damage"];
+        playerHit = (int)characterDict["Hit"];
+        playerCri = (float)characterDict["Crit"];
+        playerHeal = (float)characterDict["HealChance"];
+        playerCrtHit = (int)characterDict["CritDamage"];
+    }
+    void initializeHP(){
+        playerMaxHP = 20;
+        enemyMaxHP = 10;
+
+        playerPerHealth = playerMaxHP / 5;
+        enemyPerHealth = enemyMaxHP / 5;
+
+        playerHP = playerMaxHP;
+        enemyHP = enemyMaxHP;
+
+        checkHealthAmount(playerhealthImages);
+        checkHealthAmount(enemyhealthImages);
+
+        UpdateHearts(playerhealthImages, true);
+        UpdateHearts(enemyhealthImages, false);
     }
 
     // Update is called once per frame
@@ -110,22 +165,30 @@ public class BattleSceneController : MonoBehaviour
                 {
                     //Animation
                     enemy.Play(level.ToLower() + "Hit");
-                    //getEnemyHPLoss(character)
-                    UpdateHP(false, -2);//TODO
-                    //update HP icon
+                    player.Play("CorrectAttack");
+                    float randValue=UnityEngine.Random.value;
+                    Debug.Log(randValue);
+                    if(randValue<playerCri)
+                        UpdateHP(false, playerCrtHit*(-1));
+                    else
+                        UpdateHP(false,playerAttack*(-1));
+                    if(UnityEngine.Random.value<playerHeal)
+                    {
+                        UpdateHP(true,1);//add health if random val smaller that heal percentage
+                    }
                 }
                 else
                 {
                     //Animation
-                     enemy.Play(level.ToLower() + "Attack");
-                    //getPlayerHPLoss(character)
-                    UpdateHP(true, -2);//TODO
-                    //update HP icon
+                    enemy.Play(level.ToLower() + "Attack");
+                    player.Play("Hit");
+                    UpdateHP(true, playerHit*(-1));//TODO
                 }
 
                 if (playerHP <= 0)
                 {
                     //Die animatin
+                     player.Play("Hit");
                     //show u loss
                     resultCanvas.gameObject.SetActive(true);
                     vic.gameObject.SetActive(false);

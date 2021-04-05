@@ -50,13 +50,19 @@
      <Compile Include="Assets\Scripts\CharacterSelectionCollider.cs" />
      <Compile Include="Assets\Scripts\CharacterSelectionController.cs" />
      <Compile Include="Assets\Scripts\DialogMessageController.cs" />
+     <Compile Include="Assets\Scripts\FriendBattlePlayerController.cs" />
+     <Compile Include="Assets\Scripts\FriendBattleQuestionController.cs" />
      <Compile Include="Assets\Scripts\FriendBattleSceneController.cs" />
+     <Compile Include="Assets\Scripts\FriendRoomController.cs" />
      <Compile Include="Assets\Scripts\InputFieldController.cs" />
      <Compile Include="Assets\Scripts\LeaderboardContainer.cs" />
      <Compile Include="Assets\Scripts\LevelSelectionController.cs" />
      <Compile Include="Assets\Scripts\LoginController.cs" />
      <Compile Include="Assets\Scripts\MainMenuController.cs" />
      <Compile Include="Assets\Scripts\MissingInputField.cs" />
+     <Compile Include="Assets\Scripts\MultiPlayerBattleSceneController.cs" />
+     <Compile Include="Assets\Scripts\MultiPlayerQuestionController.cs" />
+     <Compile Include="Assets\Scripts\MultiplePlayersRoomController.cs" />
      <Compile Include="Assets\Scripts\MusicController.cs" />
      <Compile Include="Assets\Scripts\OpenChallengeController.cs" />
      <Compile Include="Assets\Scripts\ProfileController.cs" />
@@ -284,11 +290,11 @@
     <Reference Include="Newtonsoft.Json">
         <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Assets/Plugins/Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Photon3Unity3D">
-        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Assets/Photon/PhotonLibs/netstandard2.0/Photon3Unity3D.dll</HintPath>
-    </Reference>
     <Reference Include="websocket-sharp">
         <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Assets/Photon/PhotonLibs/WebSocket/websocket-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Photon3Unity3D">
+        <HintPath>/Users/bryson/PROJECTS/CZ3003/frontend/SEHeroes/Assets/Photon/PhotonLibs/netstandard2.0/Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
         <HintPath>/Applications/Unity/Hub/Editor/2019.4.21f1/Unity.app/Contents/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
