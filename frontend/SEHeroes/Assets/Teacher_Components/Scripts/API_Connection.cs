@@ -91,7 +91,7 @@ public class API_Connection
         }
     }
 
-    public IEnumerator DeleteData(string apiEndpoint){  // Verified: Working
+    public IEnumerator DeleteData(string apiEndpoint, System.Action<string> callback = null){  // Verified: Working
         string fullURL = baseURL + apiEndpoint;
         UnityWebRequest response = UnityWebRequest.Delete(fullURL);
         Debug.Log(response.url);
@@ -101,6 +101,11 @@ public class API_Connection
             Debug.LogError(response.error);
             yield break;
         }
-        Debug.Log("Delete successfully");
+        if(callback != null){
+            try{
+                callback(response.downloadHandler.text);
+            }
+            catch(Exception){}
+        }
     }
 }

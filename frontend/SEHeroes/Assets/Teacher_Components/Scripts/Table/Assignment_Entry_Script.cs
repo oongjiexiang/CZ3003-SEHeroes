@@ -21,9 +21,11 @@ public class Assignment_Entry_Script : MonoBehaviour
     public GameObject content;
 
     public static Assignment chosenAsg;
+    private API_Assignment conn;
 
     IEnumerator Start()
     {
+        conn = (API_Assignment)transform.GetComponent(typeof(API_Assignment));
         popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
         popUp.SetActive(false);
         yield return StartCoroutine(setAssignmentList());
@@ -34,9 +36,7 @@ public class Assignment_Entry_Script : MonoBehaviour
     IEnumerator setAssignmentList()
     {
         API_Connection conn = new API_Connection();
-        print(conn);
         JSONNode jsonNode = null;
-        // print("in main: " + json_receivedData.Count);
         yield return StartCoroutine(conn.GetData("Assignment", null, s => {
             jsonNode = JSON.Parse(s);
         }));
@@ -114,7 +114,7 @@ public class Assignment_Entry_Script : MonoBehaviour
             entryTransform.Find("Text_Name").Find("Button_Delete").GetComponent<Button>().onClick.AddListener(() => {
                 // This block should be delete
                 int chosenAsgIndex = int.Parse(entryTransform.Find("Text_No").GetComponent<Text>().text);
-                chosenAsg = assignmentList[i-1];
+                chosenAsg = assignmentList[chosenAsgIndex-1];
                 deleteAssignment();
             });
             entryTransform.Find("Text_Name").Find("Button_Share_Tele").GetComponent<Button>().onClick.AddListener(() => {
@@ -160,6 +160,7 @@ public class Assignment_Entry_Script : MonoBehaviour
     }
     public void confirmDelete(){
         // delete request to backend here
+        StartCoroutine(conn.deleteAssignment(chosenAsg));
         SceneManager.LoadScene("Assignments");
     }
     public void exitDelete(){
