@@ -20,7 +20,7 @@ public class Create_Assignment_Script : MonoBehaviour
     private Transform entryContainer;
     private GameObject popUp;
     private Dropdown dropdownAnswer;
-    
+    private API_Assignment conn;
 
     // Start is called before the first frame update
     void Awake()
@@ -34,6 +34,7 @@ public class Create_Assignment_Script : MonoBehaviour
         // panelObject.transform.Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(() => clickCancel());
 
         // variables: questions
+        conn = (API_Assignment)transform.GetComponent(typeof(API_Assignment));
         asgQuestionList = new List<AssignmentQuestion>();
         current_question = new AssignmentQuestion();
         asgQuestionList.Add(current_question);
@@ -45,6 +46,8 @@ public class Create_Assignment_Script : MonoBehaviour
         if(validateFields()){
             popUp.SetActive(true);
             popUp.transform.Find("Popup_Create").gameObject.SetActive(true);
+            StartCoroutine(conn.addAssignment(asg, asgQuestionList));
+            SceneManager.LoadScene("Assignments");
         }
         else{
             popupQuestionIncomplete();

@@ -33,3 +33,22 @@ public class Assignment{
             questions.Add(jsonAsg["questions"][j]);
     }
 }
+
+[Serializable]
+public class AssignmentForAPI{
+    public string assignmentName;
+    [System.NonSerialized]
+    public string assignmentId;
+    public int tries;
+    public AsgDate startDate;   
+    public AsgDate dueDate;    
+    public List<AssignmentQuestion> questions; 
+    public AssignmentForAPI(Assignment asg, List<AssignmentQuestion> questions){
+        assignmentName = asg.assignmentName;
+        assignmentId = asg.assignmentId;
+        tries = asg.tries;
+        startDate = asg.startDate;
+        dueDate = asg.dueDate;
+        this.questions = questions;
+    }
+}

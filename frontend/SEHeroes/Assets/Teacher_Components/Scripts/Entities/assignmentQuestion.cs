@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using SimpleJSON;
 using System.Linq;
 using UnityEngine;
+using System;
 
+[Serializable]
 public class AssignmentQuestion{
     public string question;
     [System.NonSerialized]

@@ -14,6 +14,7 @@ public class API_Assignment : MonoBehaviour{
     public static Boolean asgQAddDone;
     public static Boolean asgQDeleteDone;
     public static Boolean asgQUpdateDone;
+    public static Boolean asgAddDone;
     public static List<JSONNode> jsonNodeAsgQ;
 
     public API_Assignment(){
@@ -23,6 +24,7 @@ public class API_Assignment : MonoBehaviour{
         asgQAddDone = true;
         asgQDeleteDone = true;
         asgQUpdateDone = true;
+        asgQAddDone = true;
     }
 
     // public Assignment getAssignment(string assignmentId){
@@ -34,6 +36,19 @@ public class API_Assignment : MonoBehaviour{
     //     }));
     //     return new Assignment(jsonNode);
     // }
+    public IEnumerator addAssignment(Assignment asg, List<AssignmentQuestion> asgQuestions){
+        asgAddDone = false;
+        API_Connection conn = new API_Connection();
+        AssignmentForAPI asgAPI = new AssignmentForAPI(asg, asgQuestions);
+        string jsonString = JsonUtility.ToJson(asgAPI);
+        Debug.Log(jsonString + " for assignment question");
+        yield return StartCoroutine(conn.PostData("assignment/", jsonString, s => {
+            // asgQuestion.assignmentQuestionId = 
+            print(JSON.Parse(s));
+        }));
+        // yield return null;
+        asgQAddDone = true;
+    }
     public IEnumerator getAssignmentQuestion(string assignmentQuestionId){
         JSONNode jsonNode = null;
         API_Connection conn = new API_Connection();

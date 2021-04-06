@@ -104,11 +104,11 @@ public class Assignment_Entry_Script : MonoBehaviour
             else{
                 entryTransform.Find("Text_Status").GetComponent<Text>().text = "From " + assignmentList[i].startDate.printTime();
             }
-            entryTransform.Find("Text_Name").Find("Button_Edit").Find("Text").GetComponent<Text>().text = "View";
+            entryTransform.Find("Text_Name").Find("Button_Edit").Find("Text").GetComponent<Text>().text = "Edit";
             entryTransform.Find("Text_Name").Find("Button_Edit").GetComponent<Button>().onClick.AddListener(() => {
                 int chosenAsgIndex = int.Parse(entryTransform.Find("Text_No").GetComponent<Text>().text);
                 chosenAsg = assignmentList[chosenAsgIndex-1];
-                viewAssignment();
+                editAssignment();
             });
             entryTransform.Find("Text_Name").Find("Button_Delete").Find("Text").GetComponent<Text>().text = "Delete";
             entryTransform.Find("Text_Name").Find("Button_Delete").GetComponent<Button>().onClick.AddListener(() => {
@@ -145,7 +145,7 @@ public class Assignment_Entry_Script : MonoBehaviour
     void shareAssignmentTweet(){
         StartCoroutine(shareTweet());
     }
-    public void viewAssignment()
+    public void editAssignment()
     {
         SceneManager.LoadScene("Assignment_Edit_Meta");
     }
