@@ -26,6 +26,7 @@ public class Student_Delete_List_Script : MonoBehaviour
     public static string studentUsername;
     public static string currentTutorialIndex= Tutorial_List_Script.indexNumber;
     
+    public GameObject RemovedPanel;
 
     private static string baseStudentInfoURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex;
     private static string baseUsersURL = "https://seheroes.herokuapp.com/user";
@@ -34,6 +35,8 @@ public class Student_Delete_List_Script : MonoBehaviour
     //use this for initialization
     void Start () 
     { 
+        RemovedPanel.gameObject.SetActive (false);
+        
         currentTutorialIndex= Tutorial_List_Script.indexNumber;
         baseStudentInfoURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex;
         baseRemoveStudentURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex + "/remove";
@@ -169,6 +172,8 @@ public class Student_Delete_List_Script : MonoBehaviour
             }
         }
 
+        RemovedPanel.gameObject.SetActive (true);
+
 
     }
 
@@ -185,6 +190,11 @@ public class Student_Delete_List_Script : MonoBehaviour
     public void showstudentListPopUp() 
     {
         studentPopUp.gameObject.SetActive (true);
+    }
+
+    public void dismissRemove()
+    {
+        SceneManager.LoadScene("Tutorial_Group_Management");
     }
 
 

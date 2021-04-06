@@ -18,11 +18,18 @@ public class Tutorial_Editor_Script : MonoBehaviour
 
     public string matricNum;
     public GameObject inputField;
+    public GameObject AddedPanel;
    
     
 
     private readonly string baseAddStudentURL = "https://seheroes.herokuapp.com/tutorialGroup/" + currentTutorialIndex + "/add";
     
+
+    void Start()
+    {
+        AddedPanel.gameObject.SetActive (false);
+    }
+
     //use this for initialization
     public void onSubmit () 
     { 
@@ -76,12 +83,19 @@ public class Tutorial_Editor_Script : MonoBehaviour
             }
         }
 
+        AddedPanel.gameObject.SetActive (true);
+
 
     }
 
     public void viewStudent()
     {
         SceneManager.LoadScene("Student_Management");
+    }
+
+    public void dismissAdd()
+    {
+        SceneManager.LoadScene("Tutorial_Group_Management");
     }
 
   

@@ -58,7 +58,7 @@ public class Window_Graph : MonoBehaviour
         int noStudents = 0;
         int avgScore = 0;
         
-        for (int i = 0; i < storyReportInfo.Count; i++)
+        for (int i = 0; i < 9; i++)
         {
            worldTextArray.Add(storyReportInfo[i]["world"]);
            allSectionArray.Add(storyReportInfo[i]["section"]);
@@ -69,7 +69,11 @@ public class Window_Graph : MonoBehaviour
             //Calculate average score in a level
             sum = sum + allScoreArray[i]["1"]*1 + allScoreArray[i]["2"]*2 + allScoreArray[i]["3"]*3;
             noStudents = noStudents + allScoreArray[i]["0"] + allScoreArray[i]["1"] + allScoreArray[i]["2"] + allScoreArray[i]["3"];
-            avgScore = sum/noStudents;
+            if (noStudents > 0)
+            {
+                 avgScore = sum/noStudents;
+            }
+           
 
             allAvgScoreArray.Add(avgScore);
             sum=0;
@@ -131,7 +135,7 @@ public class Window_Graph : MonoBehaviour
         
         float graphHeight = graphContainer.sizeDelta.y;
         float yMaximum = 10f;
-        float xSize = 50f;
+        float xSize = 100f;
 
         GameObject lastCircleGameObject = null;
         for (int i=0; i<valueList.Count; i++)

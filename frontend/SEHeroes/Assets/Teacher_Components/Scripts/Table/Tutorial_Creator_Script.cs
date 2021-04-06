@@ -84,23 +84,23 @@ public class Tutorial_Creator_Script : MonoBehaviour
         //Using UnityWebRequest to do a put request to the database
         var tutorialAddRequest =new  UnityWebRequest(baseAddTutorialURL, "POST");
         
-            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json_add_tutorial);
-            tutorialAddRequest.SetRequestHeader("Content-Type", "application/json");
-            tutorialAddRequest.uploadHandler = (UploadHandler) new UploadHandlerRaw(bodyRaw);
-            tutorialAddRequest.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
-            yield return tutorialAddRequest.SendWebRequest();
-            Debug.Log("Status Code: " + tutorialAddRequest.responseCode);
- 
-            yield return tutorialAddRequest.SendWebRequest();
- 
-            if (tutorialAddRequest.isNetworkError)
-            {
-                Debug.Log(tutorialAddRequest.error);
-            }
-            else
-            {
-                Debug.Log(tutorialAddRequest.downloadHandler.text);
-            }
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json_add_tutorial);
+        tutorialAddRequest.SetRequestHeader("Content-Type", "application/json");
+        tutorialAddRequest.uploadHandler = (UploadHandler) new UploadHandlerRaw(bodyRaw);
+        tutorialAddRequest.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
+
+        Debug.Log("Status Code: " + tutorialAddRequest.responseCode);
+
+        yield return tutorialAddRequest.SendWebRequest();
+
+        if (tutorialAddRequest.isNetworkError)
+        {
+            Debug.Log(tutorialAddRequest.error);
+        }
+        else
+        {
+            Debug.Log(tutorialAddRequest.downloadHandler.text);
+        }
         
 /*
         using (UnityWebRequest tutorialAddRequest = UnityWebRequest.Put(baseAddTutorialURL, json_add_tutorial))
