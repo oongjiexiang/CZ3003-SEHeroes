@@ -17,7 +17,7 @@ public class AssignmentBattleSceneController : MonoBehaviour
     private string section = ProgramStateController.section;
     private string world = ProgramStateController.world;
 
-    //private string assID = "FdT7HsqGsSfL4Dus5xNq"; //TODO GET FROM PROGRAMSTATE
+    private string assID = ProgramStateController.assID;
     private int scoreCount=0;
     public static bool APIdone = false;
     public static int questionCounter = 0;

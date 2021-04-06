@@ -15,7 +15,8 @@ public class AssignmentSelection : MonoBehaviour
     }
 
     public void enterAssignmentBattle() {
-        SceneManager.LoadScene(sceneName:"AssignmentBattle");
+        ProgramStateController.sceneToLoad = "AssignmentBattle";
+        SceneManager.LoadScene(sceneName:"Loading");
     }
 
     public void cancelButton() {
@@ -24,5 +25,13 @@ public class AssignmentSelection : MonoBehaviour
 
     public void backButton() {
         SceneManager.LoadScene(sceneName:"MainMenu");
+    }
+
+    public void backToOpenChallenge() {
+        SceneManager.LoadScene(sceneName:"OpenChallengeMainMenu");
+    }
+
+    public void backToAssignmentSelection() {
+        SceneManager.LoadScene(sceneName:"AssignmentSelection");
     }
 }

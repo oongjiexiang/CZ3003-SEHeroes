@@ -156,6 +156,8 @@ public static class APIController
 
         JSONNode storyModeResultInfo = JSON.Parse(storyModeResultPostRequest.downloadHandler.text);
         Debug.Log(storyModeResultInfo);
+
+        yield return GetUnlockedStates(ProgramStateController.matricNo);
     }
 
     // ------------------------------ OPEN CHALLENGE ------------------------------ //

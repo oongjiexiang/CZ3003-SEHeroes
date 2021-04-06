@@ -48,7 +48,8 @@ public class FriendBattleSceneController : MonoBehaviourPun
     private GameObject enemyPre;
     private Animator playerAnimator;
     private Animator enemyAnimator;
-    private string character;
+    private string playercharacter;
+    private string enemycharacter;
     public Image[] playerhealthImages;
     public Image[] enemyhealthImages;
     public Sprite[] healthSprites;
@@ -81,22 +82,11 @@ public class FriendBattleSceneController : MonoBehaviourPun
 
     void Start()
     {
-        // if (FriendRoomController.playerID == 1)
-        // {
-        //     ExitGames.Client.Photon.Hashtable p2info = new ExitGames.Client.Photon.Hashtable();
-        //     p2info.Add("p2matric", FriendRoomController.player2matric);
-        //     p2info.Add("p2character", FriendRoomController.player2char);
-        //     if (PhotonNetwork.CurrentRoom.SetCustomProperties(p2info))
-        //     {
-        //         Debug.Log("Successfully set p2 info");
-        //     }
-        //     else Debug.Log("Failed set Roominfo");
-        // }
         pv = GetComponent<PhotonView>();
         Debug.Log(FriendRoomController.player1char + " " + FriendRoomController.player2char);
         ProgramStateController.viewState();
         StartCoroutine(APIController.GetFriendStoryModeQuesAPI());
-        initializeCharacter();
+        if(FriendRoomController.playerID==2)initializeCharacter();
         initializeHP();
         resultCanvas.gameObject.SetActive(false);
         waitingpanel.gameObject.SetActive(false);
@@ -112,32 +102,34 @@ public class FriendBattleSceneController : MonoBehaviourPun
         {
             playerPre = Instantiate(playerprefab, ProgramStateController.player1Pos, new Quaternion(0, 0, 0, 0));
             enemyPre = Instantiate(playerprefab, ProgramStateController.player2Pos, new Quaternion(0, 180, 0, 0));
-            character = FriendRoomController.player1char;
+            playercharacter = FriendRoomController.player1char;
+            enemycharacter = FriendRoomController.player2char;
         }
         else
         {
             playerPre = Instantiate(playerprefab, ProgramStateController.player2Pos, new Quaternion(0, 180, 0, 0));
             enemyPre = Instantiate(playerprefab, ProgramStateController.player1Pos, new Quaternion(0, 0, 0, 0));
-            character = FriendRoomController.player2char;
+            playercharacter = FriendRoomController.player2char;
+            enemycharacter = FriendRoomController.player1char;
         }
         playerAnimator = playerPre.GetComponent<Animator>();
-        if (character.Equals("Warrior"))
+        if (playercharacter.Equals("Warrior"))
             playerAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/RedWarrior");
-        else if (character.Equals("Magician"))
+        else if (playercharacter.Equals("Magician"))
             playerAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Magician");
-        else if (character.Equals("Bowman"))
+        else if (playercharacter.Equals("Bowman"))
             playerAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Bowman");
-        else if (character.Equals("Swordman"))
+        else if (playercharacter.Equals("Swordman"))
             playerAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Swordman");
 
         enemyAnimator = enemyPre.GetComponent<Animator>();
-        if (character.Equals("Warrior"))
+        if (enemycharacter.Equals("Warrior"))
             enemyAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/RedWarrior");
-        else if (character.Equals("Magician"))
+        else if (enemycharacter.Equals("Magician"))
             enemyAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Magician");
-        else if (character.Equals("Bowman"))
+        else if (enemycharacter.Equals("Bowman"))
             enemyAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Bowman");
-        else if (character.Equals("Swordman"))
+        else if (enemycharacter.Equals("Swordman"))
             enemyAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Swordman");
 
         playerAttack = 2;
@@ -158,8 +150,8 @@ public class FriendBattleSceneController : MonoBehaviourPun
         enemyHP = enemyMaxHP;
 
         ExitGames.Client.Photon.Hashtable Roominfo = new ExitGames.Client.Photon.Hashtable();
-        Roominfo.Add("player2mat",null);
-        Roominfo.Add("player2char",null);
+        Roominfo.Add("p2char", null);
+        Roominfo.Add("p2mat", null);
         Roominfo.Add("player1HP", 20);
         Roominfo.Add("player2HP", 20);
         Roominfo.Add("player1waiting", false);
@@ -175,6 +167,18 @@ public class FriendBattleSceneController : MonoBehaviourPun
             Image[] temp = playerhealthImages;
             playerhealthImages = enemyhealthImages;
             enemyhealthImages = temp;
+            ExitGames.Client.Photon.Hashtable Roominfo2 = new ExitGames.Client.Photon.Hashtable();
+            Roominfo2.Add("p2char", FriendRoomController.player2char);
+            Roominfo2.Add("p2mat", FriendRoomController.player2matric);
+            Roominfo2.Add("player1HP", 20);
+            Roominfo2.Add("player2HP", 20);
+            Roominfo2.Add("player1waiting", false);
+            Roominfo2.Add("player2waiting", false);
+            if (PhotonNetwork.CurrentRoom.SetCustomProperties(Roominfo2))
+            {
+                Debug.Log("Successfully set p2 info");
+            }
+            else Debug.Log("Failed set Roominfo");
         }
         checkHealthAmount(playerhealthImages);
         checkHealthAmount(enemyhealthImages);
@@ -186,45 +190,13 @@ public class FriendBattleSceneController : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if(FriendRoomController.playerID == 2 && p2notset&& (!p2ready)){
-            Debug.Log("Enter ready p2"); 
-            ExitGames.Client.Photon.Hashtable Roominfo = new ExitGames.Client.Photon.Hashtable();
-            Roominfo.Add("player2mat",FriendRoomController.player2matric);
-            Roominfo.Add("player2char",FriendRoomController.player2char);
-            Roominfo.Add("player1HP", (int)PhotonNetwork.CurrentRoom.CustomProperties["player1HP"]);
-            Roominfo.Add("player2HP", (int)PhotonNetwork.CurrentRoom.CustomProperties["player2HP"]);
-            Roominfo.Add("player1waiting", (bool)PhotonNetwork.CurrentRoom.CustomProperties["player1waiting"]);
-            Roominfo.Add("player2waiting", (bool)PhotonNetwork.CurrentRoom.CustomProperties["player2waiting"]);
-            if (PhotonNetwork.CurrentRoom.SetCustomProperties(Roominfo))
-            {
-                Debug.Log("Successfully set Room2 info");
-            }
-            else Debug.Log("Failed set Roominfo");  
-            p2ready=true;
-        }else{
-            Debug.Log(p2ready.ToString()+p2notset.ToString());
-        }
-        if(p2ready && FriendRoomController.playerID==1 &&p2notset)
-        {
-            Debug.Log("Enter set p2"); 
-            FriendRoomController.player2char=PhotonNetwork.CurrentRoom.CustomProperties["player2char"].ToString();
-            Debug.Log("Enter setting p2, "+ PhotonNetwork.CurrentRoom.CustomProperties["player2char"].ToString()+" "+PhotonNetwork.CurrentRoom.CustomProperties["player2mat"].ToString());
-            FriendRoomController.player2matric=PhotonNetwork.CurrentRoom.CustomProperties["player2mat"].ToString();
-            p2notset=false;
-            ExitGames.Client.Photon.Hashtable Roominfo = new ExitGames.Client.Photon.Hashtable();
-            Roominfo.Add("player2mat",FriendRoomController.player2matric);
-            Roominfo.Add("player2char",FriendRoomController.player2char);
-            Roominfo.Add("player1HP", (int)PhotonNetwork.CurrentRoom.CustomProperties["player1HP"]);
-            Roominfo.Add("player2HP", (int)PhotonNetwork.CurrentRoom.CustomProperties["player2HP"]);
-            Roominfo.Add("player1waiting", (bool)PhotonNetwork.CurrentRoom.CustomProperties["player1waiting"]);
-            Roominfo.Add("player2waiting", (bool)PhotonNetwork.CurrentRoom.CustomProperties["player2waiting"]);
-            if (PhotonNetwork.CurrentRoom.SetCustomProperties(Roominfo))
-            {
-                Debug.Log("Successfully set Room2 info");
-            }
-            else Debug.Log("Failed set Roominfo");  
-        }else{
-            Debug.Log(p2ready.ToString()+p2notset.ToString());
+        // if(FriendRoomController.playerID == 1 && )
+        if(FriendRoomController.player2char != PhotonNetwork.CurrentRoom.CustomProperties["p2char"].ToString()){
+            FriendRoomController.player2char =PhotonNetwork.CurrentRoom.CustomProperties["p2char"].ToString();
+            FriendRoomController.player2matric =PhotonNetwork.CurrentRoom.CustomProperties["p2mat"].ToString();
+            Debug.Log("Fix p2 error");
+            player2matric.text = FriendRoomController.player2matric;
+            initializeCharacter();
         }
         if (playerHP != (FriendRoomController.playerID == 1 ? (int)PhotonNetwork.CurrentRoom.CustomProperties["player1HP"] : (int)PhotonNetwork.CurrentRoom.CustomProperties["player2HP"]))
         {

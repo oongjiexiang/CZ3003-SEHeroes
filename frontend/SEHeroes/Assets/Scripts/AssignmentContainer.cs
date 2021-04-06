@@ -11,7 +11,7 @@ public class AssignmentContainer : MonoBehaviour
     public static List<JSONNode> allAssignments = new List<JSONNode>();
     private GameObject[] AssignmentContainerPrefab;
     private GameObject[] clones;
-    private int height_offset = -200;
+    private int height_offset = 700;
     private int margin = 340;
     public static bool APIdone = false;
     public static bool noAssignment = false;

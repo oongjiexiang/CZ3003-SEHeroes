@@ -27,8 +27,11 @@ public class LevelSelectionController : MonoBehaviour
         if(APIdone){
             for(int i = 0; i < ProgramStateController.allUnlockedState.Count; i++) {
                 if(ProgramStateController.allUnlockedState[i]["section"].Equals(section)){
-                    for(int j = 0; j < ProgramStateController.allUnlockedState[i]["level"].Count; j++)
+                    unlockedLevels.Clear();
+                    for(int j = 0; j < ProgramStateController.allUnlockedState[i]["level"].Count; j++){
                         unlockedLevels.Add(ProgramStateController.allUnlockedState[i]["level"][j]);
+                        Debug.Log("Unlocked levels: " + unlockedLevels[j]);
+                    }
                 }
             }
         }
@@ -36,7 +39,6 @@ public class LevelSelectionController : MonoBehaviour
         lockSections();
     }
 
-    // Update is called once per frame
     void lockSections() {
         if(!unlockedLevels.Contains(currentLevel) && !string.IsNullOrEmpty(currentLevel)){
             image.color = new Color(255,255,255,0.3f);

@@ -208,6 +208,7 @@ public class BattleSceneController : MonoBehaviour
                 question = currQuestion["question"];
                 answer = currQuestion["answer"];
                 correctAnswerIndex = (int)currQuestion["correctAnswer"]+1;
+                Debug.Log("The next answer is: " + correctAnswerIndex);
                 questionCounter++;
                 userAnswer = 0;
             
@@ -216,6 +217,10 @@ public class BattleSceneController : MonoBehaviour
                 Bbutton.interactable = true;
                 Cbutton.interactable = true;
                 Dbutton.interactable = true;
+                Abutton.gameObject.SetActive(true);
+                Bbutton.gameObject.SetActive(true);
+                Cbutton.gameObject.SetActive(true);
+                Dbutton.gameObject.SetActive(true);
                 Abutton.image.color = Color.white;
                 Bbutton.image.color = Color.white;
                 Cbutton.image.color = Color.white;
@@ -228,29 +233,6 @@ public class BattleSceneController : MonoBehaviour
 
 
     }
-    // IEnumerator GetQuesAPI()
-    // {
-    //     string QuesURL = baseQuesAPIURL + "world=" + world + "&section=" + section + "&level=" + level;
-    //     UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
-    //     yield return quesRequest.SendWebRequest();
-
-    //     if (quesRequest.isNetworkError || quesRequest.isHttpError)
-    //     {
-    //         Debug.LogError(quesRequest.error);
-    //         yield break;
-    //     }
-
-    //     JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
-    //     for (int i = 0; i < quesInfo.Count; i++)
-    //     {
-    //         Debug.Log(quesInfo[i]);
-    //         allQA.Add(quesInfo[i]);
-    //     }
-    //     APIdone = true;
-
-
-    // }
-
     private IEnumerator HandleIt()
     {
         yield return new WaitForSeconds(2.0f);
@@ -351,6 +333,7 @@ public class BattleSceneController : MonoBehaviour
                 }
             }
         }
+        StartCoroutine(APIController.PostStoryModeResult(marks));
     }
     void UpdateBG(string world)
     {

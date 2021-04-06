@@ -16,7 +16,7 @@ public class MainMenuController : MonoBehaviour
     }
 
     public void loadOpenChallenge() {
-
+        SceneManager.LoadScene(sceneName:"OpenChallengeMainMenu");
     }
 
     public void loadBossBattle() {

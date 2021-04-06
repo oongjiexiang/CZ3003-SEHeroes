@@ -26,6 +26,7 @@ public class SectionController : MonoBehaviour
         if(APIdone){
             for(int i = 0; i < ProgramStateController.allUnlockedState.Count; i++) {
                 unlockedSections.Add(ProgramStateController.allUnlockedState[i]["section"]);
+                Debug.Log("Unlocked Sections: " + unlockedSections[i]);
             }
         }
 
