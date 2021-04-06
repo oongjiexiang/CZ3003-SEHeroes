@@ -24,7 +24,7 @@ public class AsgDate{
     public AsgDate(DateTime time){
         year = time.Year;
         month = time.Month + 1;
-        day = time.Day;
+        day = time.Day + 1;
         hour = time.Hour;
         minute = time.Minute;
         second = time.Second;
@@ -49,11 +49,11 @@ public class AsgDate{
         return String.Format("{0:d2}:{1:d2}", hour, minute);
     }
     public DateTime time(){
-        // Debug.Log(year);
-        // Debug.Log(month);
-        // Debug.Log(day);
-        // Debug.Log(hour);
-        // Debug.Log(minute);
-        return DateTime.Parse(String.Format("{0}/{1}/{2} {3}:{4}:00", year, month, day, hour, minute));
+        try{
+            return DateTime.Parse(String.Format("{0}/{1}/{2} {3}:{4}:00", year, month, day, hour, minute));
+        }
+        catch(FormatException){
+            return DateTime.Now;
+        }
     }
 }
