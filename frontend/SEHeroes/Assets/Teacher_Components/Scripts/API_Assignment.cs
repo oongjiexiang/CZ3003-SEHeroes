@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using SimpleJSON;
 using System.Linq;
+using UnityEngine.Networking;
 
 public class API_Assignment : MonoBehaviour{
     public static Boolean asgRequestDone;
@@ -16,6 +17,7 @@ public class API_Assignment : MonoBehaviour{
     public static Boolean asgQUpdateDone;
     public static Boolean asgAddDone;
     public static Boolean asgDeleteDone;
+    public static Boolean asgUpdateDone;
     public static List<JSONNode> jsonNodeAsgQ;
 
     public API_Assignment(){
@@ -27,6 +29,7 @@ public class API_Assignment : MonoBehaviour{
         asgQUpdateDone = true;
         asgQAddDone = true;
         asgDeleteDone = true;
+        asgUpdateDone = true;
     }
 
     // public Assignment getAssignment(string assignmentId){
@@ -52,16 +55,25 @@ public class API_Assignment : MonoBehaviour{
         // yield return null;
         asgQAddDone = true;
     }
+    public IEnumerator updateAssignment(Assignment asg){
+        asgUpdateDone = false;
+        API_Connection conn = new API_Connection();
+        string jsonString = JsonUtility.ToJson(asg);
+        Debug.Log(jsonString + " for assignment question");
+        yield return StartCoroutine(conn.PutData("assignment/" + asg.assignmentId, jsonString, s => {
+            print(JSON.Parse(s));
+        }));
+        asgUpdateDone = true;
+    }
     public IEnumerator deleteAssignment(Assignment asg){
         print(asg.assignmentId);
         asgDeleteDone = false;
         API_Connection conn = new API_Connection();
         yield return StartCoroutine(conn.DeleteData("assignment/" + asg.assignmentId, s => {
-            // asgQuestion.assignmentQuestionId = 
             print(JSON.Parse(s));
         }));
         yield return null;
-        asgQAddDone = true;
+        asgQDeleteDone = true;
     }
     public IEnumerator getAssignmentQuestion(string assignmentQuestionId){
         JSONNode jsonNode = null;
@@ -88,7 +100,6 @@ public class API_Assignment : MonoBehaviour{
     public IEnumerator addQuestion(Assignment asg, AssignmentQuestion asgQuestion){
         asgQAddDone = false;
         API_Connection conn = new API_Connection();
-        // AssignmentQuestionForAPI asgQAPI = new AssignmentQuestionForAPI(asgQuestion);
         string jsonString = JsonUtility.ToJson(asgQuestion);
         Debug.Log(jsonString + " for assignment question");
         yield return StartCoroutine(conn.PutData("assignment/" + asg.assignmentId + "/addQuestion", jsonString, s => {
@@ -97,15 +108,49 @@ public class API_Assignment : MonoBehaviour{
         asgQAddDone = true;
     }
     public IEnumerator deleteQuestion(Assignment asg, AssignmentQuestion asgQuestion){
-        asgQDeleteDone = false;
-        API_Connection conn = new API_Connection();
-        // AssignmentQuestionForAPI asgQAPI = new AssignmentQuestionForAPI(asgQuestion);
+        // asgQDeleteDone = false;
+        // API_Connection conn = new API_Connection();
         string jsonString = "{\"assignmentQuestionId: \"" + asgQuestion.assignmentQuestionId + "\"}";
-        Debug.Log(jsonString + " for assignment question");
-        yield return StartCoroutine(conn.PutData("assignment/" + asg.assignmentId + "/removeQuestion", jsonString, s => {
-            asgQuestion.assignmentQuestionId = JSON.Parse(s);
-        }));
-        asgQDeleteDone = true;
+        // Debug.Log(jsonString + " for assignment question");
+        // yield return StartCoroutine(conn.PutData("assignment/" + asg.assignmentId + "/removeQuestion", jsonString, s => {
+        //     asgQuestion.assignmentQuestionId = JSON.Parse(s);
+        // }));
+        // asgQDeleteDone = true;
+        // byte[] myData = System.Text.Encoding.UTF8.GetBytes(jsonString);
+        // byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json_add_tutorial);
+        //     tutorialAddRequest.SetRequestHeader("Content-Type", "application/json");
+        // using (UnityWebRequest www = UnityWebRequest.Put("https://seheroes.herokuapp.com/assignment/" + asg.assignmentId + "/removeQuestion", myData))
+        // {
+        //     yield return www.SendWebRequest();
+
+        //     if (www.isNetworkError){
+        //         Debug.Log(www.error);
+        //     }
+        //     else{
+        //         Debug.Log(www.downloadHandler.text);
+        //     }
+        // }
+        AssignmentQuestionIdForAPI asgId = new AssignmentQuestionIdForAPI(asgQuestion);
+        string json = JsonUtility.ToJson(asgId);
+        var assignmentQDeleteRequest =new  UnityWebRequest("https://seheroes.herokuapp.com/assignment/" + asg.assignmentId + "/removeQuestion", "PUT");
+    
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        assignmentQDeleteRequest.SetRequestHeader("Content-Type", "application/json");
+        assignmentQDeleteRequest.uploadHandler = (UploadHandler) new UploadHandlerRaw(bodyRaw);
+        assignmentQDeleteRequest.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
+        yield return assignmentQDeleteRequest.SendWebRequest();
+        Debug.Log("Status Code: " + assignmentQDeleteRequest.responseCode);
+
+        // yield return assignmentQDeleteRequest.SendWebRequest();
+
+        if (assignmentQDeleteRequest.isNetworkError)
+        {
+            Debug.Log(assignmentQDeleteRequest.error);
+        }
+        else
+        {
+            Debug.Log(assignmentQDeleteRequest.downloadHandler.text);
+        }
     }
     public IEnumerator updateQuestion(AssignmentQuestion asgQuestion){
         asgQUpdateDone = false;
@@ -115,6 +160,5 @@ public class API_Assignment : MonoBehaviour{
             print(JSON.Parse(s) == asgQuestion.assignmentQuestionId);
         }));
         asgQUpdateDone = true;
-        yield return null;
     }
 }

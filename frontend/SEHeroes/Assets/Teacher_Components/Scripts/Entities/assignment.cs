@@ -52,3 +52,11 @@ public class AssignmentForAPI{
         this.questions = questions;
     }
 }
+
+[Serializable]
+public class AssignmentQuestionIdForAPI{
+    public string assignmentQuestionId;
+    public AssignmentQuestionIdForAPI(AssignmentQuestion asgQuestion){
+        assignmentQuestionId = asgQuestion.assignmentQuestionId;
+    }
+}

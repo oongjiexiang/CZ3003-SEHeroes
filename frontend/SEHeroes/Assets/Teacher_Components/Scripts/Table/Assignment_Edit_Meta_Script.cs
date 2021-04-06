@@ -12,8 +12,10 @@ public class Assignment_Edit_Meta_Script : MonoBehaviour
     public GameObject panelObject;
     public GameObject mainContentPanel;
     public static Assignment editAsg;
+    private API_Assignment conn;
     void Start()
     {
+        conn = (API_Assignment)transform.GetComponent(typeof(API_Assignment));
         editAsg = Assignment_Entry_Script.chosenAsg;
         populateRetries();
         populateFields();
@@ -60,6 +62,7 @@ public class Assignment_Edit_Meta_Script : MonoBehaviour
     }
     public void clickEdit(){
         if(verifyFields()){
+            StartCoroutine(conn.updateAssignment(editAsg));
             SceneManager.LoadScene("Assignments_Edit");
         }
         else{
