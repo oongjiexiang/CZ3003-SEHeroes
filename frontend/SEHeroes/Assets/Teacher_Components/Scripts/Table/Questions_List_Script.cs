@@ -25,6 +25,7 @@ public class Questions_List_Script : MonoBehaviour
     List<JSONNode> questionContentTextArray = new List<JSONNode>();
     List<JSONNode> questionLevelArray = new List<JSONNode>();
     List<JSONNode> questionIdArray = new List<JSONNode>();
+    public static StoryModeQuestion editStoryModeQ;
     public static string questionId;
     public static string selectedWorld= World_Select_Script.worldChoice;
     public static string selectedSectionUnformat= Section_Select_Script.sectionChoice;
@@ -35,6 +36,7 @@ public class Questions_List_Script : MonoBehaviour
     //use this for initialization
     void Start () 
     { 
+       editStoryModeQ = new StoryModeQuestion(questionId);
        selectedWorld= World_Select_Script.worldChoice;
        selectedSectionUnformat= Section_Select_Script.sectionChoice;
        selectedSection = selectedSectionUnformat.Replace(" ", "%20");
@@ -87,9 +89,7 @@ public class Questions_List_Script : MonoBehaviour
                 playerTextPanel.transform.Find("Text_Id").GetComponent<Text>().text = questionId;
                 
                 playerTextPanel.transform.Find("Text_Difficulty").transform.Find("Button_Manage").GetComponent<Button>().onClick.AddListener(() => {
-                    questionId = playerTextPanel.transform.Find("Text_Id").GetComponent<Text>().text;
-                    questionId = "098DfCRhoMfjWUiHni93";
-                    print(playerTextPanel.transform.Find("Text_Id").GetComponent<Text>().text);
+                    editStoryModeQ.storyModeQuestionId = playerTextPanel.transform.Find("Text_Id").GetComponent<Text>().text;
                     SceneManager.LoadScene("Question_Bank_Editor");
                 });
             }

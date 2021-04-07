@@ -19,7 +19,7 @@ public class StoryModeQuestion{
     public StoryModeQuestion(JSONNode jsonStoryQ){
         answer = new List<string>();
         section = jsonStoryQ["section"];
-        question = jsonStoryQ["answer"];
+        question = jsonStoryQ["question"];
         level = jsonStoryQ["level"];
         world = jsonStoryQ["world"];
         storyModeQuestionId = jsonStoryQ["storyModeQuestionId"];
@@ -28,4 +28,7 @@ public class StoryModeQuestion{
             answer.Add(jsonStoryQ["answer"][i]);
         }
     }  
+    public StoryModeQuestion(string questionId){
+        this.storyModeQuestionId = questionId;
+    }
 }

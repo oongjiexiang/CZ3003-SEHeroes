@@ -8,14 +8,14 @@ using SimpleJSON;
 using System.Linq;
 using UnityEngine.Networking;
 
-public class API_StoryMode : MonoBehaviour{
+public class API_Storymode : MonoBehaviour{
     public static Boolean getStoryQDone;
     public static Boolean updateStoryQDone;
     public static Boolean addStoryQDone;
     public static Boolean deleteStoryQDone;
     public static JSONNode jsonNodeStoryQ;
 
-    public API_StoryMode(){
+    public API_Storymode(){
         getStoryQDone = false;
         updateStoryQDone = false;
         addStoryQDone = false;

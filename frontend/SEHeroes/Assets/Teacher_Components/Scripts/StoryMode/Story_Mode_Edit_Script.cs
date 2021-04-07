@@ -16,20 +16,16 @@ public class Story_Mode_Edit_Script : MonoBehaviour
     private Transform entryContainer;
     private GameObject popUp;
     private Dropdown dropdownAnswer;
-    private API_StoryMode conn;     ///// need to create API_StoryMode
+    private API_Storymode conn; 
     
     void Start()
     {
-        // display
-        print(Questions_List_Script.selectedWorld);
-        print(Questions_List_Script.selectedSection);
-        print(Questions_List_Script.questionId);
-        fetchQuestions();       //// not yet assign result to current_question
+        // display   
         popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
-        entryContainer = panelObject.transform.Find("Panel_Question_Creation");
+        entryContainer = panelObject.transform.Find("Panel_Question_Creation_Story");
         dropdownAnswer = entryContainer.Find("Dropdown_Answer").GetComponent<Dropdown>();
         popUp.SetActive(false);
-        conn = (API_StoryMode)transform.GetComponent(typeof(API_StoryMode));
+        conn = (API_Storymode)transform.GetComponent(typeof(API_Storymode));
         panelObject.gameObject.SetActive(false);
 
         // button events
@@ -41,20 +37,22 @@ public class Story_Mode_Edit_Script : MonoBehaviour
         popUp.transform.Find("Popup_Info").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(popupQuestionInfoAcknowledge);
         popUp.transform.Find("Popup_Delete").Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(exitDelete);
         popUp.transform.Find("Popup_Delete").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(confirmDelete);
+
+        fetchQuestions();
     }
     void Update(){
-        if(API_StoryMode.getStoryQDone){
-            API_StoryMode.getStoryQDone = false;
-            current_question = new StoryModeQuestion(API_StoryMode.jsonNodeStoryQ);
+        if(API_Storymode.getStoryQDone){
+            API_Storymode.getStoryQDone = false;
+            current_question = new StoryModeQuestion(API_Storymode.jsonNodeStoryQ);
             populateFields();
             panelObject.gameObject.SetActive(true);
         }
     }
     private void fetchQuestions(){   
-        API_StoryMode.getStoryQDone = false;
-        print(Questions_List_Script.questionId);
+        API_Storymode.getStoryQDone = false;
+        print(Questions_List_Script.editStoryModeQ.storyModeQuestionId);
         print(conn);
-        StartCoroutine(conn.getStoryQ(Questions_List_Script.questionId));        
+        StartCoroutine(conn.getStoryQ(Questions_List_Script.editStoryModeQ.storyModeQuestionId));        
     }
     public void ClickReturn(){
         SceneManager.LoadScene("Question_Bank_Management");
@@ -149,6 +147,8 @@ public class Story_Mode_Edit_Script : MonoBehaviour
     private void populateFields()
     {
         entryContainer.Find("InputField_Question").GetComponent<InputField>().text = current_question.question;
+        print(current_question.question);
+        print(entryContainer.Find("InputField_Question").GetComponent<InputField>().text);
         try{
             entryContainer.Find("InputField_A").GetComponent<InputField>().text = current_question.answer[0];
             entryContainer.Find("InputField_B").GetComponent<InputField>().text = current_question.answer[1];
