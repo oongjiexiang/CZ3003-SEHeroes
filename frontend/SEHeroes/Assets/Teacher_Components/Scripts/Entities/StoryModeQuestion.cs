@@ -15,6 +15,7 @@ public class StoryModeQuestion{
     public string level;
     public string world;
     public int correctAnswer;
+    [System.NonSerialized]
     public string storyModeQuestionId;  
     public StoryModeQuestion(JSONNode jsonStoryQ){
         answer = new List<string>();
@@ -30,5 +31,14 @@ public class StoryModeQuestion{
     }  
     public StoryModeQuestion(string questionId){
         this.storyModeQuestionId = questionId;
+    }
+    public StoryModeQuestion(string world, string section){
+        this.world = world;
+        this.section = section;
+        answer = new List<string>();
+        correctAnswer = 0;
+        storyModeQuestionId = "";
+        question = "";
+        level = "Easy";
     }
 }

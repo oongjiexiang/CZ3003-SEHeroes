@@ -40,6 +40,7 @@ public class API_Storymode : MonoBehaviour{
             print(JSON.Parse(s));
         }));
         updateStoryQDone = true;
+        // yield return null;
     }
     public IEnumerator addStoryQ(StoryModeQuestion storyModeQ){
         addStoryQDone = false;
