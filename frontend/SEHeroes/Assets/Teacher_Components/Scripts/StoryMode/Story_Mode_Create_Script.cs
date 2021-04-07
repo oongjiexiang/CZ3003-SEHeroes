@@ -138,8 +138,6 @@ public class Story_Mode_Create_Script : MonoBehaviour
     {
         ClickClear();
         entryContainer.Find("InputField_Question").GetComponent<InputField>().text = current_question.question;
-        print(current_question.question);
-        print(entryContainer.Find("InputField_Question").GetComponent<InputField>().text);
         try{
             entryContainer.Find("InputField_A").GetComponent<InputField>().text = current_question.answer[0];
             entryContainer.Find("InputField_B").GetComponent<InputField>().text = current_question.answer[1];

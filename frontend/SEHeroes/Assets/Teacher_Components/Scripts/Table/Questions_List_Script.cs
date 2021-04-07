@@ -40,6 +40,7 @@ public class Questions_List_Script : MonoBehaviour
        selectedWorld= World_Select_Script.worldChoice;
        selectedSectionUnformat= Section_Select_Script.sectionChoice;
        selectedSection = selectedSectionUnformat.Replace(" ", "%20");
+       transform.Find("Panel_00").Find("World_Section_Subheader_Text").GetComponent<Text>().text = selectedWorld + "/ " + selectedSectionUnformat;
        transform.Find("Panel_00").Find("Button_Add_Question").GetComponent<Button>().onClick.AddListener(addStoryModeQuestion);
        baseQuestionInfoURL = "https://seheroes.herokuapp.com/storyModeQuestion?world=" + selectedWorld + "&section=" + selectedSection;
        StartCoroutine(GetQuestionInfo());

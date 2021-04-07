@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,8 +43,12 @@ public class Section_Select_Script : MonoBehaviour
     public void DropdownItemSelected(Dropdown dropdown)
     {
         int index = dropdown.value;
-
-        sectionChoice = dropdown.options[index].text;
+        try{
+            sectionChoice = dropdown.options[index].text;
+        }
+        catch(ArgumentOutOfRangeException){
+            sectionChoice = "";
+        }
     }
 
     // Start is called before the first frame update
