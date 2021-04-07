@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using UnityEngine.EventSystems;
 using SimpleJSON;
 using System.Linq;
 
@@ -29,11 +30,7 @@ public class Questions_List_Script : MonoBehaviour
     public static string selectedSectionUnformat= Section_Select_Script.sectionChoice;
     public static string selectedSection = selectedSectionUnformat.Replace(" ", "%20");
 
-
-
-    
-
-    private static string baseQuestionInfoURL = "https://seheroes.herokuapp.com/storyModeQuestion?world=" + selectedWorld + "&section=" + selectedSection;
+    private static string baseQuestionInfoURL;
     
     //use this for initialization
     void Start () 
@@ -49,23 +46,17 @@ public class Questions_List_Script : MonoBehaviour
     {
         //GET students' matriculation number in a tutorial group
         UnityWebRequest questionInfoRequest = UnityWebRequest.Get(baseQuestionInfoURL);
-
         yield return questionInfoRequest.SendWebRequest();
-
         if (questionInfoRequest.isNetworkError || questionInfoRequest.isHttpError)
         {
             //Debug.LogError(questionInfoRequest.error);
             yield break;
         }
-
         JSONNode questionInfo = JSON.Parse(questionInfoRequest.downloadHandler.text);
-
-        for (int i = 0; i < questionInfo.Count; i++)
-        {
+        for (int i = 0; i < questionInfo.Count; i++){
             questionContentTextArray.Add(questionInfo[i]["question"]);
             questionLevelArray.Add(questionInfo[i]["level"]);
-            questionIdArray.Add(questionInfo[i]["storyModeQuestionId"]);
-            
+            questionIdArray.Add(questionInfo[i]["storyModeQuestionId"]);    
         }
         
 
@@ -79,12 +70,10 @@ public class Questions_List_Script : MonoBehaviour
         questionIdList = questionIdArray;
         
         
-        if (questionList.Count > 0)
-        {
+        if (questionList.Count > 0){
             noRecordLabel.gameObject.SetActive(false);
             RectTransform rt = (RectTransform)mainScrollContentView.transform;
-            for (int i = 0; i < questionList.Count; i++)
-            { 
+            for (int i = 0; i < questionList.Count; i++){ 
                 string value = questionList[i];
                 string questionLevel = questionLevelList[i];
                 string questionId = questionIdList[i];
@@ -98,36 +87,23 @@ public class Questions_List_Script : MonoBehaviour
                 playerTextPanel.transform.Find("Text_Id").GetComponent<Text>().text = questionId;
                 
                 playerTextPanel.transform.Find("Text_Difficulty").transform.Find("Button_Manage").GetComponent<Button>().onClick.AddListener(() => {
-                questionId = playerTextPanel.transform.Find("Text_Id").GetComponent<Text>().text;
-                viewQuestionEditor();
-            });
+                    questionId = playerTextPanel.transform.Find("Text_Id").GetComponent<Text>().text;
+                    questionId = "098DfCRhoMfjWUiHni93";
+                    print(playerTextPanel.transform.Find("Text_Id").GetComponent<Text>().text);
+                    SceneManager.LoadScene("Question_Bank_Editor");
+                });
             }
         }
-        else 
-        {
+        else {
             noRecordLabel.gameObject.SetActive (true);
         }
-        
-
     }
 
-    public void viewQuestionEditor()
-    {
-        //Add your question editor scene here
-        SceneManager.LoadScene("Question_Bank_Editor");
-    }
-
-    public void hideQuestionListPopUp() 
-    {
+    public void hideQuestionListPopUp() {
         studentPopUp.gameObject.SetActive (false);
     }
-
-    public void showQuestionListPopUp() 
-    {
+    public void showQuestionListPopUp() {
         studentPopUp.gameObject.SetActive (true);
     }
-
-
-
 }
 
