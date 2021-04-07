@@ -1561,7 +1561,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 573826611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 001c4c7aeb01d92429a9cc12f818f733, type: 3}
+  m_Script: {fileID: 11500000, guid: d8020cdd9b0cb2d4e8f3080210c3a943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &714372947
@@ -1804,7 +1804,6 @@ GameObject:
   - component: {fileID: 1091185124}
   - component: {fileID: 1091185127}
   - component: {fileID: 1091185126}
-  - component: {fileID: 1091185125}
   m_Layer: 5
   m_Name: Content_Area
   m_TagString: Untagged
@@ -1833,22 +1832,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.21862793, y: 0}
   m_SizeDelta: {x: -0.43725586, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1091185125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1091185123}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3469d65615e0f14a9ff36c64aa03265, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  noRecordLabel: {fileID: 1255976906}
-  mainScrollContentView: {fileID: 0}
-  ContentDataPanel: {fileID: 6447235027704959558, guid: 56a3f81afcbd34393ad774bddc5833a0,
-    type: 3}
 --- !u!114 &1091185126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2083,18 +2066,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c154b2187f28a24a93cb935ed86d058, type: 3}
---- !u!114 &1255976906 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7813051805773398193, guid: 7c154b2187f28a24a93cb935ed86d058,
-    type: 3}
-  m_PrefabInstance: {fileID: 1255976905}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1286981623
 GameObject:
   m_ObjectHideFlags: 0
