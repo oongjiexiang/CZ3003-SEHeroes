@@ -30,15 +30,19 @@ public class WorldSelectionController : MonoBehaviour
         ProgramStateController.world = currentWorld;
 
         if(currentWorld.Contains("Planning"))
-                SceneManager.LoadScene(sceneName:"Forest");
+            SceneManager.LoadScene(sceneName:"Forest");
         else if(currentWorld.Contains("Design"))
-                SceneManager.LoadScene(sceneName:"Village");
+            DialogMessageController.showMessage("World Selection");
+            // SceneManager.LoadScene(sceneName:"Village");
         else if(currentWorld.Contains("Implementation"))
-                SceneManager.LoadScene(sceneName:"Snowland");
+            DialogMessageController.showMessage("World Selection");
+            // SceneManager.LoadScene(sceneName:"Snowland");
         else if(currentWorld.Contains("Testing"))                
-                SceneManager.LoadScene(sceneName:"Desert");
+            DialogMessageController.showMessage("World Selection");
+            // SceneManager.LoadScene(sceneName:"Desert");
         else if(currentWorld.Contains("Maintenance"))    
-                SceneManager.LoadScene(sceneName:"Ashland");
+            DialogMessageController.showMessage("World Selection");
+            // SceneManager.LoadScene(sceneName:"Ashland");
     }
 
     void OnMouseOver() {

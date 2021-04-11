@@ -20,6 +20,16 @@ public class DialogMessageController : MonoBehaviour
                 textMesh.text = "Registration Succesful!";
                 break;
 
+            case "World Selection":
+                textMesh.text =  "This world hasn't been inplmented yet!\nPlease contact the developer team for more information.";
+                break;
+
+            case "Section Selection":
+                textMesh.text =  "World: " + ProgramStateController.world + "\n" +
+                                    "Section: " + ProgramStateController.section + "\n is locked!";
+                break;
+
+
             case "Level Selection":
                 switch(ProgramStateController.level){
                     case "Easy":
@@ -37,11 +47,6 @@ public class DialogMessageController : MonoBehaviour
             case "Assignment Selection":
                 Debug.Log(ProgramStateController.assName);
                 textMesh.text = "Attempting\n" + ProgramStateController.assName;
-                break;
-
-            case "Section Selection":
-                textMesh.text =  "World: " + ProgramStateController.world + "\n" +
-                                    "Section: " + ProgramStateController.section + "\n is locked!";
                 break;
         }
         dialogCanvas.enabled = true;

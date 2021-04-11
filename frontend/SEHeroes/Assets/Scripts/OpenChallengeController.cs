@@ -16,4 +16,8 @@ public class OpenChallengeController : MonoBehaviourPunCallbacks
     public void viewLeaderboard() {
         SceneManager.LoadScene(sceneName:"Leaderboard");
     }
+
+    public void backButton() {
+        SceneManager.LoadScene(sceneName:"MainMenu");
+    }
 }

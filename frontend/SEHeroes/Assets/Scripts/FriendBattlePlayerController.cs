@@ -5,7 +5,7 @@ using Photon.Realtime;
 public class FriendBattlePlayerController : MonoBehaviourPun {
     
     Animator animator;
-     private string character = ProgramStateController.characterType;
+    private string character = ProgramStateController.characterType;
     private void Start() {
         animator = GetComponent<Animator>();   
         if(character.Equals("Warrior"))

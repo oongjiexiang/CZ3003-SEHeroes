@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class FriendRoomController : MonoBehaviourPunCallbacks
 {
@@ -44,6 +45,10 @@ public class FriendRoomController : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+    }
+
+    public void backButton() {
+        SceneManager.LoadScene(sceneName:"OpenChallengeMainMenu");
     }
 
     public override void OnConnectedToMaster()
