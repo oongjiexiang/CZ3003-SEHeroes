@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+// For Question_Bank_Add Scene
 public class Story_Mode_Create_Script : MonoBehaviour
 {
     // variables
@@ -50,6 +51,7 @@ public class Story_Mode_Create_Script : MonoBehaviour
             popupQuestionIncomplete();
         }
     }
+    // Clear all fields
     public void ClickClear()
     {
         entryContainer.Find("InputField_Question").GetComponent<InputField>().text = "";
@@ -70,6 +72,8 @@ public class Story_Mode_Create_Script : MonoBehaviour
     private void setPopupInfoMessage(string message){   // helper function to set popup's message easily
         popUp.transform.Find("Popup_Incomplete").Find("Text").GetComponent<Text>().text = message;
     }
+
+    // Validate if the data are valid
     private bool validateFields(){
         string ans;
         current_question.question = entryContainer.Find("InputField_Question").GetComponent<InputField>().text;
@@ -135,6 +139,8 @@ public class Story_Mode_Create_Script : MonoBehaviour
         }
         return true;
     }
+
+    // UI instructions to populate the input fields and dropdowns
     private void populateFields()
     {
         ClickClear();

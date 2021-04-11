@@ -8,7 +8,7 @@ using SimpleJSON;
 using System.Linq;
 using UnityEngine.Networking;
 
-
+// Controls Assignments Scene
 public class Assignment_Entry_Script : MonoBehaviour
 {
     private Transform entryTemplate;
@@ -33,6 +33,7 @@ public class Assignment_Entry_Script : MonoBehaviour
         popUp.transform.Find("Popup_Delete").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(confirmDelete);
         popUp.transform.Find("Popup_Delete").Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(exitDelete);
     }
+    // Obtains assignment list from backend
     IEnumerator setAssignmentList()
     {
         API_Connection conn = new API_Connection();
@@ -45,7 +46,7 @@ public class Assignment_Entry_Script : MonoBehaviour
             assignmentList.Add(new Assignment(jsonNode[i]));
         }
     }
-    
+    // Share to Telegram
     IEnumerator shareTele(){
         WWWForm form = new WWWForm();
         form.AddField("assignmentId", chosenAsg.assignmentId);
@@ -62,7 +63,7 @@ public class Assignment_Entry_Script : MonoBehaviour
             }
         }
     }
-    
+    // Share to Twitter
     IEnumerator shareTweet(){
         WWWForm form = new WWWForm();
         form.AddField("assignmentId", chosenAsg.assignmentId);
@@ -79,6 +80,7 @@ public class Assignment_Entry_Script : MonoBehaviour
             }
         }
     }
+    // UI Display for the list
     void tableInitialize()
     {
         entryContainer = content.transform.Find("Assignment_Entry_Container");
@@ -139,9 +141,11 @@ public class Assignment_Entry_Script : MonoBehaviour
             noRecordLabel.gameObject.SetActive(false);
         }
     }
+    // Event called when Telegram icon is clicked
     void shareAssignmentTele(){
         StartCoroutine(shareTele());
     }
+    // Event called when Telegram icon is clicked
     void shareAssignmentTweet(){
         StartCoroutine(shareTweet());
     }

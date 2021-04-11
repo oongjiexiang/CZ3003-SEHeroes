@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using SimpleJSON;
 using System.Linq;
 
+// Assignments are stored in the database
 public class Assignment{
     public string assignmentName;
     [System.NonSerialized]
@@ -34,6 +35,7 @@ public class Assignment{
     }
 }
 
+// This class is created to cater to the correct serialized Assignment JSON format that the backend expects
 [Serializable]
 public class AssignmentForAPI{
     public string assignmentName;
@@ -53,6 +55,7 @@ public class AssignmentForAPI{
     }
 }
 
+// This class is created to cater to the correct serialized Assignment Question JSON format that the backend expects
 [Serializable]
 public class AssignmentQuestionIdForAPI{
     public string assignmentQuestionId;

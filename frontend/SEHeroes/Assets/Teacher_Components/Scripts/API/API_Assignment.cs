@@ -8,6 +8,7 @@ using SimpleJSON;
 using System.Linq;
 using UnityEngine.Networking;
 
+// Handles GET, POST, PUT and DELETE requests for Assignments
 public class API_Assignment : MonoBehaviour{
     public static Boolean asgRequestDone;
     public static Boolean asgQRequestDone;
@@ -32,27 +33,30 @@ public class API_Assignment : MonoBehaviour{
         asgUpdateDone = true;
     }
     
+    // Adds assignment
     public IEnumerator addAssignment(Assignment asg, List<AssignmentQuestion> asgQuestions){
         asgAddDone = false;
         API_Connection conn = new API_Connection();
         AssignmentForAPI asgAPI = new AssignmentForAPI(asg, asgQuestions);
         string jsonString = JsonUtility.ToJson(asgAPI);
-        Debug.Log(jsonString + " for assignment question");
         yield return StartCoroutine(conn.PostData("assignment/", jsonString, s => {
             print(JSON.Parse(s));
         }));
         asgQAddDone = true;
     }
+
+    // Updates Existing Assignment
     public IEnumerator updateAssignment(Assignment asg){
         asgUpdateDone = false;
         API_Connection conn = new API_Connection();
         string jsonString = JsonUtility.ToJson(asg);
-        Debug.Log(jsonString + " for assignment question");
         yield return StartCoroutine(conn.PutData("assignment/" + asg.assignmentId, jsonString, s => {
             print(JSON.Parse(s));
         }));
         asgUpdateDone = true;
     }
+
+    // Delete Assignment
     public IEnumerator deleteAssignment(Assignment asg){
         print(asg.assignmentId);
         asgDeleteDone = false;
@@ -63,6 +67,8 @@ public class API_Assignment : MonoBehaviour{
         yield return null;
         asgQDeleteDone = true;
     }
+
+    // GET an Assignment Question
     public IEnumerator getAssignmentQuestion(string assignmentQuestionId){
         JSONNode jsonNode = null;
         API_Connection conn = new API_Connection();
@@ -73,6 +79,8 @@ public class API_Assignment : MonoBehaviour{
         }));
         asgQRequestDone = true;
     }
+
+    // Get a list of assignment questions
     public IEnumerator getAssignmentQuestionList(Assignment asg){
         JSONNode jsonNode = null;
         API_Connection conn = new API_Connection();
@@ -85,17 +93,20 @@ public class API_Assignment : MonoBehaviour{
         }));
         asgQListRequestDone = true;
     }
+
+    // Add an assignment question to an assignment
     public IEnumerator addQuestion(Assignment asg, AssignmentQuestion asgQuestion){
         asgQAddDone = false;
         API_Connection conn = new API_Connection();
         string jsonString = JsonUtility.ToJson(asgQuestion);
-        Debug.Log(jsonString + " for assignment question");
         yield return StartCoroutine(conn.PutData("assignment/" + asg.assignmentId + "/addQuestion", jsonString, s => {
             asgQuestion.assignmentQuestionId = JSON.Parse(s);
         }));
         
         asgQAddDone = true;
     }
+
+    // Delete a question
     public IEnumerator deleteQuestion(Assignment asg, AssignmentQuestion asgQuestion){
         string jsonString = "{\"assignmentQuestionId: \"" + asgQuestion.assignmentQuestionId + "\"}";
         AssignmentQuestionIdForAPI asgId = new AssignmentQuestionIdForAPI(asgQuestion);
@@ -107,7 +118,6 @@ public class API_Assignment : MonoBehaviour{
         assignmentQDeleteRequest.uploadHandler = (UploadHandler) new UploadHandlerRaw(bodyRaw);
         assignmentQDeleteRequest.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
         yield return assignmentQDeleteRequest.SendWebRequest();
-        Debug.Log("Status Code: " + assignmentQDeleteRequest.responseCode);
 
         if (assignmentQDeleteRequest.isNetworkError)
         {
@@ -118,6 +128,8 @@ public class API_Assignment : MonoBehaviour{
             Debug.Log(assignmentQDeleteRequest.downloadHandler.text);
         }
     }
+
+    // Update an assignment question
     public IEnumerator updateQuestion(AssignmentQuestion asgQuestion){
         asgQUpdateDone = false;
         API_Connection conn = new API_Connection();

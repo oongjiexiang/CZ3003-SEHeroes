@@ -69,12 +69,10 @@ public class Assignment_Edit_Script : MonoBehaviour
             populateFields(current_question);
             originLength = asgQuestionList.Count;
             panelObject.gameObject.SetActive(true);
-            // print(asgQuestionList.Count);
         }
         if(API_Assignment.asgQAddDone){
             API_Assignment.jsonNodeAsgQ.Clear();
             API_Assignment.asgQAddDone = false;
-            print(current_question.assignmentQuestionId);
         }
     }
     private void fetchQuestions(Assignment asg){ 
@@ -105,15 +103,12 @@ public class Assignment_Edit_Script : MonoBehaviour
         populateFields(current_question);
     }
     public void ClickNextOrAdd(){
-        // print("before entering: " + asgQuestionList.Count.ToString());
-        // print("Current Question Number " + cur.ToString());
         try{
             current_question = asgQuestionList[cur+1];
             cur++;
             populateFields(current_question);
         }
         catch(ArgumentOutOfRangeException){
-            print(asgQuestionList.Count);
             if(!newQuestion){
                 current_question = new AssignmentQuestion();
                 asgQuestionList.Add(current_question);
@@ -145,7 +140,6 @@ public class Assignment_Edit_Script : MonoBehaviour
         popUp.gameObject.SetActive(false);
     }
     public void confirmDelete(){
-        print("confirm delete");
         exitDelete();
         if(cur == asgQuestionList.Count - 1 && newQuestion){
             newQuestion = false;

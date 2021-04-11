@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 
+// Controls Assignment_Creation_Meta Scene
 public class Create_Assignment_Meta_Script : MonoBehaviour
 {
     const int NUM_TRY = 10;
@@ -23,6 +24,7 @@ public class Create_Assignment_Meta_Script : MonoBehaviour
         panelObject.transform.Find("Button_Create").GetComponent<Button>().onClick.AddListener(() => clickCreate());
         mainContentPanel.transform.Find("Panel_Messages").Find("Popup_Incomplete").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(() => incompleteAcknowledge());
     }
+    // Populate the number of tries for an assignment
     void populateRetries(){
         List<string> numTry = new List<string>();
         for(int i = 1; i < NUM_TRY; i++){
@@ -50,10 +52,11 @@ public class Create_Assignment_Meta_Script : MonoBehaviour
     private void incompletePopup(string message){
         popUp.transform.Find("Popup_Incomplete").Find("Text").GetComponent<Text>().text = message;
     }
-    // logic
+    // Helper function to get the handle of dropdowns
     private Dropdown getDropdown(string dropdownSection, string dropdownName){
         return panelObject.transform.Find(dropdownSection).Find(dropdownName).GetComponent<Dropdown>();
     }
+    // Verify if all of the data are valid
     public bool verifyFields(){
         List<Dropdown> dropdowns = new List<Dropdown>();
         List<string> time = new List<string>();
@@ -81,7 +84,6 @@ public class Create_Assignment_Meta_Script : MonoBehaviour
         dt_dueDate.AddMonths(-1);
         newAsg.startDate = new AsgDate(dt_startDate);
         newAsg.dueDate = new AsgDate(dt_dueDate);
-        print(newAsg.startDate.printTime());
         
         if(newAsg.assignmentName == ""){
             incompletePopup("Please give the assignment a name.");

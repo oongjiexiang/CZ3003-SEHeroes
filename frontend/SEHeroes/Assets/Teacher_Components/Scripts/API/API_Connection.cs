@@ -8,10 +8,12 @@ using SimpleJSON;
 using System.Linq;
 using UnityEngine.Networking;
 
+// This class handles the general GET, POST, PUT and DELETE HTTP requests. Other classes will obtain data from this class
 public class API_Connection
 {
     private readonly string baseURL = "https://seheroes.herokuapp.com/";
     
+    // Handles GET request
     public IEnumerator GetData(string apiEndpoint, Dictionary<string, string> queryParams, System.Action<string> callback = null)   //Verified: Working
     {
         string fullURL = baseURL + apiEndpoint;
@@ -25,7 +27,6 @@ public class API_Connection
             fullURL += "\b";
         }
         UnityWebRequest response = UnityWebRequest.Get(fullURL);
-        Debug.Log(response.url);
         yield return response.SendWebRequest();
         
         if (response.isNetworkError || response.isHttpError)
@@ -36,9 +37,10 @@ public class API_Connection
             callback(response.downloadHandler.text);
         }
     }
+
+    // Handles POST request
     public IEnumerator PostData(string apiEndpoint, string json_toAdd, System.Action<string> callback = null){
         string fullURL = baseURL + apiEndpoint;
-        Debug.Log(fullURL);
 
         var addRequest = new UnityWebRequest(fullURL, "POST");
         byte[] bytes_toAdd = System.Text.Encoding.UTF8.GetBytes(json_toAdd);
@@ -46,23 +48,21 @@ public class API_Connection
         addRequest.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
         addRequest.SetRequestHeader("Content-Type", "application/json");
         yield return addRequest.SendWebRequest();
-        Debug.Log("Status Code for post: " + addRequest.responseCode);
         if (addRequest.isNetworkError){
             Debug.Log(addRequest.error);
         }
         else{
             Debug.Log(addRequest.downloadHandler.text);
         }
-        Debug.Log("post successful");
         if(callback != null){
             callback(addRequest.downloadHandler.text);
         }
     }
+
+    // Handles PUT Request
     public IEnumerator PutData(string apiEndpoint, string json_toModify, System.Action<string> callback = null)
     {   // PUT method: as extra compiler must be installed for dynamic type, pass json instead of whole object
         string fullURL = baseURL + apiEndpoint;
-        Debug.Log("in apiEndpoint " + apiEndpoint);
-        Debug.Log("in API_Connections " + fullURL); 
         UnityWebRequest putRequest;
         byte[] bytes_toModify = System.Text.Encoding.UTF8.GetBytes(json_toModify);
 
@@ -80,8 +80,6 @@ public class API_Connection
                 Debug.Log(putRequest.downloadHandler.text);
             }
         }
-        // Debug.Log("Status Code for post: " + putRequest.responseCode);
-        Debug.Log("put successful");
         if(callback != null){
             try{
                 callback(putRequest.downloadHandler.text);
@@ -90,10 +88,10 @@ public class API_Connection
         }
     }
 
+    // Handles DELETE Request
     public IEnumerator DeleteData(string apiEndpoint, System.Action<string> callback = null){  // Verified: Working
         string fullURL = baseURL + apiEndpoint;
         UnityWebRequest response = UnityWebRequest.Delete(fullURL);
-        Debug.Log(response.url);
         yield return response.SendWebRequest();
         if (response.isNetworkError || response.isHttpError)
         {

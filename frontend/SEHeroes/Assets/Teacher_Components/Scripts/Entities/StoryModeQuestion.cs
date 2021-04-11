@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using SimpleJSON;
 using System.Linq;
 
+// Story Mode Questions are stored in the database
 [Serializable]
 public class StoryModeQuestion{
     public string section;

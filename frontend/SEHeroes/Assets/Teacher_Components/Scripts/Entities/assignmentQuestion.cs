@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using System;
 
+// Assignment Questions are stored in the database
 [Serializable]
 public class AssignmentQuestion{
     public string question;
@@ -35,6 +36,7 @@ public class AssignmentQuestion{
     }
 }
 
+// This class is created to cater to the correct serialized Assignment Question JSON format that the backend expects
 public class AssignmentQuestionForAPI{
     public AssignmentQuestion question;
     public AssignmentQuestionForAPI(AssignmentQuestion asgQ){

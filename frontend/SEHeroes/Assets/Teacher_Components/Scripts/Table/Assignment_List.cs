@@ -45,7 +45,6 @@ public class Assignment_List : MonoBehaviour
 
     void assignmentMainPopupInitialized()
     {
-        Debug.Log(assignmentNames[2]);
         if(assignmentNames.Count > 0)
         {
             noRecordLabel.gameObject.SetActive (false);
@@ -57,14 +56,12 @@ public class Assignment_List : MonoBehaviour
                 assignmentTextPanel.transform.localScale = new Vector3(1, 1, 1);
                 assignmentTextPanel.transform.localPosition = new Vector3(0, 0, 0);
                 assignmentTextPanel.transform.Find("Cell_Text").GetComponent<Text> ().text = i + ".                     " + assignmentNames[i] + "                     " + assignmentStatus[i];
-                Debug.Log(assignmentTextPanel.transform.Find("Cell_Text").GetComponent<Text>().text);
             }   
         }
         else
         {
             noRecordLabel.gameObject.SetActive(true);
         }
-        Debug.Log("Completed");
     }
     public void hideAssignmentTeacherListPopUp()
     {

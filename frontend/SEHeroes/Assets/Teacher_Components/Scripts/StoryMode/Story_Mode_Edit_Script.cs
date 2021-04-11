@@ -50,6 +50,7 @@ public class Story_Mode_Edit_Script : MonoBehaviour
             panelObject.gameObject.SetActive(true);
         }
     }
+    // Fetches the question from the backend
     private void fetchQuestions(){   
         API_Storymode.getStoryQDone = false;
         StartCoroutine(conn.getStoryQ(Questions_List_Script.editStoryModeQ.storyModeQuestionId));        
@@ -95,9 +96,11 @@ public class Story_Mode_Edit_Script : MonoBehaviour
         popUp.transform.Find("Popup_Delete").gameObject.SetActive(false);
         popUp.gameObject.SetActive(false);
     }
+    // Other functions can set up pop up messages to be displayed. This allows customisation of error messages
     private void setPopupInfoMessage(string message){   // helper function to set popup's message easily
         popUp.transform.Find("Popup_Incomplete").Find("Text").GetComponent<Text>().text = message;
     }
+    // Validate if data are valid
     private bool validateFields(){
         string ans;
         current_question.question = entryContainer.Find("InputField_Question").GetComponent<InputField>().text;
@@ -163,6 +166,7 @@ public class Story_Mode_Edit_Script : MonoBehaviour
         }
         return true;
     }
+    // Populate fields on the screen
     private void populateFields()
     {
         ClickClear();

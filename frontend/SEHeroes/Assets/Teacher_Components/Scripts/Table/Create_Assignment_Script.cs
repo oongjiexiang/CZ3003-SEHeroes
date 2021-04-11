@@ -31,7 +31,6 @@ public class Create_Assignment_Script : MonoBehaviour
         dropdownAnswer = entryContainer.Find("Dropdown_Answer").GetComponent<Dropdown>();
         panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = false;
         popUp.SetActive(false);
-        // panelObject.transform.Find("Button_Cancel").GetComponent<Button>().onClick.AddListener(() => clickCancel());
 
         // variables: questions
         conn = (API_Assignment)transform.GetComponent(typeof(API_Assignment));
