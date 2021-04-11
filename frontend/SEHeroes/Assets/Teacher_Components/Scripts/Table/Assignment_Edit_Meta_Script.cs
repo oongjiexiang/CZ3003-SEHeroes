@@ -24,7 +24,6 @@ public class Assignment_Edit_Meta_Script : MonoBehaviour
         mainContentPanel.transform.Find("Panel_Messages").Find("Popup_Incomplete").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(() => incompleteAcknowledge());
     }
     void populateFields(){
-        // panelObject.transform.Find("Text_Name").GetComponent<Text>().text = editAsg.assignmentName;
         popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
         popUp.SetActive(false);
         panelObject.transform.Find("InputField_Name").GetComponent<InputField>().text = editAsg.assignmentName;
@@ -48,6 +47,8 @@ public class Assignment_Edit_Meta_Script : MonoBehaviour
             Datetime_Controller_Script handleEnd = (Datetime_Controller_Script)panelObject.transform.Find("Handle_End_Date").GetComponent(typeof(Datetime_Controller_Script));
             handleEnd.FocusValues(editAsg.dueDate);
         }
+        print(editAsg.startDate.time());
+        print(editAsg.dueDate.time());
     }
     void populateRetries(){
         List<string> numTry = new List<string>();

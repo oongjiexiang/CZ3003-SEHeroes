@@ -23,8 +23,8 @@ public class AsgDate{
     }
     public AsgDate(DateTime time){
         year = time.Year;
-        month = time.Month + 1;
-        day = time.Day + 1;
+        month = time.Month;
+        day = time.Day;
         hour = time.Hour;
         minute = time.Minute;
         second = time.Second;
@@ -32,12 +32,13 @@ public class AsgDate{
         Debug.Log(day);
     }
     public AsgDate(){
-        year = 2022;
-        month = 3;
-        day = 30;
-        hour = 10;
-        minute = 22;
-        second = 00;
+        DateTime time = DateTime.Now;
+        year = time.Year;
+        month = time.Month;
+        day = time.Day;
+        hour = time.Hour;
+        minute = time.Minute;
+        second = time.Second;
     }
     public string printTime(){
         return String.Format("{0}/{1}/{2} {3:d2}:{4:d2}", year, month, day, hour, minute);
@@ -53,6 +54,8 @@ public class AsgDate{
             return DateTime.Parse(String.Format("{0}/{1}/{2} {3}:{4}:00", year, month, day, hour, minute));
         }
         catch(FormatException){
+            Debug.Log("Exception");
+            Debug.Log(year.ToString() + "/" + month.ToString() + "/" + day.ToString());
             return DateTime.Now;
         }
     }

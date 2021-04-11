@@ -31,19 +31,11 @@ public class API_Assignment : MonoBehaviour{
         asgDeleteDone = true;
         asgUpdateDone = true;
     }
-
-    // public Assignment getAssignment(string assignmentId){
-    //     API_Connection conn = new API_Connection();
-    //     JSONNode jsonNode = null;
-    //     // print("in main: " + json_receivedData.Count);
-    //     yield return StartCoroutine(conn.GetData("assignment/", null, s => {
-    //         jsonNode = JSON.Parse(s);
-    //     }));
-    //     return new Assignment(jsonNode);
-    // }
     
     public IEnumerator addAssignment(Assignment asg, List<AssignmentQuestion> asgQuestions){
         asgAddDone = false;
+        asg.startDate.month+=1;
+        asg.dueDate.month+=1;
         API_Connection conn = new API_Connection();
         AssignmentForAPI asgAPI = new AssignmentForAPI(asg, asgQuestions);
         string jsonString = JsonUtility.ToJson(asgAPI);
@@ -52,17 +44,22 @@ public class API_Assignment : MonoBehaviour{
             // asgQuestion.assignmentQuestionId = 
             print(JSON.Parse(s));
         }));
-        // yield return null;
+        asg.startDate.month-=1;
+        asg.dueDate.month-=1;
         asgQAddDone = true;
     }
     public IEnumerator updateAssignment(Assignment asg){
         asgUpdateDone = false;
+        asg.startDate.month+=1;
+        asg.dueDate.month+=1;
         API_Connection conn = new API_Connection();
         string jsonString = JsonUtility.ToJson(asg);
         Debug.Log(jsonString + " for assignment question");
         yield return StartCoroutine(conn.PutData("assignment/" + asg.assignmentId, jsonString, s => {
             print(JSON.Parse(s));
         }));
+        asg.startDate.month-=1;
+        asg.dueDate.month-=1;
         asgUpdateDone = true;
     }
     public IEnumerator deleteAssignment(Assignment asg){
@@ -105,31 +102,11 @@ public class API_Assignment : MonoBehaviour{
         yield return StartCoroutine(conn.PutData("assignment/" + asg.assignmentId + "/addQuestion", jsonString, s => {
             asgQuestion.assignmentQuestionId = JSON.Parse(s);
         }));
+        
         asgQAddDone = true;
     }
     public IEnumerator deleteQuestion(Assignment asg, AssignmentQuestion asgQuestion){
-        // asgQDeleteDone = false;
-        // API_Connection conn = new API_Connection();
         string jsonString = "{\"assignmentQuestionId: \"" + asgQuestion.assignmentQuestionId + "\"}";
-        // Debug.Log(jsonString + " for assignment question");
-        // yield return StartCoroutine(conn.PutData("assignment/" + asg.assignmentId + "/removeQuestion", jsonString, s => {
-        //     asgQuestion.assignmentQuestionId = JSON.Parse(s);
-        // }));
-        // asgQDeleteDone = true;
-        // byte[] myData = System.Text.Encoding.UTF8.GetBytes(jsonString);
-        // byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json_add_tutorial);
-        //     tutorialAddRequest.SetRequestHeader("Content-Type", "application/json");
-        // using (UnityWebRequest www = UnityWebRequest.Put("https://seheroes.herokuapp.com/assignment/" + asg.assignmentId + "/removeQuestion", myData))
-        // {
-        //     yield return www.SendWebRequest();
-
-        //     if (www.isNetworkError){
-        //         Debug.Log(www.error);
-        //     }
-        //     else{
-        //         Debug.Log(www.downloadHandler.text);
-        //     }
-        // }
         AssignmentQuestionIdForAPI asgId = new AssignmentQuestionIdForAPI(asgQuestion);
         string json = JsonUtility.ToJson(asgId);
         var assignmentQDeleteRequest =new  UnityWebRequest("https://seheroes.herokuapp.com/assignment/" + asg.assignmentId + "/removeQuestion", "PUT");
@@ -140,8 +117,6 @@ public class API_Assignment : MonoBehaviour{
         assignmentQDeleteRequest.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
         yield return assignmentQDeleteRequest.SendWebRequest();
         Debug.Log("Status Code: " + assignmentQDeleteRequest.responseCode);
-
-        // yield return assignmentQDeleteRequest.SendWebRequest();
 
         if (assignmentQDeleteRequest.isNetworkError)
         {

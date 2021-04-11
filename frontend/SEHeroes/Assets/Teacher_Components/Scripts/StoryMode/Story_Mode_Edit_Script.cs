@@ -52,8 +52,6 @@ public class Story_Mode_Edit_Script : MonoBehaviour
     }
     private void fetchQuestions(){   
         API_Storymode.getStoryQDone = false;
-        print(Questions_List_Script.editStoryModeQ.storyModeQuestionId);
-        print(conn);
         StartCoroutine(conn.getStoryQ(Questions_List_Script.editStoryModeQ.storyModeQuestionId));        
     }
     public void ClickReturn(){

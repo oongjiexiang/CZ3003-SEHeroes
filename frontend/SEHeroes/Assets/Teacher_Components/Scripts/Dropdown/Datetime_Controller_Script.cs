@@ -12,9 +12,7 @@ public class Datetime_Controller_Script : MonoBehaviour
 
     public GameObject HandleDate;
     public GameObject HandleTime;
-    //public GameObject mainContentPanel;
     private List<Dropdown> dropdowns = new List<Dropdown>();
-    //private GameObject popUp;
 
     void Awake()
     {

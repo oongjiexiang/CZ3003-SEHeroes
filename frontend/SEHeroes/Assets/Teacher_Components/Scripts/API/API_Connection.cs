@@ -11,10 +11,9 @@ using UnityEngine.Networking;
 public class API_Connection
 {
     private readonly string baseURL = "https://seheroes.herokuapp.com/";
-    // Start is called before the first frame update
+    
     public IEnumerator GetData(string apiEndpoint, Dictionary<string, string> queryParams, System.Action<string> callback = null)   //Verified: Working
     {
-        Debug.Log("Enter get data");
         string fullURL = baseURL + apiEndpoint;
         if(queryParams != null)
         {
@@ -34,7 +33,6 @@ public class API_Connection
             yield break;
         }
         if(callback != null){
-            Debug.Log("response callback is not null");
             callback(response.downloadHandler.text);
         }
     }
@@ -57,7 +55,6 @@ public class API_Connection
         }
         Debug.Log("post successful");
         if(callback != null){
-            Debug.Log("response callback is not null");
             callback(addRequest.downloadHandler.text);
         }
     }

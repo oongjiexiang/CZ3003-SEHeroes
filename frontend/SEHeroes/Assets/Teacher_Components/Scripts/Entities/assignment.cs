@@ -12,14 +12,14 @@ public class Assignment{
     [System.NonSerialized]
     public string assignmentId;
     public int tries;
-    public AsgDate startDate;      // will change
-    public AsgDate dueDate;        // will change
+    public AsgDate startDate;     
+    public AsgDate dueDate;       
     public List<string> questions;  // represents list of questionId 
     public Assignment(){
-        assignmentName = "Testing";
+        assignmentName = "Loading";
         startDate = new AsgDate();
         dueDate = new AsgDate();
-        tries = 2;
+        tries = 1;
         questions = new List<string>();
     }
     public Assignment(JSONNode jsonAsg){

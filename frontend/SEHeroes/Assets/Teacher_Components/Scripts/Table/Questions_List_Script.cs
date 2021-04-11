@@ -108,7 +108,6 @@ public class Questions_List_Script : MonoBehaviour
         studentPopUp.gameObject.SetActive (true);
     }
     private void addStoryModeQuestion(){
-        print("calling");
         SceneManager.LoadScene("Question_Bank_Add");
     }
 }

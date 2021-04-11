@@ -75,9 +75,13 @@ public class Create_Assignment_Meta_Script : MonoBehaviour
         foreach(var dp in dropdowns){
             time.Add(dp.options[dp.value].text);
         }
+        DateTime dt_startDate = DateTime.Parse(String.Format("{0} {1} {2} {3}:{4}:{5}", time[0], time[1], time[2], time[3], time[4], 0));
+        DateTime dt_dueDate = DateTime.Parse(String.Format("{0} {1} {2} {3}:{4}:{5}", time[5], time[6], time[7], time[8], time[9], 0));
+        dt_startDate.AddMonths(1);
+        dt_dueDate.AddMonths(1);
+        newAsg.startDate = new AsgDate(dt_startDate);
+        newAsg.dueDate = new AsgDate(dt_dueDate);
         
-        newAsg.startDate = new AsgDate(DateTime.Parse(String.Format("{0} {1} {2} {3}:{4}:{5}", time[0], time[1], time[2], time[3], time[4], 0)));
-        newAsg.dueDate = new AsgDate(DateTime.Parse(String.Format("{0} {1} {2} {3}:{4}:{5}", time[5], time[6], time[7], time[8], time[9], 0)));
         if(newAsg.assignmentName == ""){
             incompletePopup("Please give the assignment a name.");
             return false;

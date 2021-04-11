@@ -119,12 +119,12 @@ public class Assignment_Entry_Script : MonoBehaviour
             });
             entryTransform.Find("Text_Name").Find("Button_Share_Tele").GetComponent<Button>().onClick.AddListener(() => {
                 int chosenAsgIndex = int.Parse(entryTransform.Find("Text_No").GetComponent<Text>().text);
-                chosenAsg = assignmentList[i-1];
+                chosenAsg = assignmentList[chosenAsgIndex-1];
                 shareAssignmentTele();
             });
             entryTransform.Find("Text_Name").Find("Button_Share_Tweet").GetComponent<Button>().onClick.AddListener(() => {
                 int chosenAsgIndex = int.Parse(entryTransform.Find("Text_No").GetComponent<Text>().text);
-                chosenAsg = assignmentList[i-1];
+                chosenAsg = assignmentList[chosenAsgIndex-1];
                 shareAssignmentTweet();
             });
             entryTransform.localScale = new Vector2(1, 1);
@@ -166,8 +166,5 @@ public class Assignment_Entry_Script : MonoBehaviour
     public void exitDelete(){
         popUp.transform.Find("Popup_Delete").gameObject.SetActive(false);   
         popUp.SetActive(false);
-    }
-    public void shareAssignment(){
-        print("Still need to connect to API");
     }
 }
