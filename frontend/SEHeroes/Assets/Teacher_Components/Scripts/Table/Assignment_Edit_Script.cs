@@ -68,7 +68,7 @@ public class Assignment_Edit_Script : MonoBehaviour
             API_Assignment.jsonNodeAsgQ.Clear();
             API_Assignment.asgQListRequestDone = false;
             current_question = asgQuestionList[0];
-            populateFields(current_question, false);
+            populateFields(current_question);
             originLength = asgQuestionList.Count;
             panelObject.gameObject.SetActive(true);
             // print(asgQuestionList.Count);
@@ -91,18 +91,12 @@ public class Assignment_Edit_Script : MonoBehaviour
         if(validateFields()){
             if(newQuestion && cur == asgQuestionList.Count - 1){
                 newQuestion = false;
-                // asgQuestionList.Add(current_question);
-                panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = true;
                 StartCoroutine(conn.addQuestion(asg, current_question));
             }
             else{
                 StartCoroutine(conn.updateQuestion(current_question));
             }
-            if(cur == 0){
-                panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = true;
-            }
-            // popUp.SetActive(true);
-            // popUp.transform.Find("Popup_Create").gameObject.SetActive(true);
+            populateFields(current_question);
         }
         else{
             popupQuestionIncomplete();
@@ -110,28 +104,15 @@ public class Assignment_Edit_Script : MonoBehaviour
     }
     public void ClickPrevious(){
         current_question = asgQuestionList[--cur];
-        panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = true;
-        if(cur > 0){
-            prevAllowed = true;
-            populateFields(current_question, true);
-        }
-        else{
-            prevAllowed = false;
-            populateFields(current_question, false);
-        }
+        populateFields(current_question);
     }
     public void ClickNextOrAdd(){
         // print("before entering: " + asgQuestionList.Count.ToString());
         // print("Current Question Number " + cur.ToString());
         try{
             current_question = asgQuestionList[cur+1];
-            // print(current_question.question);
             cur++;
-            populateFields(current_question, true);
-            // if(cur == asgQuestionList.Count - 1){
-            //     // print("Should change text on next button");
-            //     panelObject.transform.Find("Button_NextQ").Find("Text").GetComponent<Text>().text = "Add Question";
-            // }
+            populateFields(current_question);
         }
         catch(ArgumentOutOfRangeException){
             print(asgQuestionList.Count);
@@ -140,10 +121,8 @@ public class Assignment_Edit_Script : MonoBehaviour
                 asgQuestionList.Add(current_question);
                 cur++;
                 newQuestion = true;
-                populateFields(current_question, true);
+                populateFields(current_question);
             }
-            panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = false;
-            prevAllowed = true;
         }
     }
     public void ClickClear()
@@ -170,19 +149,23 @@ public class Assignment_Edit_Script : MonoBehaviour
     public void confirmDelete(){
         print("confirm delete");
         exitDelete();
-        StartCoroutine(conn.deleteQuestion(asg, current_question));
+        if(cur == asgQuestionList.Count - 1 && newQuestion){
+            newQuestion = false;
+        }
+        else{
+            StartCoroutine(conn.deleteQuestion(asg, current_question));
+        }
         if(cur < asgQuestionList.Count - 1){
             asgQuestionList.RemoveAt(cur);
             current_question = asgQuestionList[cur];
-            if(cur == 0) populateFields(current_question, false);
-            else populateFields(current_question, true);
+            populateFields(current_question);
         }
         else{
             asgQuestionList.RemoveAt(cur);
             current_question = asgQuestionList[--cur];
-            if(cur == 0) populateFields(current_question, false);
-            else populateFields(current_question, true);
+            populateFields(current_question);
         }
+        
     }
     public void exitDelete(){
         popUp.transform.Find("Popup_Delete").gameObject.SetActive(false);
@@ -232,7 +215,18 @@ public class Assignment_Edit_Script : MonoBehaviour
             return false;
         }
         current_question.correctAnswer = dropdownAnswer.value-1;
-        populateFields(current_question, prevAllowed);
+        try{
+            current_question.score = int.Parse(entryContainer.Find("InputField_Score").GetComponent<InputField>().text);
+            if(current_question.score < 0){
+                setPopupInfoMessage("Score must not be negative");
+                return false;
+            }
+        }
+        catch(FormatException){
+            setPopupInfoMessage("Score must be a whole number");
+            return false;
+        }
+        populateFields(current_question);
         switch(current_question.correctAnswer){
             case 2: {
                 if(current_question.answer.Count <= 2){
@@ -255,39 +249,37 @@ public class Assignment_Edit_Script : MonoBehaviour
         }
         return true;
     }
-    private void populateFields(AssignmentQuestion current_question, bool buttonInteractable)
+    private void populateFields(AssignmentQuestion current_question)
     {
         ClickClear();
+
+        entryContainer.Find("Text_Question").GetComponent<Text>().text = "Question " + (cur + 1).ToString();
         entryContainer.Find("InputField_Question").GetComponent<InputField>().text = current_question.question;
+        
         try{
             entryContainer.Find("InputField_A").GetComponent<InputField>().text = current_question.answer[0];
             entryContainer.Find("InputField_B").GetComponent<InputField>().text = current_question.answer[1];
             entryContainer.Find("InputField_C").GetComponent<InputField>().text = current_question.answer[2];
             entryContainer.Find("InputField_D").GetComponent<InputField>().text = current_question.answer[3];
         }
-        catch(ArgumentOutOfRangeException){
-
-        }
-        entryContainer.Find("Text_Question").GetComponent<Text>().text = "Question " + (cur + 1).ToString();
+        catch(ArgumentOutOfRangeException){}
+        
         entryContainer.Find("InputField_Score").GetComponent<InputField>().text = current_question.score.ToString();
         if(current_question.correctAnswer == -1) dropdownAnswer.value = 0;
         else dropdownAnswer.value = current_question.correctAnswer + 1;
-        if(asgQuestionList.Count > 1){
-            panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = true;
-            prevAllowed = true;
-        }
-        else{
-            panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = false;
-            prevAllowed = false;
-        }
-        panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = buttonInteractable;
+
+        if(asgQuestionList.Count > 1) panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = true;
+        else panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = false;
+        
+        if(cur == 0) panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = false;
+        else panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = true;
+
         panelObject.transform.Find("Button_NextQ").Find("Text").GetComponent<Text>().text = "Next";
-        if(cur == asgQuestionList.Count - 1 && !newQuestion){
-            // print("Should change text on next button");
+        panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = true;
+        if(cur == asgQuestionList.Count - 1){
             panelObject.transform.Find("Button_NextQ").Find("Text").GetComponent<Text>().text = "Add Question";
-        }
-        else if(cur == asgQuestionList.Count - 1 && newQuestion){
-            panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = false;
+            if(!newQuestion) panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = true;
+            else panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = false;
         }
     }
     private void popupQuestionIncomplete(){

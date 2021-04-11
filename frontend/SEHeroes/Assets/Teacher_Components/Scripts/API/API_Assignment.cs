@@ -156,6 +156,7 @@ public class API_Assignment : MonoBehaviour{
         asgQUpdateDone = false;
         API_Connection conn = new API_Connection();
         string jsonString = JsonUtility.ToJson(asgQuestion);
+        print("update json" + jsonString);
         yield return StartCoroutine(conn.PutData("assignmentQUestion/" + asgQuestion.assignmentQuestionId, jsonString, s => {
             print(JSON.Parse(s) == asgQuestion.assignmentQuestionId);
         }));
