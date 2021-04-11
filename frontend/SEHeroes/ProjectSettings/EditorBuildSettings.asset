@@ -68,4 +68,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Teacher UI/Assignment_Edit_Meta.unity
     guid: 3057802e23e8cf447a56721912a3827d
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/World_Scheduling.unity
+    guid: ea01a5f648ad04932b596e666fcb6386
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/World_Schedule_Editor.unity
+    guid: 1f4d3074aa26243eb8412374a15fc9a9
   m_configObjects: {}

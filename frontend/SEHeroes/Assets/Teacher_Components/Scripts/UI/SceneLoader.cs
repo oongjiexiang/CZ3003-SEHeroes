@@ -22,6 +22,8 @@ public class SceneLoader : MonoBehaviour
     const string tutorialReport = "Tutorial_Group_Report";
     const string addAssignmentMetaScene = "Assignment_Creation_Meta";
     const string studentReport = "Student_Report";
+    const string worldSchedule = "World_Scheduling";   
+    const string worldScheduleEditor = "World_Schedule_Editor";
     public void LoadNextScene() 
     {
     	int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -102,5 +104,13 @@ public class SceneLoader : MonoBehaviour
     public void LoadStudentReportScene()
     {
         SceneManager.LoadScene(studentReport);
+    }
+    public void LoadWorldSchedulingScene()
+    {
+        SceneManager.LoadScene(worldSchedule);
+    }
+    public void LoadWorldScheduleEditorScene()
+    {
+        SceneManager.LoadScene(worldScheduleEditor);
     }
 }
