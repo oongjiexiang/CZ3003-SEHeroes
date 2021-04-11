@@ -1515,8 +1515,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 573826612}
-  - component: {fileID: 573826613}
   - component: {fileID: 573826614}
+  - component: {fileID: 573826613}
   m_Layer: 0
   m_Name: Assignment_Controller
   m_TagString: Untagged
@@ -1547,7 +1547,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 573826611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0446cca6aef68b4080c72f12fd54f75, type: 3}
+  m_Script: {fileID: 11500000, guid: d1d74c52426a24f47b1adc72a4b15605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panelObject: {fileID: 1487696761}
@@ -2502,8 +2502,6 @@ GameObject:
   - component: {fileID: 1431067285}
   - component: {fileID: 1431067288}
   - component: {fileID: 1431067287}
-  - component: {fileID: 1431067289}
-  - component: {fileID: 1431067286}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -2532,20 +2530,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1431067286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1431067284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0446cca6aef68b4080c72f12fd54f75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panelObject: {fileID: 1487696761}
-  mainContentPanel: {fileID: 1091185123}
 --- !u!114 &1431067287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2583,18 +2567,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1431067284}
   m_CullTransparentMesh: 0
---- !u!114 &1431067289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1431067284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8020cdd9b0cb2d4e8f3080210c3a943, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1445654580
 GameObject:
   m_ObjectHideFlags: 0
@@ -4083,7 +4055,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 573826613}
+      objectReference: {fileID: 0}
     - target: {fileID: 8591989997657723308, guid: e17daa75367eb744d9b066b2e8749dd8,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName

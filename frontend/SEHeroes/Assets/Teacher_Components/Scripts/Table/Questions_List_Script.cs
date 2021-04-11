@@ -85,7 +85,7 @@ public class Questions_List_Script : MonoBehaviour
                 playerTextPanel.transform.SetParent(mainScrollContentView.transform);
                 playerTextPanel.transform.localScale = new Vector3(1,1,1);
                 playerTextPanel.transform.localPosition = new Vector3(0,0,0);
-                playerTextPanel.transform.Find("Text_No").GetComponent<Text>().text = i.ToString();
+                playerTextPanel.transform.Find("Text_No").GetComponent<Text>().text = (i+1).ToString();
                 playerTextPanel.transform.Find("Text_Question").GetComponent<Text>().text = value;
                 playerTextPanel.transform.Find("Text_Difficulty").GetComponent<Text>().text = questionLevel;
                 playerTextPanel.transform.Find("Text_Id").GetComponent<Text>().text = questionId;

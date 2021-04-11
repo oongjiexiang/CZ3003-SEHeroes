@@ -35,18 +35,15 @@ public class API_Storymode : MonoBehaviour{
         updateStoryQDone = false;
         API_Connection conn = new API_Connection();
         string jsonString = JsonUtility.ToJson(storyModeQ);
-        Debug.Log(jsonString + " for StoryModeQuestion question");
         yield return StartCoroutine(conn.PutData("StoryModeQuestion/" + storyModeQ.storyModeQuestionId, jsonString, s => {
             print(JSON.Parse(s));
         }));
         updateStoryQDone = true;
-        // yield return null;
     }
     public IEnumerator addStoryQ(StoryModeQuestion storyModeQ){
         addStoryQDone = false;
         API_Connection conn = new API_Connection();
         string jsonString = JsonUtility.ToJson(storyModeQ);
-        Debug.Log(jsonString + " for StoryModeQuestion question");
         yield return StartCoroutine(conn.PostData("StoryModeQuestion/", jsonString, s => {
             storyModeQ.storyModeQuestionId = JSON.Parse(s);
         }));

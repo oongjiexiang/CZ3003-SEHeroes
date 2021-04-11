@@ -14,7 +14,6 @@ public class Assignment_Edit_Script : MonoBehaviour
     private int cur;
     private int originLength;
     private bool newQuestion;
-    private bool prevAllowed;
 
     // display
     public GameObject panelObject;
@@ -34,7 +33,6 @@ public class Assignment_Edit_Script : MonoBehaviour
         entryContainer = panelObject.transform.Find("Panel_Question_Creation");
         dropdownAnswer = entryContainer.Find("Dropdown_Answer").GetComponent<Dropdown>();
         panelObject.transform.Find("Button_Delete").GetComponent<Button>().interactable = false;    // need to change
-        prevAllowed = false;
         popUp.SetActive(false);
         conn = (API_Assignment)transform.GetComponent(typeof(API_Assignment));
         panelObject.gameObject.SetActive(false);

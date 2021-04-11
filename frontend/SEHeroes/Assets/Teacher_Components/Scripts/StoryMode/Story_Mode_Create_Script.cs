@@ -111,6 +111,7 @@ public class Story_Mode_Create_Script : MonoBehaviour
             return false;
         }
         current_question.correctAnswer = dropdownAnswer.value-1;
+        current_question.level = dropdownLevel.options[dropdownLevel.value].text;
         populateFields();
         switch(current_question.correctAnswer){
             case 2: {

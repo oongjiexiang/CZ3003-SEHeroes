@@ -177,6 +177,17 @@ public class Story_Mode_Edit_Script : MonoBehaviour
 
         }
         dropdownAnswer.value = current_question.correctAnswer + 1;
+        switch(current_question.level){
+            case "Easy":
+                dropdownLevel.value = 0;
+                break;
+            case "Medium":
+                dropdownLevel.value = 1;
+                break;
+            case "Hard":
+                dropdownLevel.value = 2;
+                break;
+        }
     }
     private void popupQuestionIncomplete(){
         popUp.SetActive(true);

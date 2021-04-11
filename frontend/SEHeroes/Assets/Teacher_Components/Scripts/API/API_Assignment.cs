@@ -34,32 +34,23 @@ public class API_Assignment : MonoBehaviour{
     
     public IEnumerator addAssignment(Assignment asg, List<AssignmentQuestion> asgQuestions){
         asgAddDone = false;
-        asg.startDate.month+=1;
-        asg.dueDate.month+=1;
         API_Connection conn = new API_Connection();
         AssignmentForAPI asgAPI = new AssignmentForAPI(asg, asgQuestions);
         string jsonString = JsonUtility.ToJson(asgAPI);
         Debug.Log(jsonString + " for assignment question");
         yield return StartCoroutine(conn.PostData("assignment/", jsonString, s => {
-            // asgQuestion.assignmentQuestionId = 
             print(JSON.Parse(s));
         }));
-        asg.startDate.month-=1;
-        asg.dueDate.month-=1;
         asgQAddDone = true;
     }
     public IEnumerator updateAssignment(Assignment asg){
         asgUpdateDone = false;
-        asg.startDate.month+=1;
-        asg.dueDate.month+=1;
         API_Connection conn = new API_Connection();
         string jsonString = JsonUtility.ToJson(asg);
         Debug.Log(jsonString + " for assignment question");
         yield return StartCoroutine(conn.PutData("assignment/" + asg.assignmentId, jsonString, s => {
             print(JSON.Parse(s));
         }));
-        asg.startDate.month-=1;
-        asg.dueDate.month-=1;
         asgUpdateDone = true;
     }
     public IEnumerator deleteAssignment(Assignment asg){
