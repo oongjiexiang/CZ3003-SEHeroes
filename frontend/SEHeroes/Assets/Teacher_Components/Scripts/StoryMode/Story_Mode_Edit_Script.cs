@@ -16,6 +16,7 @@ public class Story_Mode_Edit_Script : MonoBehaviour
     private Transform entryContainer;
     private GameObject popUp;
     private Dropdown dropdownAnswer;
+    private Dropdown dropdownLevel;
     private API_Storymode conn; 
     
     void Start()
@@ -24,6 +25,7 @@ public class Story_Mode_Edit_Script : MonoBehaviour
         popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
         entryContainer = panelObject.transform.Find("Panel_Question_Creation_Story");
         dropdownAnswer = entryContainer.Find("Dropdown_Answer").GetComponent<Dropdown>();
+        dropdownLevel = entryContainer.Find("Dropdown_Level").GetComponent<Dropdown>();
         popUp.SetActive(false);
         conn = (API_Storymode)transform.GetComponent(typeof(API_Storymode));
         panelObject.gameObject.SetActive(false);
@@ -139,6 +141,7 @@ public class Story_Mode_Edit_Script : MonoBehaviour
             return false;
         }
         current_question.correctAnswer = dropdownAnswer.value-1;
+        current_question.level = dropdownLevel.options[dropdownLevel.value].text;
         populateFields();
         switch(current_question.correctAnswer){
             case 2: {

@@ -79,8 +79,7 @@ public class Assignment_Edit_Script : MonoBehaviour
             print(current_question.assignmentQuestionId);
         }
     }
-    private void fetchQuestions(Assignment asg){   
-        // API_Assignment conn = (API_Assignment)transform.GetComponent(typeof(API_Assignment));
+    private void fetchQuestions(Assignment asg){ 
         API_Assignment.asgQListRequestDone = false;
         StartCoroutine(conn.getAssignmentQuestionList(asg));        
     }
@@ -92,10 +91,15 @@ public class Assignment_Edit_Script : MonoBehaviour
         if(validateFields()){
             if(newQuestion && cur == asgQuestionList.Count - 1){
                 newQuestion = false;
+                // asgQuestionList.Add(current_question);
+                panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = true;
                 StartCoroutine(conn.addQuestion(asg, current_question));
             }
             else{
                 StartCoroutine(conn.updateQuestion(current_question));
+            }
+            if(cur == 0){
+                panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = true;
             }
             // popUp.SetActive(true);
             // popUp.transform.Find("Popup_Create").gameObject.SetActive(true);
@@ -107,9 +111,14 @@ public class Assignment_Edit_Script : MonoBehaviour
     public void ClickPrevious(){
         current_question = asgQuestionList[--cur];
         panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = true;
-        prevAllowed = true;
-        if(cur > 0) populateFields(current_question, true);
-        else populateFields(current_question, false);
+        if(cur > 0){
+            prevAllowed = true;
+            populateFields(current_question, true);
+        }
+        else{
+            prevAllowed = false;
+            populateFields(current_question, false);
+        }
     }
     public void ClickNextOrAdd(){
         // print("before entering: " + asgQuestionList.Count.ToString());
@@ -119,10 +128,10 @@ public class Assignment_Edit_Script : MonoBehaviour
             // print(current_question.question);
             cur++;
             populateFields(current_question, true);
-            if(cur == asgQuestionList.Count - 1){
-                // print("Should change text on next button");
-                panelObject.transform.Find("Button_NextQ").Find("Text").GetComponent<Text>().text = "Add Question";
-            }
+            // if(cur == asgQuestionList.Count - 1){
+            //     // print("Should change text on next button");
+            //     panelObject.transform.Find("Button_NextQ").Find("Text").GetComponent<Text>().text = "Add Question";
+            // }
         }
         catch(ArgumentOutOfRangeException){
             print(asgQuestionList.Count);
@@ -134,7 +143,7 @@ public class Assignment_Edit_Script : MonoBehaviour
                 populateFields(current_question, true);
             }
             panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = false;
-            prevAllowed = false;
+            prevAllowed = true;
         }
     }
     public void ClickClear()
@@ -273,6 +282,13 @@ public class Assignment_Edit_Script : MonoBehaviour
         }
         panelObject.transform.Find("Button_PrevQ").GetComponent<Button>().interactable = buttonInteractable;
         panelObject.transform.Find("Button_NextQ").Find("Text").GetComponent<Text>().text = "Next";
+        if(cur == asgQuestionList.Count - 1 && !newQuestion){
+            // print("Should change text on next button");
+            panelObject.transform.Find("Button_NextQ").Find("Text").GetComponent<Text>().text = "Add Question";
+        }
+        else if(cur == asgQuestionList.Count - 1 && newQuestion){
+            panelObject.transform.Find("Button_NextQ").GetComponent<Button>().interactable = false;
+        }
     }
     private void popupQuestionIncomplete(){
         popUp.SetActive(true);

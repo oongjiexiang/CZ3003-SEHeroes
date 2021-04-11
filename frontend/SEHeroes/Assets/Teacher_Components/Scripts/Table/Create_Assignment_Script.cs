@@ -46,8 +46,6 @@ public class Create_Assignment_Script : MonoBehaviour
         if(validateFields()){
             popUp.SetActive(true);
             popUp.transform.Find("Popup_Create").gameObject.SetActive(true);
-            StartCoroutine(conn.addAssignment(asg, asgQuestionList));
-            SceneManager.LoadScene("Assignments");
         }
         else{
             popupQuestionIncomplete();
@@ -95,14 +93,7 @@ public class Create_Assignment_Script : MonoBehaviour
         popUp.transform.Find("Popup_Delete").gameObject.SetActive(true);
     }
     public void confirmSaveAndCreate(){
-        API_Assignment asg_conn = new API_Assignment();
-        print(new API_Connection());
-        // foreach(var asgQuestion in asgQuestionList){
-        //     StartCoroutine(asg_conn.addQuestion(asgQuestion));
-        //     asg.questions.Add(asgQuestion.assignmentQuestionId);
-        // }
-        // StartCoroutine(asg_conn.saveBack(asg));
-        print("Whole process is successful");
+        StartCoroutine(conn.addAssignment(asg, asgQuestionList));
         SceneManager.LoadScene("Assignments");
     }
     public void exitSaveAndCreate(){
