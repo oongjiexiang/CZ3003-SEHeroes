@@ -54,14 +54,16 @@ public class AssignmentBattleSceneController : MonoBehaviour
     public TextMeshProUGUI marksText;
     public TextMeshProUGUI quesCounter;
     public TextMeshProUGUI totalScore;
+
+    private string[] worldArr= new string[] {"Planning","Design","Implementation","Testing","Maintanence"};
     void Start()
     {
         ProgramStateController.viewState();
         StartCoroutine(APIController.GetAssignmentQuesAPI());
         //StartCoroutine(GetQuesAPI());
         resultCanvas.gameObject.SetActive(false);
-        UpdateBG(world);
-        enemy.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/"+world+"MonsterController/"+level+world+"Monst");
+        UpdateBG(worldArr[UnityEngine.Random.Range(0, worldArr.Length)]);
+        enemy.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/assignmentMonster");
     }
 
     // Update is called once per frame
@@ -90,13 +92,13 @@ public class AssignmentBattleSceneController : MonoBehaviour
             {
                 if (correctAnswerIndex == userAnswer)
                 {
-                    enemy.Play(level.ToLower() + "Hit");
+                    enemy.Play("Hit");
                     player.Play("CorrectAttack");
                     scoreCount+=score;
                 }
                 else
                 {
-                     enemy.Play(level.ToLower() + "Attack");
+                     enemy.Play("Attack");
                      player.Play("Hit");
                 }
 
