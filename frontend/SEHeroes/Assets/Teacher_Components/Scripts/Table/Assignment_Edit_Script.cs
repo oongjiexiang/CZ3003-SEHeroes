@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+// Controls Assignment_Edit Scene
 public class Assignment_Edit_Script : MonoBehaviour
 {
     // variables
@@ -75,6 +76,7 @@ public class Assignment_Edit_Script : MonoBehaviour
             API_Assignment.asgQAddDone = false;
         }
     }
+    // Obtains assignment details from backend
     private void fetchQuestions(Assignment asg){ 
         API_Assignment.asgQListRequestDone = false;
         StartCoroutine(conn.getAssignmentQuestionList(asg));        
@@ -82,6 +84,8 @@ public class Assignment_Edit_Script : MonoBehaviour
     public void ClickReturn(){
         SceneManager.LoadScene("Assignments");
     }
+
+    // Logic when saving. The question might be a new or existing question
     public void ClickSave()
     {
         if(validateFields()){
@@ -102,6 +106,7 @@ public class Assignment_Edit_Script : MonoBehaviour
         current_question = asgQuestionList[--cur];
         populateFields(current_question);
     }
+    // The button could be 'Next' or 'Add'. Two different logics
     public void ClickNextOrAdd(){
         try{
             current_question = asgQuestionList[cur+1];
@@ -241,6 +246,7 @@ public class Assignment_Edit_Script : MonoBehaviour
         }
         return true;
     }
+    // Populate UI fields
     private void populateFields(AssignmentQuestion current_question)
     {
         ClickClear();

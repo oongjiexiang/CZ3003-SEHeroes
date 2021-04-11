@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 
+// Controls Assignments_Edit_Meta Scene
 public class Assignment_Edit_Meta_Script : MonoBehaviour
 {
     const int NUM_TRY = 10;
@@ -23,6 +24,7 @@ public class Assignment_Edit_Meta_Script : MonoBehaviour
         panelObject.transform.Find("Button_Edit").GetComponent<Button>().onClick.AddListener(() => clickEdit());
         mainContentPanel.transform.Find("Panel_Messages").Find("Popup_Incomplete").Find("Button_Confirm").GetComponent<Button>().onClick.AddListener(() => incompleteAcknowledge());
     }
+    // Populate UI fields 
     void populateFields(){
         popUp = mainContentPanel.transform.Find("Panel_Messages").gameObject;
         popUp.SetActive(false);
@@ -50,6 +52,7 @@ public class Assignment_Edit_Meta_Script : MonoBehaviour
         print(editAsg.startDate.time());
         print(editAsg.dueDate.time());
     }
+    // Populate try dropdown options
     void populateRetries(){
         List<string> numTry = new List<string>();
         for(int i = 1; i < NUM_TRY; i++){
@@ -77,10 +80,11 @@ public class Assignment_Edit_Meta_Script : MonoBehaviour
     private void incompletePopup(string message){
         popUp.transform.Find("Popup_Incomplete").Find("Text").GetComponent<Text>().text = message;
     }
-    // logic
+    // Helper function: Get the handle of the dropdown
     private Dropdown getDropdown(string dropdownSection, string dropdownName){
         return panelObject.transform.Find(dropdownSection).Find(dropdownName).GetComponent<Dropdown>();
     }
+    // Verify if all data are valid
     public bool verifyFields(){
         List<Dropdown> dropdowns = new List<Dropdown>();
         List<string> time = new List<string>();
