@@ -16,6 +16,7 @@ public class BattleSceneController : MonoBehaviour
     private string world = ProgramStateController.world;
     private string section = ProgramStateController.section;
     private string level = ProgramStateController.level;
+    private string character = ProgramStateController.characterType;
 
     public static bool APIdone = false;
     public static bool q1Ready = false;
@@ -92,6 +93,15 @@ public class BattleSceneController : MonoBehaviour
         resultCanvas.gameObject.SetActive(false);
         UpdateBG(world);
         enemy.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/"+world+"MonsterController/"+level+world+"Monst");
+        if(character.Equals("Warrior"))
+            player.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/RedWarrior");
+        else if(character.Equals("Magician"))
+            player.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Magician");
+        else if(character.Equals("Bowman"))
+            player.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Bowman");
+        else if(character.Equals("Swordman"))
+            player.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Swordman");
+
     }
 
     void initializeCharacter(){

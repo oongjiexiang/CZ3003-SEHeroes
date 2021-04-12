@@ -15,7 +15,7 @@ public class ProgramStateController : MonoBehaviour
     // User Information
     public static string username;
     public static string email;
-    public static string matricNo = "U1920640B";
+    public static string matricNo;
     public static string characterType;
 
     // Lock State

@@ -652,14 +652,14 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Health: 20
 
-    Damage: 1
+    Damage: 2
 
-    Hit: 1
+    Hit: 2
 
     Crit chance: 35%
 
     Critical
-    Damage: 2
+    Damage: 4
 
 
 '
@@ -1807,8 +1807,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.0645447, y: 0.41555786}
-  m_SizeDelta: {x: 278.3169, y: 295.51062}
+  m_AnchoredPosition: {x: 2.326, y: 0.085}
+  m_SizeDelta: {x: 424.03864, y: 366.88458}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1169733207
 MonoBehaviour:
@@ -1831,9 +1831,14 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Health: 20
 
-    Damage: 1.5
+    Damage: 3
 
-    Hit: 0.75
+    Hit: 2
+
+    Crit Chance: 10%
+
+    Crit
+    Damage: 5
 
 
 '
@@ -2258,8 +2263,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5.9714355, y: -1.593689}
-  m_SizeDelta: {x: 278.3169, y: 295.51062}
+  m_AnchoredPosition: {x: -6.054, y: -2.185}
+  m_SizeDelta: {x: 391.3255, y: 423.38885}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1380456610
 MonoBehaviour:
@@ -2282,9 +2287,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Health: 20
 
-    Damage: 1
+    Damage: 2
 
-    Hit: 0.5
+    Hit: 1
 
 
 '
@@ -2865,8 +2870,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6.118286, y: 0.41555786}
-  m_SizeDelta: {x: 278.3169, y: 295.51062}
+  m_AnchoredPosition: {x: 6.186, y: 0.28}
+  m_SizeDelta: {x: 518.9459, y: 324.80457}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1797418115
 MonoBehaviour:
@@ -2889,9 +2894,14 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Health: 20
 
-    Damage: 1
+    Damage: 2
 
-    Hit: 0.5
+    Hit: 2
+
+    Heal Chance: 35%
+
+    Heal
+    Amount: 1
 
 
 '
