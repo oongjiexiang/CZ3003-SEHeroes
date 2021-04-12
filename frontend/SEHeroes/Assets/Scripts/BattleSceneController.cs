@@ -17,7 +17,6 @@ public class BattleSceneController : MonoBehaviour
     private string section = ProgramStateController.section;
     private string level = ProgramStateController.level;
     private string character = ProgramStateController.characterType;
-
     public static bool APIdone = false;
     public static bool q1Ready = false;
     public static int questionCounter = 0;

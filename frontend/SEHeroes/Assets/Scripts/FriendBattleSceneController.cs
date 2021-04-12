@@ -18,6 +18,7 @@ public class FriendBattleSceneController : MonoBehaviourPun
     private string level = FriendRoomController.challengeLevel;
     private string section = FriendRoomController.challengeSection;
     private string world = FriendRoomController.challengeWorld;
+    private string character = ProgramStateController.characterType;
     public static bool APIdone = false;
     public static bool q1Ready = false;
     public static int questionCounter = 0;

@@ -16,6 +16,7 @@ public class AssignmentBattleSceneController : MonoBehaviour
     private string level = ProgramStateController.level;
     private string section = ProgramStateController.section;
     private string world = ProgramStateController.world;
+    private string character = ProgramStateController.characterType;
 
     private string assID = ProgramStateController.assID;
     private int scoreCount=0;
@@ -64,6 +65,14 @@ public class AssignmentBattleSceneController : MonoBehaviour
         resultCanvas.gameObject.SetActive(false);
         UpdateBG(worldArr[UnityEngine.Random.Range(0, worldArr.Length)]);
         enemy.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/assignmentMonster");
+        if(character.Equals("Warrior"))
+                player.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/RedWarrior");
+            else if(character.Equals("Magician"))
+                player.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Magician");
+            else if(character.Equals("Bowman"))
+                player.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Bowman");
+            else if(character.Equals("Swordman"))
+                player.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/Swordman");
     }
 
     // Update is called once per frame
