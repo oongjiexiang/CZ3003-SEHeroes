@@ -1,0 +1,232 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> story-mode-questions-controller.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>controller</h2><h3>Modules</h3><ul><li><a href="module-account-controller.html">account-controller</a></li><li><a href="module-assignment-controller.html">assignment-controller</a></li><li><a href="module-assignment-question-controller.html">assignment-question-controller</a></li><li><a href="module-assignment-report-controller.html">assignment-report-controller</a></li><li><a href="module-assignment-result-controller.html">assignment-result-controller</a></li><li><a href="module-open-challenge-record-controller.html">open-challenge-record-controller</a></li><li><a href="module-story-mode-question-controller.html">story-mode-question-controller</a></li><li><a href="module-story-mode-report-controller.html">story-mode-report-controller</a></li><li><a href="module-story-mode-result-controller.html">story-mode-result-controller</a></li><li><a href="module-telegram-controller.html">telegram-controller</a></li><li><a href="module-tutorial-group-controller.html">tutorial-group-controller</a></li><li><a href="module-user-controller.html">user-controller</a></li><li><a href="module-world-controller.html">world-controller</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>story-mode-questions-controller.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Controller for story mode question related logic.
+ * @module story-mode-question-controller
+ * @category controller
+ */
+
+const admin = require('firebase-admin');
+const db = admin.firestore();
+const storyModeQuestionCollection = db.collection("storyModeQuestion")
+
+/**
+ * Create story mode question and store into the database. Story mode question must have necessary field.
+ * @param {Object} record - New story mode question details, including question, answer, correctAnswer, world, level and section.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.createStoryModeQuestion= async function(record, callback) {
+
+    if (record['answer'] == null || record['correctAnswer'] == null|| record['level'] == null
+                || record['question']== null || record['section']== null || record['world'] == null) {
+        callback('Missing fields', null)
+        return
+    }
+    if(!record['image']) delete record['image']
+
+    try{
+        const reply = await storyModeQuestionCollection.add(record)
+        callback(null, reply.id)
+    } catch(err) {
+        callback(err, null)
+    }
+}
+
+/**
+ * Get all story mode question data that satisfy filter.
+ * @param {Object} queryMap - Filter to query, can include world, section and level.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.getAllStoryModeQuestions= async function(queryMap, callback) {
+    try{ 
+        let questions = storyModeQuestionCollection
+        for (const key in queryMap) {
+            questions = questions.where(key, "==", queryMap[key])
+        }
+        const snapshot = await questions.get()
+        if (snapshot.empty) {
+            callback('No data', null)
+        }
+        else {
+            const res = []
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                data['storyModeQuestionId'] = doc.id;
+                res.push(data);
+            })
+            callback(null, res)
+        }
+    } catch(err) {
+        callback(err, null)
+    }
+}
+
+/**
+ * Get story mode question data by storyModeQuestionId.
+ * @param {String} storyModeQuestionId - StoryModeQuestionId of story mode question.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.getStoryModeQuestion= async function(storyModeQuestionId, callback) {
+    try{ 
+        const question = await storyModeQuestionCollection.doc(storyModeQuestionId).get()
+        if (!question.exists) {
+            callback('No such question found', null)
+        }
+        else {
+            const data = question.data();
+            data['storyModeQuestionId'] = storyModeQuestionId;
+            callback(null, data)
+        }
+    } catch(err) {
+        callback(err, null)
+    }
+}
+
+/**
+ * Update story mode question by storyModeQuestionId, updated field name must be valid.
+ * @param {String} storyModeQuestionId - StoryModeQuestionId of story mode question to be updated.
+ * @param {Object} updateFields - Object include new data to update.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.updateStoryModeQuestion= async function(storyModeQuestionId, updateFields, callback) {
+    try{
+        const question = await storyModeQuestionCollection.doc(storyModeQuestionId).get()
+        if (!question.exists) {
+            callback('No such question found', null)
+        }
+        else{
+            const res = await storyModeQuestionCollection.doc(storyModeQuestionId).update(updateFields)
+            callback(null, "Update successfully")
+        }
+    } catch(err) {
+        callback(err, null)
+    }
+}
+
+
+/**
+ * Delete story mode question by storyModeQuestionId.
+ * @param {String} storyModeQuestionId - StoryModeQuestionId of story mode question to be deleted.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.deleteStoryModeQuestion= async function(storyModeQuestionId, callback) {
+    try{
+        const res = await storyModeQuestionCollection.doc(storyModeQuestionId).delete()
+        callback(null, "Delete successfully") 
+    } catch(err) {
+        callback(err, null)
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>

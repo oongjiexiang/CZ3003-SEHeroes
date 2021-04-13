@@ -1,40 +1,93 @@
 const express = require("express");
 const router = express.Router();
-const { createUser, getAllUsers, getUser, updateUser, removeUser }  = require("../controllers/user-controller");
-const { isAuthenticated } = require("../auth/authenticated.js");
-const { isAuthorized }  = require("../auth/authorized");
+const UserController = require("../controllers/user-controller");
 
-router.post('/',
-    isAuthenticated,
-    isAuthorized({ hasRole: ['admin', 'manager'] }),
-    createUser
-);
+router.post("/", (req, res) => {
+    const {character, matricNo, username} = req.body;
 
-router.get('/', [
-    //isAuthenticated,
-    //isAuthorized({ hasRole: ['admin', 'manager'] }),
-    getAllUsers
-]);
+    UserController.createUser(
+        {
+            character:character,
+            matricNo:matricNo,
+            username:username
+        },
+        (err, info) => {
+            if (err) {
+                return res.status(500).send({ message: `${err}` });
+            } else {
+                return res.status(200).send(info);
+            }
+        }
+    );
+});
 
-// get :id user
-router.get('/:id', [
-    isAuthenticated,
-    isAuthorized({ hasRole: ['admin', 'manager'], allowSameUser: true }),
-    getUser
-]);
+router.put("/:matricNo", (req, res) => {
+    const { character, openChallengeRating, tutorialGroup, username } = req.body;
+    const {matricNo} = req.params;
+    const updateMap = {}
+    if(character) updateMap['character'] = character;
+    if(username) updateMap['username'] = username;
 
-// updates :id user
-router.patch('/:id', [
-    isAuthenticated,
-    isAuthorized({ hasRole: ['admin', 'manager'], allowSameUser: true }),
-    updateUser
-]);
+    if(tutorialGroup) return res.status(500).send({ message: "Update tutorial group only using tutorialGroup endpoint" });
+    if(openChallengeRating) updateMap['openChallengeRating'] = openChallengeRating;
+    //return res.status(500).send({ message: "You cannot change open challenge rating directly" });
+    if(req.body.matricNo) return res.status(500).send({ message: "You cannot change matricNo" });
 
-// deletes :id user
-router.delete('/:id', [
-    isAuthenticated,
-    isAuthorized({ hasRole: ['admin', 'manager'] }),
-    removeUser
-]);
+    UserController.updateUser(
+        matricNo,
+        updateMap,
+        (err, docid) => {
+            if (err) {
+                return res.status(500).send({ message: `${err}` });
+            } else {
+                return res.status(200).send(docid);
+            }
+        }
+    );
+});
 
-module.exports = router
+router.delete("/:matricNo", (req, res) => {
+    const { matricNo } = req.params;
+    UserController.deleteUser(
+        matricNo,
+        (err, msg) => {
+        if (err) {
+            return res.status(500).send({ message: `${err}` });
+        } else {
+            return res.status(200).send(msg);
+        }
+    });
+});
+
+
+router.get("/:matricNo", (req, res) => {
+    const { matricNo } = req.params;
+    UserController.getUser(matricNo, (err, assignemnt) => {
+        if (err) {
+            return res.status(500).send({ message: `${err}` });
+        } else {
+            return res.status(200).send(assignemnt);
+        }
+    });
+});
+
+router.get("/", (req, res) => {
+
+    const { tutorialGroup } = req.query;
+
+    let queryMap = {}
+    if(tutorialGroup != null) queryMap['tutorialGroup'] = tutorialGroup;
+
+    UserController.getAllUsers(
+        queryMap,
+        (err, users) => {
+        if (err) {
+            return res.status(500).send({ message: `${err}` });
+        } else {
+            return res.status(200).send(users);
+        }
+    });
+});
+
+
+module.exports = router;

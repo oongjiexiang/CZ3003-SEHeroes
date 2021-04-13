@@ -1,6 +1,15 @@
-# Project Bootstrapped With START-EXPRESS-APP
+# Backend for SEHeroes
 
-### Easy to use CLI to start your node.js - express app. <br>
+## Requirement
+- [Node.js](https://nodejs.org/en/)
+- [Yarn package manager](https://yarnpkg.com/)
 
-- Check out start-express-app [github](https://github.com/draganpodrascanin/start-express-app) page
-- Check out start-express-app [npm ](https://www.npmjs.com/package/start-express-app) page
+## Setup and Run
+```
+yarn install
+npm start
+```
+
+## Documentation of API Endpoint
+Documentation of API is hosted on [here](https://app.swaggerhub.com/apis-docs/jiaqing23/SEHeroes/1.0.0).
+It is documented by OpenAPI Specification and hosted by Swagger.

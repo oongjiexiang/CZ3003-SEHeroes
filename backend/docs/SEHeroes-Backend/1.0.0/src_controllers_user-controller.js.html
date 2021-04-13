@@ -1,0 +1,278 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> src/controllers/user-controller.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-index.html">index</a></li></ul></div><div class="category"><h2>controller</h2><h3>Modules</h3><ul><li><a href="module-account-controller.html">account-controller</a></li><li><a href="module-assignment-controller.html">assignment-controller</a></li><li><a href="module-assignment-question-controller.html">assignment-question-controller</a></li><li><a href="module-assignment-report-controller.html">assignment-report-controller</a></li><li><a href="module-assignment-result-controller.html">assignment-result-controller</a></li><li><a href="module-open-challenge-record-controller.html">open-challenge-record-controller</a></li><li><a href="module-story-mode-question-controller.html">story-mode-question-controller</a></li><li><a href="module-story-mode-report-controller.html">story-mode-report-controller</a></li><li><a href="module-story-mode-result-controller.html">story-mode-result-controller</a></li><li><a href="module-telegram-controller.html">telegram-controller</a></li><li><a href="module-tutorial-group-controller.html">tutorial-group-controller</a></li><li><a href="module-user-controller.html">user-controller</a></li><li><a href="module-world-controller.html">world-controller</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>src/controllers/user-controller.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Controller for user related logic.
+ * @module user-controller
+ * @category controller
+ */
+
+const admin = require("firebase-admin");
+const db = admin.firestore();
+const usersCollection = db.collection('users');
+
+
+/**
+ * Create user and store into the database. User must have necessary field.
+ * It will check duplication of user by checking the matricNo.
+ * @param {Object} record - New user details, including matricNo, username and character.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.createUser= async function(record, callback){
+    if (record["matricNo"] == null|| record["username"]== null || record['character']== null) {
+        callback('Missing fields', null)
+        return
+    }
+
+    try {
+        const matricNumber = record["matricNo"];
+        const result = await usersCollection.where("matricNo", "==", matricNumber).get();
+        if (result.empty) {
+            // just create a new item with random id 
+            record['openChallengeRating'] = 0;
+            await usersCollection.doc().set(record);
+            callback(null, "User created");
+        }
+        // assuming that we already have the user with such user name and matric number dont do anything
+        else {
+            callback(null, "User already exist");
+        }
+
+    } catch (err) {
+      callback(err, null);
+    }
+}
+
+/**
+ * Update user by matricNo, updated field name must be valid.
+ * @param {String} matricNo - MatricNo of assignment to be updated.
+ * @param {Object} updateMap - Object include new data to update.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.updateUser= async function (matricNo, updateMap, callback) {
+    try {
+        const result = await usersCollection.where("matricNo", "==", matricNo).get();
+        if (result.empty) {
+            callback("User does not exists",null)
+        }
+        else {
+            
+            result.forEach((doc) => {
+                usersCollection.doc(doc.id).update(updateMap);
+                callback(null,"Update sucessfully")
+         });
+        }
+    }
+    catch (err) {
+        callback(err, null);
+    }
+}
+
+/**
+ * Get user data by matricNo.
+ * @param {String} matricNo - MatricNo of assignment.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.getUser= async function (matricNo, callback) {
+    try {
+        const result = await usersCollection.where("matricNo", "==", matricNo).get();
+        if (result.empty) {
+            callback("User does not exists",null)
+        }
+        else {
+            result.forEach((doc) => {
+                const user = doc.data();
+                callback(null, user)
+            })
+        }
+    }
+    catch (err) {
+        callback(err, null);
+    }
+}
+
+/**
+ * Delete an user from database by matricNo.
+ * @param {String} matricNo - MatricNo of user to be deleted.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.deleteUser= async function (matricNo, callback) {
+    try {
+        console.log(matricNo);
+        const result = await usersCollection.where("matricNo", "==", matricNo).get();
+        console.log(result);
+        if (result.empty) {
+            callback("User does not exists",null)
+        } else {
+            result.forEach((doc) => {
+                usersCollection.doc(doc.id).delete();
+                callback(null, "Delete successfully");
+            });
+        }
+    }
+    catch (err) {
+        callback(err, null);
+    }
+}
+
+/**
+ * Get all user data in the database by filter.
+ * @param {Object} queryMap - Object of filter, field can include tutorialGroupId and character.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.getAllUsers= async function (queryMap, callback) {
+    try {
+
+        let results = usersCollection
+        for (const key in queryMap) {
+            results = results.where(key, "==", queryMap[key])
+        }
+        const snapshot = await results.get()
+        if (snapshot.empty) {
+            callback("User does not exists!",null)
+        }
+        else {
+            const users = []
+            snapshot.forEach((doc) => {
+                users.push(doc.data());
+            })
+            callback(null, users);
+        }
+    }
+    catch (err) {
+        callback(err, null);
+    }
+}
+
+module.exports.getLeaderboard= async function (callback) {
+    try {
+        const snapshot = await usersCollection.get()
+        if (snapshot.empty) {
+            callback("User does not exists!",null)
+            return
+        }
+        let users = []
+        snapshot.forEach((doc) => {users.push(doc.data());})
+        users = users.filter(data => !isNaN(data.openChallengeRating))
+        users.forEach(data => data.openChallengeRating = parseInt(data.openChallengeRating))
+        users.sort((a, b) => b.openChallengeRating - a.openChallengeRating);
+        callback(null, users);
+    }
+    catch (err) {
+        callback(err, null);
+    }
+}
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>

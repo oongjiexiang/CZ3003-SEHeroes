@@ -1,0 +1,22 @@
+extends layout
+
+block layout-content
+  div.View.WelcomeView
+    h1.Banner #{assignmentName}
+    ul.Question
+      each navItem, index in data
+        li.Ques
+          div.Message
+            div.Title
+              h3= 'Question ' + (index+1)
+              h1= navItem.question
+              
+            ol
+              each answer in navItem.answer
+                li
+                  span.Details= answer
+
+        
+    //- div.NavButtons
+    //-   a(href="/user")
+    //-       div.NavButton Just dive in!
