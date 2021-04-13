@@ -191,14 +191,16 @@ public class FriendBattleSceneController : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        // if(FriendRoomController.playerID == 1 && )
-        if(FriendRoomController.player2char != PhotonNetwork.CurrentRoom.CustomProperties["p2char"].ToString()){
-            FriendRoomController.player2char =PhotonNetwork.CurrentRoom.CustomProperties["p2char"].ToString();
-            FriendRoomController.player2matric =PhotonNetwork.CurrentRoom.CustomProperties["p2mat"].ToString();
-            Debug.Log("Fix p2 error");
-            player2matric.text = FriendRoomController.player2matric;
-            initializeCharacter();
+        if(PhotonNetwork.CurrentRoom.CustomProperties["p2char"] != null){
+            if(FriendRoomController.player2char != PhotonNetwork.CurrentRoom.CustomProperties["p2char"].ToString()){
+                FriendRoomController.player2char =PhotonNetwork.CurrentRoom.CustomProperties["p2char"].ToString();
+                FriendRoomController.player2matric =PhotonNetwork.CurrentRoom.CustomProperties["p2mat"].ToString();
+                Debug.Log("Fix p2 error");
+                player2matric.text = FriendRoomController.player2matric;
+                initializeCharacter();
+            }
         }
+
         if (playerHP != (FriendRoomController.playerID == 1 ? (int)PhotonNetwork.CurrentRoom.CustomProperties["player1HP"] : (int)PhotonNetwork.CurrentRoom.CustomProperties["player2HP"]))
         {
             playerHP = (FriendRoomController.playerID == 1 ? (int)PhotonNetwork.CurrentRoom.CustomProperties["player1HP"] : (int)PhotonNetwork.CurrentRoom.CustomProperties["player2HP"]);
