@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> src/controllers/world-controller.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-index.html">index</a></li></ul></div><div class="category"><h2>controller</h2><h3>Modules</h3><ul><li><a href="module-account-controller.html">account-controller</a></li><li><a href="module-assignment-controller.html">assignment-controller</a></li><li><a href="module-assignment-question-controller.html">assignment-question-controller</a></li><li><a href="module-assignment-report-controller.html">assignment-report-controller</a></li><li><a href="module-assignment-result-controller.html">assignment-result-controller</a></li><li><a href="module-open-challenge-record-controller.html">open-challenge-record-controller</a></li><li><a href="module-story-mode-question-controller.html">story-mode-question-controller</a></li><li><a href="module-story-mode-report-controller.html">story-mode-report-controller</a></li><li><a href="module-story-mode-result-controller.html">story-mode-result-controller</a></li><li><a href="module-telegram-controller.html">telegram-controller</a></li><li><a href="module-tutorial-group-controller.html">tutorial-group-controller</a></li><li><a href="module-user-controller.html">user-controller</a></li><li><a href="module-world-controller.html">world-controller</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>src/controllers/world-controller.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Controller for world related logic.
+ * @module world-controller
+ * @category controller
+ */
+
+const admin = require('firebase-admin');
+const db = admin.firestore();
+const WorldCollection = db.collection('world');
+const UsersCollection = db.collection('users');
+const storyModeResultCollection = db.collection("storyModeResult") 
+
+
+/**
+ * Create or update world schedule and store into the database.
+ * It will overwrite the previous schedule if same (world, section) is being added.
+ * @param {Object} record - New schedule details, including world, section, tutorialGroupId and unlockDate
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.update_add_restrictions = async function(record,callback) {
+    
+    // Are we assuming that all the data we obtained using the 3 parameter must be unique
+    if (record['section'] == null|| record['world']== null || record['tutorialGroupId']== null || record['unlockDate']== null) {
+        callback('Missing fields', null)
+        return
+    }
+    console.log(record)
+    try {
+        const section = record['section'];
+        const world = record['world'];
+        const tutorialGroupId = record['tutorialGroupId'];
+        const unlockDate = record['unlockDate'];
+
+        const result = await WorldCollection.where('section', '==', section).where('world', '==', world)
+                            .where('tutorialGroupId', '==', tutorialGroupId).get();
+        if (result.empty) {
+            // just create a new item with random id //
+            await WorldCollection.doc().set(record);
+            callback(null, "new restriction added for section number " + String(section) + 
+                        " world number " + String(world) + " tutorial group " + tutorialGroupId);
+            return;
+        }
+        // assuming that we already have the object with same section, 
+        // world-number and tutorial group, we just update the object's unlockDate
+        const id = result.docs[0].id
+        
+        await WorldCollection.doc(id).update({ 'unlockDate': unlockDate });
+        callback(null,"restriction modified for section number " +String(section) +" world number " +String(world) +" tutorial group " +tutorialGroupId);
+        
+    }
+    catch (err) {
+        callback(err, null);
+    }
+}
+ 
+/**
+ * Remove world schedule from the database.
+ * @param {Object} record - New schedule details, including world, section and tutorialGroupId
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.remove_restriction = async function (record, callback) {
+    if (record['section'] == null|| record['world']== null || record['tutorialGroupId']== null) {
+        callback('Missing fields', null)
+        return
+    }
+    //section, world, tutorialGroupId
+    try {
+        const section = record['section'];
+        const world = record['world'];
+        const tutorialGroupId = record['tutorialGroupId'];
+        
+        const result = await WorldCollection.where('section', '==', section).where('world', '==', world)
+                            .where('tutorialGroupId', '==', tutorialGroupId).get();
+        if (result.empty) {
+            callback(null, "No exisiting document found");
+            return;
+        }
+
+        const id = result.docs[0].id
+        await WorldCollection.doc(id).delete();
+        callback(null, "restriction removed for section number " + String(section) + " world number " + world 
+                        + " tutorial group " + tutorialGroupId);
+    }
+    catch (err) {
+        callback(err, null);
+    }
+}
+
+/**
+ * Get all restriction based on filter.
+ * @param {Object} queryMap - Object of filter, field can include world, section, tutorialGroupId.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.getRestriction = async function(queryMap, callback) {
+    try{ 
+        let result = WorldCollection
+        for (const key in queryMap) {
+            result = result.where(key, "==", queryMap[key])
+        }
+        const snapshot = await result.get()
+        
+        const res = []
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            data['unlockDate'] = dateToObject(data['unlockDate'].toDate())
+            res.push(data);
+        })
+        callback(null, res)
+        
+    } catch(err) {
+        callback(err, null)
+    }
+}
+
+/**
+ * Get all restriction of a student.
+ * @param {Object} matricNo - MatricNo of the student.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.getUnlockedByMatricNo = async function(matricNo, callback) {
+    try{
+        let result = await UsersCollection.where("matricNo", "==", matricNo).get();
+        if (result.empty) {
+            callback("User does not exists", null)
+            return
+        }
+        
+        let tutorialGroup = result.docs[0].data()['tutorialGroup']
+
+        if(!tutorialGroup){
+            callback(null, []) //All lock
+            return
+        }
+
+        const now = new Date();
+        result = await WorldCollection.where('unlockDate', '&lt;=', now).get();
+
+        let unlocked = []
+        result.forEach((doc) => {
+            let data = doc.data();
+            if(data.tutorialGroupId == tutorialGroup) unlocked.push({world: data.world, section: data.section, level: ["Easy"]});
+        });
+
+        result = await storyModeResultCollection.where('matricNo', '==', matricNo).get();
+        const passResult = []
+        result.forEach((doc) => passResult.push(doc.data()));
+
+        unlocked.forEach((data) => {
+            passResult.forEach((passData) =>{
+                if(passData.world == data.world &amp;&amp; passData.section == data.section){
+                    if(parseInt(passData.star) >= 2){
+                        if(passData.level == "Easy") data.level.push("Medium");
+                        if(passData.level == "Medium") data.level.push("Hard");
+                    }
+                }
+            })
+        })
+        console.log(unlocked);
+        callback(null, unlocked);
+        
+    } catch(err) {
+        callback(err, null)
+    }
+}
+
+/**
+ * Convert the date to a formatted object.
+ * @param {Date} date - Date to be converted.
+ * @returns {Object} result - Object contains year, month, day, hour and minute.
+ */
+function dateToObject(date){
+    return{
+        year: date.getFullYear(),
+        month: date.getMonth()+1,
+        day: date.getDate(),
+        hour: date.getHours(),
+        minute: date.getMinutes()
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>

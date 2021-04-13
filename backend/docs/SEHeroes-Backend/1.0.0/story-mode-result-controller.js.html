@@ -1,0 +1,232 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> story-mode-result-controller.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>controller</h2><h3>Modules</h3><ul><li><a href="module-account-controller.html">account-controller</a></li><li><a href="module-assignment-controller.html">assignment-controller</a></li><li><a href="module-assignment-question-controller.html">assignment-question-controller</a></li><li><a href="module-assignment-report-controller.html">assignment-report-controller</a></li><li><a href="module-assignment-result-controller.html">assignment-result-controller</a></li><li><a href="module-open-challenge-record-controller.html">open-challenge-record-controller</a></li><li><a href="module-story-mode-question-controller.html">story-mode-question-controller</a></li><li><a href="module-story-mode-report-controller.html">story-mode-report-controller</a></li><li><a href="module-story-mode-result-controller.html">story-mode-result-controller</a></li><li><a href="module-telegram-controller.html">telegram-controller</a></li><li><a href="module-tutorial-group-controller.html">tutorial-group-controller</a></li><li><a href="module-user-controller.html">user-controller</a></li><li><a href="module-world-controller.html">world-controller</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>story-mode-result-controller.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Controller for story mode result related logic.
+ * @module story-mode-result-controller
+ * @category controller
+ */
+
+const admin = require('firebase-admin');
+const db = admin.firestore();
+const storyModeResultCollection = db.collection("storyModeResult")
+
+
+/**
+ * Create story mode result and store into the database. Result identify by (matricNo, world, section, level). 
+ * Result will be updated if exists in database. 
+ * Star will take the max of new result and previous result.
+ * @param {Object} record - New story mode result details, including matricNo, world, section, level and star.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.createOrUpdateStoryModeResult= async function(record, callback) {
+    if (record['level'] == null|| record['section']== null || record['star']== null || record['matricNo']== null || record['world']== null) {
+        callback('Missing fields', null)
+        return
+    }
+    try{
+        const world = record['world']
+        const section = record['section']
+        const level = record['level']
+        const matricNo = record['matricNo']
+
+        const result = await storyModeResultCollection.where('world', '==', world).where('section', '==', section)
+                            .where('level', '==', level).where('matricNo', '==', matricNo).get();
+
+        if (result.empty) {
+            await storyModeResultCollection.add(record);
+            callback(null, "Result added");
+            return;
+        }
+
+        let id = result.docs[0].id;
+        if(result.docs[0].data().star &lt; record['star']) await storyModeResultCollection.doc(id).update({ 'star': record['star'] });
+        callback(null, "Result updated");
+        
+    } catch(err) {
+        callback(err, null)
+    }
+}
+
+
+/**
+ * Get all story mode results.
+ * @param {Object} queryMap - Object of filter, field can include matricNo, world, section and level.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.getAllStoryModeResults= async function(queryMap, callback) {
+    try{ 
+        let results = storyModeResultCollection
+        for (const key in queryMap) {
+            results = results.where(key, "==", queryMap[key])
+        }
+        const snapshot = await results.get()
+        if (snapshot.empty) {
+            callback('No data', null)
+        }
+        else {
+            var res = []
+            const worldMap = {
+                "Planning": 0,
+                "Design": 1,
+                "Implementation": 2,
+                "Testing": 3,
+                "Maintainance": 4
+            }
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                data['storyModeResultId'] = doc.id;
+                if(worldMap[data.world] != null) res.push(data)
+            })
+
+            res.sort((a, b) => worldMap[a.world] &lt; worldMap[b.world] ? -1 : (worldMap[a.world] > worldMap[b.world] ? 1 : 0));
+
+            callback(null, res)
+            }
+    } catch(err) {
+        callback(err, null)
+    }
+}
+
+module.exports.getStoryModeResult= async function(resultId, callback) {
+    try{ 
+        const result = await storyModeResultCollection.doc(resultId).get()
+        if (!result.exists) {
+            callback('No such result found', null)
+        }
+        else {
+            const data = result.data();
+            data['storyModeResultId'] = resultId;
+            callback(null, data);
+        }
+    } catch(err) {
+        callback(err, null)
+    }
+}
+
+/**
+ * Delete an story mode result from database by resultId.
+ * @param {String} resultId - ResultId of story mode result to be deleted.
+ * @param {requestCallback} callback - A callback to return http response.
+ */
+module.exports.deleteStoryModeResult= async function(resultId, callback) {
+    try{
+        const res = await storyModeResultCollection.doc(resultId).delete()
+        callback(null, "Delete successfully")
+        
+    } catch(err) {
+        callback(err, null)
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>

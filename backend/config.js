@@ -1,3 +1,8 @@
+/**
+ * Configuration for application, include firebase, telegram and twitter key.
+ * @module config
+ */
+
 const dotenv = require("dotenv");
 dotenv.config();
 
