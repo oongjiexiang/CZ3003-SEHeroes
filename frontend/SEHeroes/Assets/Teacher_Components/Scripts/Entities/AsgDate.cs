@@ -33,8 +33,6 @@ public class AsgDate{
         hour = time.Hour;
         minute = time.Minute;
         second = time.Second;
-        Debug.Log(month);
-        Debug.Log(day);
     }
     public AsgDate(){
         DateTime time = DateTime.Now;

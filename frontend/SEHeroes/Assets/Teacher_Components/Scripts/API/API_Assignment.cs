@@ -58,7 +58,6 @@ public class API_Assignment : MonoBehaviour{
 
     // Delete Assignment
     public IEnumerator deleteAssignment(Assignment asg){
-        print(asg.assignmentId);
         asgDeleteDone = false;
         API_Connection conn = new API_Connection();
         yield return StartCoroutine(conn.DeleteData("assignment/" + asg.assignmentId, s => {
@@ -134,7 +133,6 @@ public class API_Assignment : MonoBehaviour{
         asgQUpdateDone = false;
         API_Connection conn = new API_Connection();
         string jsonString = JsonUtility.ToJson(asgQuestion);
-        print("update json" + jsonString);
         yield return StartCoroutine(conn.PutData("assignmentQUestion/" + asgQuestion.assignmentQuestionId, jsonString, s => {
             print(JSON.Parse(s) == asgQuestion.assignmentQuestionId);
         }));
