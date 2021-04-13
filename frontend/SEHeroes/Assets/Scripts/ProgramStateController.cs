@@ -33,6 +33,7 @@ public class ProgramStateController : MonoBehaviour
     public static Vector3 player1Pos = new Vector3(-6.87f,-0.6f,302f);
     public static Vector3 player2Pos = new Vector3(6.87f,-0.6f,302f);
     public static string sceneToLoad;
+    
     public static void viewState() {
         // Debug.Log(world);
         // Debug.Log(section);

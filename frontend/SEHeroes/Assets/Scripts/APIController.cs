@@ -161,33 +161,11 @@ public static class APIController
     }
 
     // ------------------------------ OPEN CHALLENGE ------------------------------ //
-
-    public static IEnumerator GetMultipStoryModeQuesAPI() {
-        string QuesURL = baseStoryModeQuesAPIURL +
-                                "world=" +MultiPlayerBattleSceneController.world +
-                                    "&section=" + MultiPlayerBattleSceneController.section +
-                                        "&level=" + MultiPlayerBattleSceneController.level;
-        UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
-        yield return quesRequest.SendWebRequest();
-
-        if (quesRequest.isNetworkError || quesRequest.isHttpError)
-        {
-            Debug.LogError(quesRequest.error);
-            yield break;
-        }
-
-        JSONNode quesInfo = JSON.Parse(quesRequest.downloadHandler.text);
-        for (int i = 0; i < quesInfo.Count; i++)
-            MultiPlayerBattleSceneController.allQA.Add(quesInfo[i]);
-
-        MultiPlayerBattleSceneController.APIdone = true;
-    }
-
     public static IEnumerator GetFriendStoryModeQuesAPI() {
         string QuesURL = baseStoryModeQuesAPIURL +
-                                "world=" +MultiPlayerBattleSceneController.world +
-                                    "&section=" + MultiPlayerBattleSceneController.section +
-                                        "&level=" + MultiPlayerBattleSceneController.level;
+                                "world=" +FriendRoomController.challengeWorld +
+                                    "&section=" + FriendRoomController.challengeSection +
+                                        "&level=" + FriendRoomController.challengeLevel;
         UnityWebRequest quesRequest = UnityWebRequest.Get(QuesURL);
         yield return quesRequest.SendWebRequest();
 

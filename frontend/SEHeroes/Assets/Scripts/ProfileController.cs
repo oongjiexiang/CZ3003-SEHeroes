@@ -18,12 +18,6 @@ public class ProfileController : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-
-    public void linkToFacebook() {
-
-    }
-
     public void backToMainMenu() {
         SceneManager.LoadScene(sceneName:"MainMenu");
     }

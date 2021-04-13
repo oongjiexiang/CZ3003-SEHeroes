@@ -45,7 +45,6 @@
      <Compile Include="Assets\Scripts\AssignmentSelection.cs" />
      <Compile Include="Assets\Scripts\BattleSceneCharacterController.cs" />
      <Compile Include="Assets\Scripts\BattleSceneController.cs" />
-     <Compile Include="Assets\Scripts\ChallengeFriendRoomController.cs" />
      <Compile Include="Assets\Scripts\CharacterController.cs" />
      <Compile Include="Assets\Scripts\CharacterSelectionCollider.cs" />
      <Compile Include="Assets\Scripts\CharacterSelectionController.cs" />
@@ -60,17 +59,12 @@
      <Compile Include="Assets\Scripts\LoginController.cs" />
      <Compile Include="Assets\Scripts\MainMenuController.cs" />
      <Compile Include="Assets\Scripts\MissingInputField.cs" />
-     <Compile Include="Assets\Scripts\MultiPlayerBattleSceneController.cs" />
-     <Compile Include="Assets\Scripts\MultiPlayerQuestionController.cs" />
-     <Compile Include="Assets\Scripts\MultiplePlayersRoomController.cs" />
      <Compile Include="Assets\Scripts\MusicController.cs" />
      <Compile Include="Assets\Scripts\OpenChallengeController.cs" />
      <Compile Include="Assets\Scripts\ProfileController.cs" />
      <Compile Include="Assets\Scripts\ProgramStateController.cs" />
      <Compile Include="Assets\Scripts\QuestionController.cs" />
      <Compile Include="Assets\Scripts\RegistrationController.cs" />
-     <Compile Include="Assets\Scripts\RoomList.cs" />
-     <Compile Include="Assets\Scripts\RoomListDisplay.cs" />
      <Compile Include="Assets\Scripts\SceneLoader.cs" />
      <Compile Include="Assets\Scripts\SectionController.cs" />
      <Compile Include="Assets\Scripts\SectionTitleUpdater.cs" />

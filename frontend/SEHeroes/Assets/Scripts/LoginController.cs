@@ -31,10 +31,6 @@ public class LoginController : MonoBehaviour
             SceneManager.LoadScene(sceneName:"MainMenu");
     }
 
-    public void socialMediaLogin() {
-        Debug.Log("Social Media Login Button Clicked!");
-    }
-
     public void exitGame() {
         Application.Quit();
     }
