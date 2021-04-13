@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Home.unity
+    guid: 2ee1c8bbedfd640c78ff9d09f7f42852
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Tutorial_Group.unity
+    guid: b625c390a59374b9a888eb99d066d96b
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Story_Mode.unity
+    guid: ed8d4918afda143d0984b4cb2a75796e
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Leaderboard.unity
+    guid: fece9aa2bd2254f5f8b32f311c45073c
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Assignments.unity
+    guid: e24ba2a00934e4d4689f658c630c7335
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Settings.unity
+    guid: 8dc6281094225497eb512ffb2b328c7a
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Tutorial_Group_Management.unity
+    guid: 9f471a807de3941c992c0d9cdcbbc72a
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Tutorial_Group_Editor.unity
+    guid: bff0c1343dc904a0b99dca0a6b894aed
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Tutorial_Group_Creator.unity
+    guid: 4e57301627c0e492d9c5177e602b70d5
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Student_Management.unity
+    guid: 2ab4edebd3863420b964fdec6e81d76a
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Assignments_Creation.unity
+    guid: d0050ff225fec8c40bee8899a1424414
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Assignments_Edit.unity
+    guid: fb8f4d60a75cd3f4880024af1068cb73
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Tutorial_Group_Report.unity
+    guid: 3c2d51eaf8e724cb0bc8b204d7044893
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Assignment_Creation_Meta.unity
+    guid: 01739b3eaf3f5384d9e77212d34f62b1
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Student_Report.unity
+    guid: 587601a9b1116472e8d4620853288db0
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Question_Bank_World.unity
+    guid: 098b8cf63de1e4b39a4a31773fd5317f
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Question_Bank_Section.unity
+    guid: eea28ca0071db484badbdc3b2b383eae
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Question_Bank_Management.unity
+    guid: 75467ecd0fcdb479c80620c1b5651933
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Question_Bank_Add.unity
+    guid: e6f35de90406eb14da2096c97613894c
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Question_Bank_Editor.unity
+    guid: 824e7f4a7bf02426f9cbb14508270695
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/Assignment_Edit_Meta.unity
+    guid: 3057802e23e8cf447a56721912a3827d
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/World_Scheduling.unity
+    guid: ea01a5f648ad04932b596e666fcb6386
+  - enabled: 1
+    path: Assets/Scenes/Teacher UI/World_Schedule_Editor.unity
+    guid: 1f4d3074aa26243eb8412374a15fc9a9
+  m_configObjects: {}

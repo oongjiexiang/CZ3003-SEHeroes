@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Login.unity
+    guid: d9e8044195e59a24b9fa3492a8eea140
+  - enabled: 1
+    path: Assets/Scenes/Registration.unity
+    guid: 5be43567244a416488b4f7d6c915222a
+  - enabled: 1
+    path: Assets/Scenes/Profile.unity
+    guid: 8d6f8e71c93fc1c469a5dfef55f23269
+  - enabled: 1
+    path: Assets/Scenes/EditProfile.unity
+    guid: 5df589da189f22c48af6f1b6e321a9c6
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: c7bdaff7cbc2ed844a11157f0dd9f749
+  - enabled: 1
+    path: Assets/Scenes/WorldSelection.unity
+    guid: 9171c850bcc2244b0bbf23d0270268f9
+  - enabled: 1
+    path: Assets/Scenes/LevelSelection.unity
+    guid: 4d38f53d41599436bb834209f6370b79
+  - enabled: 1
+    path: Assets/Scenes/Forest.unity
+    guid: d2d613a8d04574202a7645e47a3cc104
+  - enabled: 1
+    path: Assets/Scenes/Village.unity
+    guid: 67fa367a3f2df409982ca8e0e8a4db1c
+  - enabled: 1
+    path: Assets/Scenes/Ashland.unity
+    guid: 99ec8978692364dd184d961497ae6f43
+  - enabled: 1
+    path: Assets/Scenes/Desert.unity
+    guid: f9c11c5656aff415fb8fde471074d37e
+  - enabled: 1
+    path: Assets/Scenes/AssignmentBattle.unity
+    guid: 9e5047b58338d6e4eb37e102ad255b85
+  - enabled: 1
+    path: Assets/Scenes/AssignmentSelection.unity
+    guid: 09118df03a0f4430a925ed18f5f0c45a
+  - enabled: 1
+    path: Assets/Scenes/ChallengeFriendsBattle.unity
+    guid: 2573e41c1c9475b4ca58e85efc42d6e9
+  - enabled: 1
+    path: Assets/Scenes/ChallengeFriendsRooms.unity
+    guid: b2b3aeaa72258f145bfdb5794512d608
+  - enabled: 1
+    path: Assets/Scenes/Leaderboard.unity
+    guid: f3506affae179427aacbe3f886df550a
+  - enabled: 1
+    path: Assets/Scenes/MultiplePlayerBattle.unity
+    guid: 5aaed7a8bd0083d4eaca0c935b27a0a9
+  - enabled: 1
+    path: Assets/Scenes/MultiplePlayerRooms.unity
+    guid: 8cfc5bed32ba4a94cbdda21b3b849845
+  - enabled: 1
+    path: Assets/Scenes/OpenChallengeMainMenu.unity
+    guid: bdb928e9b68e1cd4b9df7ba20f09970d
+  - enabled: 1
+    path: Assets/Scenes/Snowland.unity
+    guid: 1dfb0741756ad46e5aeaf1405602f281
+  - enabled: 1
+    path: Assets/Scenes/StoryModeBattle.unity
+    guid: 686415b2d67aa7b428f4f56ee4512666
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/Loading.unity
+    guid: 2d1783814d32544418e3f3a0d75ed616
+  - enabled: 1
+    path: Assets/Scenes/CharacterSelection.unity
+    guid: 4e5b11fca50664fce85b28f9ab65e747
+  m_configObjects: {}
